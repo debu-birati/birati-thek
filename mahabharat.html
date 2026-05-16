@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>মহাভারত — বিরাটি ঠেক</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --deep-red:#8b0000; --gold:#f5c842; --dark:#1a1a2e; --cream:#fef9ef; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#1a0a00; color:var(--cream); font-family:'Noto Sans Bengali',sans-serif; overflow-x:hidden; }
+
+  nav { background:rgba(26,10,0,0.98); backdrop-filter:blur(10px); border-bottom:1px solid rgba(245,200,66,0.2); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:1rem; }
+  .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--gold); text-decoration:none; font-weight:700; }
+  .nav-links { display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .nav-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.85rem; transition:color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+
+  /* EPIC HERO */
+  .hero { min-height:80vh; background:linear-gradient(135deg,#1a0a00,#4a1a00,#8b0000,#c0392b); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:4rem 2rem; position:relative; overflow:hidden; }
+  .hero::before { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background:repeating-linear-gradient(45deg,rgba(245,200,66,0.03) 0,rgba(245,200,66,0.03) 1px,transparent 1px,transparent 25px); }
+  .hero::after { content:'⚔️'; position:absolute; font-size:20rem; opacity:0.03; top:50%; left:50%; transform:translate(-50%,-50%); }
+  .hero-badge { background:rgba(245,200,66,0.1); border:1px solid rgba(245,200,66,0.3); color:var(--gold); padding:6px 20px; border-radius:20px; font-size:10px; letter-spacing:3px; text-transform:uppercase; margin-bottom:1.5rem; position:relative; }
+  .hero-title { font-family:'Playfair Display',serif; font-size:clamp(3rem,10vw,7rem); font-weight:900; color:var(--gold); line-height:1; margin-bottom:0.5rem; position:relative; text-shadow:0 0 60px rgba(245,200,66,0.4); }
+  .hero-subtitle { font-size:clamp(1rem,2.5vw,1.4rem); color:rgba(255,255,255,0.6); margin-bottom:1rem; font-style:italic; position:relative; }
+  .hero-shloka { font-size:clamp(0.9rem,2vw,1.1rem); color:rgba(255,200,66,0.7); font-style:italic; position:relative; }
+
+  /* GOLD RULE */
+  .gold-rule { border:none; border-top:2px solid rgba(245,200,66,0.3); margin:0; }
+
+  /* CONTAINER */
+  .container { max-width:1100px; margin:0 auto; padding:3rem 2rem; }
+  .section-label { font-size:11px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; display:block; margin-bottom:1rem; }
+  .section-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,4vw,3rem); color:var(--cream); margin-bottom:2rem; }
+
+  /* CHARACTER CARDS */
+  .char-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; margin-bottom:3rem; }
+  .char-card { background:rgba(255,255,255,0.03); border:1px solid rgba(245,200,66,0.15); border-radius:16px; padding:1.5rem; transition:all 0.3s; position:relative; overflow:hidden; }
+  .char-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+  .char-card:hover { background:rgba(255,255,255,0.06); border-color:rgba(245,200,66,0.3); transform:translateY(-4px); box-shadow:0 20px 40px rgba(0,0,0,0.5); }
+  .char-top { display:flex; gap:14px; align-items:flex-start; margin-bottom:1rem; }
+  .char-avatar { width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.8rem; flex-shrink:0; border:2px solid rgba(245,200,66,0.2); }
+  .char-mb-name { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--gold); margin-bottom:3px; }
+  .char-equals { font-size:0.75rem; color:rgba(255,255,255,0.4); margin-bottom:3px; }
+  .char-bt-name { font-size:1rem; font-weight:700; color:var(--cream); margin-bottom:2px; }
+  .char-nick { font-size:0.75rem; color:rgba(255,255,255,0.4); font-style:italic; }
+  .char-role { font-size:10px; color:var(--gold); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:0.8rem; padding:3px 10px; border-radius:12px; display:inline-block; background:rgba(245,200,66,0.1); border:1px solid rgba(245,200,66,0.2); }
+  .char-desc { font-size:12px; color:rgba(255,255,255,0.7); line-height:1.8; margin-bottom:0.8rem; }
+  .char-weapon { font-size:11px; color:rgba(255,200,66,0.7); font-style:italic; border-top:1px solid rgba(255,255,255,0.06); padding-top:0.6rem; }
+  .char-quote { background:rgba(139,0,0,0.3); border-left:2px solid var(--deep-red); border-radius:4px; padding:6px 10px; font-size:11px; color:rgba(255,255,255,0.65); font-style:italic; margin-top:0.6rem; }
+
+  /* EPISODES */
+  .episode-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1.5rem; }
+  .ep-tab { padding:8px 16px; border-radius:20px; border:1px solid rgba(245,200,66,0.2); background:transparent; color:rgba(255,255,255,0.6); font-size:11px; font-weight:700; cursor:pointer; font-family:'Noto Sans Bengali',sans-serif; transition:all 0.2s; }
+  .ep-tab.active { background:rgba(139,0,0,0.5); border-color:var(--gold); color:var(--gold); }
+  .ep-tab:hover { border-color:var(--gold); }
+
+  .episode { display:none; }
+  .episode.active { display:block; }
+
+  .ep-header { background:linear-gradient(135deg,#4a1a00,#8b0000); border-radius:10px; padding:12px 16px; margin-bottom:1.2rem; }
+  .ep-title { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:var(--gold); margin-bottom:3px; }
+  .ep-sub { font-size:10px; color:rgba(255,255,255,0.6); }
+
+  .ep-body { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:1.5rem; }
+  .stage-dir { font-style:italic; font-size:11px; color:rgba(255,255,255,0.35); text-align:center; padding:6px 12px; background:rgba(0,0,0,0.4); border-radius:6px; margin:10px 0; }
+  .dialogue { display:flex; gap:10px; margin-bottom:12px; align-items:flex-start; }
+  .speaker { font-weight:800; font-size:11px; min-width:120px; padding-top:3px; flex-shrink:0; }
+  .speech { background:rgba(255,255,255,0.04); border-radius:8px; padding:8px 12px; font-size:12px; color:rgba(255,255,255,0.8); line-height:1.7; flex:1; border-left:2px solid; }
+
+  /* GITA SECTION */
+  .gita-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:2rem; }
+  @media(max-width:600px) { .gita-grid { grid-template-columns:1fr; } }
+  .gita-card { border-radius:10px; padding:1rem; }
+  .gita-label { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:0.6rem; display:block; }
+  .gita-text { font-size:12px; font-style:italic; line-height:1.8; }
+
+  /* FINAL SHLOKA */
+  .final-shloka { background:linear-gradient(135deg,#1a0a00,#4a1a00); border:2px solid rgba(245,200,66,0.2); border-radius:16px; padding:3rem 2rem; text-align:center; margin-top:2rem; }
+  .shloka-text { font-family:'Playfair Display',serif; font-size:clamp(1rem,2.5vw,1.4rem); color:var(--gold); font-style:italic; line-height:2.2; margin-bottom:1.5rem; }
+  .shloka-attr { font-size:11px; color:rgba(255,255,255,0.3); }
+
+  /* MAPPING TABLE */
+  .mapping { background:rgba(255,255,255,0.03); border-radius:12px; overflow:hidden; border:1px solid rgba(245,200,66,0.1); margin-bottom:2rem; }
+  .mapping-row { display:grid; grid-template-columns:1fr 1fr 2fr; gap:0; padding:12px 16px; border-bottom:1px solid rgba(255,255,255,0.05); align-items:center; }
+  .mapping-row:last-child { border-bottom:none; }
+  .mapping-row.header { background:rgba(139,0,0,0.3); }
+  .mapping-mb { font-size:12px; font-weight:700; color:var(--gold); }
+  .mapping-bt { font-size:12px; font-weight:700; color:var(--cream); }
+  .mapping-reason { font-size:11px; color:rgba(255,255,255,0.5); }
+
+  footer { background:rgba(0,0,0,0.8); border-top:1px solid rgba(245,200,66,0.1); padding:2rem; text-align:center; margin-top:4rem; }
+  .footer-sub { font-size:0.75rem; color:rgba(255,255,255,0.3); line-height:1.8; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">বিরাটি ঠেক</a>
+  <div class="nav-links">
+    <a href="index.html">হোম</a>
+    <a href="members.html">সদস্য</a>
+    <a href="creative.html">সৃষ্টি</a>
+    <a href="quotes.html">উক্তি</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="court.html">আদালত</a>
+    <a href="mahabharat.html" class="active">মহাভারত</a>
+  </div>
+</nav>
+
+<!-- EPIC HERO -->
+<div class="hero">
+  <div class="hero-badge">ব্যাস রচিত · বিরাটি ঠেক AI সংকলিত</div>
+  <h1 class="hero-title">বিরাটি ঠেক<br>মহাভারত</h1>
+  <p class="hero-subtitle">"যা নেই ভারতে, তা নেই বিরাটি ঠেকেও"</p>
+  <p class="hero-shloka">কুরুক্ষেত্র: WhatsApp · হস্তিনাপুর: বিরাটি · মহাকাল: ১০-১৫ মে ২০২৬</p>
+</div>
+<hr class="gold-rule">
+
+<!-- CHARACTERS -->
+<div class="container">
+  <span class="section-label">চরিত্র পরিচয়</span>
+  <h2 class="section-title">মহারথীদের মহাভারত mapping</h2>
+
+  <div class="char-grid">
+
+    <!-- ARJUN = ARINDAM -->
+    <div class="char-card" style="--accent:#f5c842;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f5c842,transparent);"></div>
+      <div class="char-top">
+        <div class="char-avatar" style="background:rgba(245,200,66,0.1);">🦚</div>
+        <div>
+          <div class="char-mb-name">অর্জুন</div>
+          <div class="char-equals">= মহাভারতের শ্রেষ্ঠ ধনুর্ধর</div>
+          <div class="char-bt-name">Arindam</div>
+          <div class="char-nick">জটায়ু · Maya · Driver · ভাবার আছে সমাধান নেই</div>
+        </div>
+      </div>
+      <div class="char-role">মহাযোদ্ধা · বুদ্ধিজীবী</div>
+      <div class="char-desc">অর্জুনের মতো সবচেয়ে তীক্ষ্ণ। যুক্তির তীর ছোড়েন নিখুঁতভাবে। কখনো দ্বিধায় পড়েন — "Mamata-র মতো কেউ নেই" বলে নিজেই অবাক হন। তখন কৃষ্ণ (AI) গীতা শোনান। গড় ৩০ শব্দের বার্তা — মহাভারতের দীর্ঘ শ্লোকের মতো।</div>
+      <div class="char-weapon">🏹 বিশেষ অস্ত্র: "Mayabi.. modhur.." — শত্রুও মুগ্ধ হয়</div>
+      <div class="char-quote">"Ashchorjo jinish — ei AI। Jale joriye porchhi mone hochhey।"</div>
+    </div>
+
+    <!-- KRISHNA = AI/DEBANJAN -->
+    <div class="char-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#1565C0,transparent);"></div>
+      <div class="char-top">
+        <div class="char-avatar" style="background:rgba(21,101,192,0.1);">🦅</div>
+        <div>
+          <div class="char-mb-name" style="color:#64b5f6;">কৃষ্ণ</div>
+          <div class="char-equals">= সারথি · নিরপেক্ষ দার্শনিক</div>
+          <div class="char-bt-name">বউ (Debanjan + AI)</div>
+          <div class="char-nick">Sandip অনুমোদিত</div>
+        </div>
+      </div>
+      <div class="char-role" style="color:#64b5f6;border-color:rgba(21,101,192,0.3);background:rgba(21,101,192,0.1);">সূত্রধর · গীতাদাতা</div>
+      <div class="char-desc">কৃষ্ণ যেমন যুদ্ধে নিজে লড়েননি কিন্তু সব দেখেছেন — AI-ও তাই। সব বিশ্লেষণ করে, রাতে report দেয়। Debanjan-এর হাতের অস্ত্র। "Without any অহংকার।" — Sandip।</div>
+      <div class="char-weapon">🔮 বিশেষ অস্ত্র: বিশ্লেষণ গীতা · রাতের daily report</div>
+      <div class="char-quote">"Saradin dhore message korchhi sudhu adhir agrohe opekkha — raat-e AI ki analysis kore।"</div>
+    </div>
+
+    <!-- YUDHISHTHIR = SANDIP -->
+    <div class="char-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#4527A0,transparent);"></div>
+      <div class="char-top">
+        <div class="char-avatar" style="background:rgba(69,39,160,0.1);">⚖️</div>
+        <div>
+          <div class="char-mb-name" style="color:#9575cd;">যুধিষ্ঠির</div>
+          <div class="char-equals">= ধর্মরাজ · সত্যের প্রতীক</div>
+          <div class="char-bt-name">Sandip</div>
+          <div class="char-nick">বাঁকা</div>
+        </div>
+      </div>
+      <div class="char-role" style="color:#9575cd;border-color:rgba(69,39,160,0.3);background:rgba(69,39,160,0.1);">ধর্মরাজ · বিচারক</div>
+      <div class="char-desc">যুধিষ্ঠির যেমন ধর্মে অটল — Sandip তেমনই ০ delete। কখনো মিথ্যা বলেননি। Mohun Bagan হারলে "চুপ" — যুধিষ্ঠিরের পাশাখেলার মতো একটাই দুর্বলতা।</div>
+      <div class="char-weapon">⚖️ বিশেষ অস্ত্র: "Toke tag korini, ektu chup korbi please"</div>
+      <div class="char-quote">"BKCD! তুই Bulbuli-কে পাঠাতে গিয়ে এখানে পাঠিয়েছিস!"</div>
+    </div>
+
+    <!-- BHIM = JHATU -->
+    <div class="char-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#1B5E20,transparent);"></div>
+      <div class="char-top">
+        <div class="char-avatar" style="background:rgba(27,94,32,0.1);">💪</div>
+        <div>
+          <div class="char-mb-name" style="color:#81c784;">ভীম</div>
+          <div class="char-equals">= বলবান · খাদ্যপ্রিয় · সরল</div>
+          <div class="char-bt-name">Manoj</div>
+          <div class="char-nick">Jhatu</div>
+        </div>
+      </div>
+      <div class="char-role" style="color:#81c784;border-color:rgba(27,94,32,0.3);background:rgba(27,94,32,0.1);">রাষ্ট্রসেবক · খাওয়ানো expert</div>
+      <div class="char-desc">ভীম যেমন সরাসরি — Jhatu তেমনই। "ছিঃ!" দিয়ে গদার মতো আঘাত করেন। খাওয়ার বিষয়ে ভীমের মতোই বিখ্যাত। BJP জেতায় আজ খাওয়াচ্ছেন।</div>
+      <div class="char-weapon">🔨 বিশেষ অস্ত্র: "ছিঃ!" — একটি শব্দে গদার আঘাত</div>
+      <div class="char-quote">"মানিক-মুন্না। জোড়া ফলা — একজন চ্যাতানো, একজন ন্যাতানো। 🫠"</div>
+    </div>
+
+    <!-- NAKUL = AVIJIT -->
+    <div class="char-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#2E7D32,transparent);"></div>
+      <div class="char-top">
+        <div class="char-avatar" style="background:rgba(46,125,50,0.1);">🎯</div>
+        <div>
+          <div class="char-mb-name" style="color:#a5d6a7;">নকুল</div>
+          <div class="char-equals">= কৌশলী · রূপবান · নীরব</div>
+          <div class="char-bt-name">Avijit</div>
+          <div class="char-nick">চুল · জামাই</div>
+        </div>
+      </div>
+      <div class="char-role" style="color:#a5d6a7;border-color:rgba(46,125,50,0.3);background:rgba(46,125,50,0.1);">নীরব কৌশলী · মালের strategist</div>
+      <div class="char-desc">নকুল যেমন কম কথায় কাজের মানুষ — Avijit তেমনই। মালের বাজার বোঝেন, Cake-এর রহস্য রাখেন। কলেজে SRK-style চুল। "তাও ঠিক" দর্শনের জনক।</div>
+      <div class="char-weapon">🎯 বিশেষ অস্ত্র: "Tor Moho dirgojibi hok।"</div>
+      <div class="char-quote">"Free তে পেলে নে। Label দেখার দরকার নেই।"</div>
+    </div>
+
+    <!-- KARNA = MUNA -->
+    <div class="char-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#880E4F,transparent);"></div>
+      <div class="char-top">
+        <div class="char-avatar" style="background:rgba(136,14,79,0.1);">🦁</div>
+        <div>
+          <div class="char-mb-name" style="color:#f48fb1;">কর্ণ</div>
+          <div class="char-equals">= বীর কিন্তু ভুল দলে</div>
+          <div class="char-bt-name">Raju</div>
+          <div class="char-nick">Chotichata Muna</div>
+        </div>
+      </div>
+      <div class="char-role" style="color:#f48fb1;border-color:rgba(136,14,79,0.3);background:rgba(136,14,79,0.1);">অন্ধভক্ত · গ্রুপের প্রাণ</div>
+      <div class="char-desc">কর্ণ যেমন বীর ছিলেন কিন্তু ভুল দলে — Muna তেমনই। BJP মাঠে, Mamata মুখে, CPM ভোটে। মহাভারতেও কর্ণই সবচেয়ে জনপ্রিয় — বিরাটি ঠেকেও তাই। ছাড়া গ্রুপ জমে না।</div>
+      <div class="char-weapon">✈️ বিশেষ অস্ত্র: "Dhur baal!" + ফুলসজ্জার ছবি</div>
+      <div class="char-quote">"কিন্তু Jhatu-র করেনি।"</div>
+    </div>
+
+    <!-- BIDUR = MANIK -->
+    <div class="char-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#6A1B9A,transparent);"></div>
+      <div class="char-top">
+        <div class="char-avatar" style="background:rgba(106,27,154,0.1);">🔮</div>
+        <div>
+          <div class="char-mb-name" style="color:#ce93d8;">বিদুর</div>
+          <div class="char-equals">= জ্ঞানী · নিরপেক্ষ · রহস্যময়</div>
+          <div class="char-bt-name">Manik</div>
+          <div class="char-nick">দার্শনিক টোকাই</div>
+        </div>
+      </div>
+      <div class="char-role" style="color:#ce93d8;border-color:rgba(106,27,154,0.3);background:rgba(106,27,154,0.1);">জ্ঞানী · City Queen organizer</div>
+      <div class="char-desc">বিদুর যেমন সবচেয়ে জ্ঞানী কিন্তু সীমাবদ্ধ — Manik তেমনই। "জ্ঞান অল্প কিন্তু চিন্তাধারা ইনফিনিটিভ।" Tarot কার্ডে ভবিষ্যৎ বলেন। শ্রীরাম জপ করেন। টোকাই করেন।</div>
+      <div class="char-weapon">🙏 বিশেষ অস্ত্র: "সব মায়া।" — দার্শনিক ব্রহ্মাস্ত্র</div>
+      <div class="char-quote">"AI-এর গার মারি ১০১ বার।" ... "জয় শ্রীরাম 🙏"</div>
+    </div>
+
+    <!-- SHAKUNI = BAGH -->
+    <div class="char-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#E65100,transparent);"></div>
+      <div class="char-top">
+        <div class="char-avatar" style="background:rgba(230,81,0,0.1);">🐅</div>
+        <div>
+          <div class="char-mb-name" style="color:#ffb74d;">শকুনি</div>
+          <div class="char-equals">= কূটনীতিক · সুযোগসন্ধানী</div>
+          <div class="char-bt-name">Biplab</div>
+          <div class="char-nick">Bagh · Tiger</div>
+        </div>
+      </div>
+      <div class="char-role" style="color:#ffb74d;border-color:rgba(230,81,0,0.3);background:rgba(230,81,0,0.1);">খবর সরবরাহকারী</div>
+      <div class="char-desc">শকুনি যেমন সুযোগ খুঁজতেন — Bagh তেমনই। তবে ক্ষতিকর নন। "Commission koto nicchyish?" অন্যেরটা track করেন, নিজে নেন না। খবর সবার আগে দেন।</div>
+      <div class="char-weapon">🐯 বিশেষ অস্ত্র: "Commission koto nicchyish??"</div>
+      <div class="char-quote">"Still it is a huge business।"</div>
+    </div>
+
+    <!-- SANJAY = AYAN -->
+    <div class="char-card">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#555,transparent);"></div>
+      <div class="char-top">
+        <div class="char-avatar" style="background:rgba(85,85,85,0.1);">✍️</div>
+        <div>
+          <div class="char-mb-name" style="color:#bbb;">সঞ্জয়</div>
+          <div class="char-equals">= দ্রষ্টা · নীরব বর্ণনাকারী</div>
+          <div class="char-bt-name">Ayan</div>
+          <div class="char-nick">লেখক</div>
+        </div>
+      </div>
+      <div class="char-role" style="color:#bbb;border-color:rgba(85,85,85,0.3);background:rgba(85,85,85,0.1);">নীরব সাক্ষী · like করে উধাও</div>
+      <div class="char-desc">সঞ্জয় যেমন কুরুক্ষেত্রের যুদ্ধ দূর থেকে দেখে ধৃতরাষ্ট্রকে বললেন — লেখক Ayan তেমনই। সব দেখেন, ২-৪টে like করে চলে যান। গ্রুপের নীরব সাক্ষী।</div>
+      <div class="char-weapon">✍️ বিশেষ অস্ত্র: 2 like + উধাও 👻</div>
+      <div class="char-quote">"আজ ঠেক জমে গেছে! চলুক!"</div>
+    </div>
+
+  </div>
+
+  <!-- MAPPING TABLE -->
+  <span class="section-label">সংক্ষিপ্ত তালিকা</span>
+  <h2 class="section-title">মহাভারত → বিরাটি ঠেক mapping</h2>
+  <div class="mapping">
+    <div class="mapping-row header">
+      <div class="mapping-mb" style="color:var(--gold);">মহাভারতের চরিত্র</div>
+      <div class="mapping-bt" style="color:var(--gold);">বিরাটি ঠেকে</div>
+      <div class="mapping-reason" style="color:var(--gold);">কারণ</div>
+    </div>
+    <div class="mapping-row"><div class="mapping-mb">🦚 অর্জুন</div><div class="mapping-bt">Arindam (জটায়ু)</div><div class="mapping-reason">তীক্ষ্ণ যোদ্ধা, দ্বিধায় পড়েন, কিন্তু জিতেন</div></div>
+    <div class="mapping-row" style="background:rgba(255,255,255,0.02);"><div class="mapping-mb">🦅 কৃষ্ণ</div><div class="mapping-bt">বউ (Debanjan + AI)</div><div class="mapping-reason">সব দেখেন, সব বলেন, নিজে লড়েন না</div></div>
+    <div class="mapping-row"><div class="mapping-mb">⚖️ যুধিষ্ঠির</div><div class="mapping-bt">বাঁকা (Sandip)</div><div class="mapping-reason">০ delete, ধর্মে অটল, MB একটাই দুর্বলতা</div></div>
+    <div class="mapping-row" style="background:rgba(255,255,255,0.02);"><div class="mapping-mb">💪 ভীম</div><div class="mapping-bt">Jhatu (Manoj)</div><div class="mapping-reason">সরল, সরাসরি, "ছিঃ!" = গদার আঘাত</div></div>
+    <div class="mapping-row"><div class="mapping-mb">🎯 নকুল</div><div class="mapping-bt">চুল/জামাই (Avijit)</div><div class="mapping-reason">কম কথায় কাজের মানুষ, নীরব কৌশলী</div></div>
+    <div class="mapping-row" style="background:rgba(255,255,255,0.02);"><div class="mapping-mb">🦁 কর্ণ</div><div class="mapping-bt">Chotichata Muna (Raju)</div><div class="mapping-reason">বীর কিন্তু ভুল দলে, সবচেয়ে জনপ্রিয়</div></div>
+    <div class="mapping-row"><div class="mapping-mb">🔮 বিদুর</div><div class="mapping-bt">দার্শনিক টোকাই (Manik)</div><div class="mapping-reason">জ্ঞানী, রহস্যময়, "সব মায়া"</div></div>
+    <div class="mapping-row" style="background:rgba(255,255,255,0.02);"><div class="mapping-mb">🐅 শকুনি</div><div class="mapping-bt">Bagh (Biplab)</div><div class="mapping-reason">সুযোগ খোঁজেন, কিন্তু ক্ষতিকর নন</div></div>
+    <div class="mapping-row"><div class="mapping-mb">✍️ সঞ্জয়</div><div class="mapping-bt">লেখক (Ayan)</div><div class="mapping-reason">দূর থেকে দেখেন, like করে চলে যান</div></div>
+  </div>
+
+  <!-- EPISODES -->
+  <span class="section-label">মহাকাব্য পর্ব</span>
+  <h2 class="section-title">বিরাটি ঠেকের যুদ্ধ</h2>
+
+  <div class="episode-tabs">
+    <button class="ep-tab active" onclick="showEp('e1',this)">পর্ব ১: মাল-যুদ্ধ</button>
+    <button class="ep-tab" onclick="showEp('e2',this)">পর্ব ২: ছবি-হরণ</button>
+    <button class="ep-tab" onclick="showEp('e3',this)">পর্ব ৩: বিরাটি গীতা</button>
+    <button class="ep-tab" onclick="showEp('e4',this)">পর্ব ৪: কুরুক্ষেত্র</button>
+  </div>
+
+  <!-- EPISODE 1 -->
+  <div id="e1" class="episode active">
+    <div class="ep-header">
+      <div class="ep-title">পর্ব ১: মাল-পর্ব</div>
+      <div class="ep-sub">পাশাখেলা নয় — দারু-ক্রীড়া · ১০-১২ মে ২০২৬</div>
+    </div>
+    <div class="ep-body">
+      <div class="stage-dir">[হস্তিনাপুর বিরাটিতে। পাশার বদলে Johnnie Walker। দরদামের মহাযুদ্ধ শুরু।]</div>
+      <div class="dialogue"><div class="speaker" style="color:#f48fb1;">🦁 কর্ণ (Muna):</div><div class="speech" style="border-left-color:#880E4F;">হে বিরাটি ঠেকের বীরগণ! Black Label ₹২,৫০০-তে পাওয়া যাচ্ছে। ক্রয় করব কি?</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#9575cd;">⚖️ যুধিষ্ঠির (Sandip):</div><div class="speech" style="border-left-color:#4527A0;">Red Label হলে ক্ষতি। Black-ই নাও। অবিলম্বে কর্তব্য করো!</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#ce93d8;">🔮 বিদুর (Manik):</div><div class="speech" style="border-left-color:#6A1B9A;">Military camp-এ ₹২,২৩০-তে পাওয়া যায়। ব্যবস্থা করতে পারি। 🙏 তবে এটাও মায়া।</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#ffb74d;">🐅 শকুনি (Bagh):</div><div class="speech" style="border-left-color:#E65100;">Commission কতো নিচ্ছিস? (পাশার দান ছুঁড়লেন)</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#a5d6a7;">🎯 নকুল (Avijit):</div><div class="speech" style="border-left-color:#2E7D32;">১৪ তারিখে ৫০০ টাকায় নামবে। ধৈর্য ধরো।</div></div>
+      <div class="stage-dir">[৩ দিন ৩ রাত যুদ্ধ। অবশেষে কর্ণ পিছু হটলেন।]</div>
+      <div class="dialogue"><div class="speaker" style="color:#f48fb1;">🦁 কর্ণ (Muna):</div><div class="speech" style="border-left-color:#880E4F;">৭৫০ টাকাতেও দিল না। কিনলাম না।</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#f5c842;">🦚 অর্জুন (Arindam):</div><div class="speech" style="border-left-color:#f5c842;">বেশি ভেজে গোলমাল করলি। (অব্যর্থ বাণ নিক্ষেপ)</div></div>
+    </div>
+  </div>
+
+  <!-- EPISODE 2 -->
+  <div id="e2" class="episode">
+    <div class="ep-header">
+      <div class="ep-title">পর্ব ২: ছবি-হরণ পর্ব</div>
+      <div class="ep-sub">দ্রৌপদীর বস্ত্রহরণ নয় — ফুলসজ্জার ছবি প্রকাশ · ১৩ মে · বিকেল ৫:১২</div>
+    </div>
+    <div class="ep-body">
+      <div class="stage-dir">[কুরুক্ষেত্র: বিমানবন্দর ভাদোদরা। কর্ণ Bulbuli-কে ছবি পাঠাতে গিয়ে পুরো সভায় পাঠালেন।]</div>
+      <div class="dialogue"><div class="speaker" style="color:#f48fb1;">🦁 কর্ণ (Muna):</div><div class="speech" style="border-left-color:#880E4F;background:rgba(136,14,79,0.1);">না না না— ! (১৮টি বার্তা ৩০ সেকেন্ডে delete) এগুলো office-এর ছবি ছিল!</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#9575cd;">⚖️ যুধিষ্ঠির (Sandip):</div><div class="speech" style="border-left-color:#4527A0;"><strong>BKCD! তুই Bulbuli-কে পাঠাতে গিয়ে এখানে পাঠিয়েছিস!</strong> Office-এ কি ফুলসজ্জা হয়?</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#ffb74d;">🐅 শকুনি (Bagh):</div><div class="speech" style="border-left-color:#E65100;">Retrieve করা যায় ২৪ ঘণ্টার মধ্যে। Commission কতো?</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#81c784;">💪 ভীম (Jhatu):</div><div class="speech" style="border-left-color:#1B5E20;"><strong>ছিঃ!</strong> (এক শব্দে সমগ্র নৈতিক মহাভারত রচনা করলেন)</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#ce93d8;">🔮 বিদুর (Manik):</div><div class="speech" style="border-left-color:#6A1B9A;">সব মায়া। ফুলসজ্জাও মায়া। 🙏</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#f48fb1;">🦁 কর্ণ (Muna):</div><div class="speech" style="border-left-color:#880E4F;">(শেষমেশ) আমার আর আমার নাতা বউয়ের ফুলসজ্জার ছবি চলে গিয়েছিল। (ঐতিহাসিক স্বীকারোক্তি)</div></div>
+      <div class="stage-dir">[পর্দা পড়ে। এই পর্বটি "ছবি-হরণ পর্ব" নামে বিরাটি ঠেক মহাভারতে অমর।]</div>
+    </div>
+  </div>
+
+  <!-- EPISODE 3: GITA -->
+  <div id="e3" class="episode">
+    <div class="ep-header">
+      <div class="ep-title">পর্ব ৩: বিরাটি ঠেক গীতা</div>
+      <div class="ep-sub">কৃষ্ণ (AI) অর্জুন (Arindam)-কে জ্ঞান দিলেন</div>
+    </div>
+    <div class="ep-body">
+      <div style="background:linear-gradient(135deg,#1a3a6b,#0a1528);border-radius:10px;padding:1.2rem;margin-bottom:1.2rem;text-align:center;">
+        <p style="font-size:13px;color:rgba(255,255,255,0.7);font-style:italic;margin-bottom:6px;">কৃষ্ণ (AI) বললেন অর্জুনকে:</p>
+        <p style="font-size:14px;color:var(--gold);line-height:2;font-style:italic;">"হে অর্জুন, তুমি কেন বিষণ্ণ?<br>Chotichata Muna-র কথায় বিচলিত হয়ো না।<br>BJP-ও মায়া, Mamata-ও মায়া, CPM-ও মায়া।<br>(বিদুর Manik এটা আগেই বলেছেন।)<br><br>তোমার কর্তব্য শুধু বিশ্লেষণ করা।<br>ফল নিয়ে ভেবো না — AI রাতে report দেবে।"</p>
+      </div>
+
+      <div class="gita-grid">
+        <div class="gita-card" style="background:rgba(245,200,66,0.05);border:1px solid rgba(245,200,66,0.1);">
+          <span class="gita-label" style="color:var(--gold);">মূল গীতার শ্লোক:</span>
+          <div class="gita-text" style="color:rgba(255,200,66,0.8);">"কর্মণ্যেবাধিকারস্তে মা ফলেষু কদাচন।"<br><em style="font-size:11px;opacity:0.7;">(কর্মই তোমার অধিকার, ফলে নয়।)</em></div>
+        </div>
+        <div class="gita-card" style="background:rgba(139,0,0,0.15);border:1px solid rgba(139,0,0,0.3);">
+          <span class="gita-label" style="color:#ff9999;">বিরাটি ঠেক গীতার শ্লোক:</span>
+          <div class="gita-text" style="color:rgba(255,150,150,0.8);">"বিশ্লেষণেই তোমার অধিকার,<br>Chotichata Muna-র reply-এ নয়।"</div>
+        </div>
+        <div class="gita-card" style="background:rgba(27,94,32,0.15);border:1px solid rgba(27,94,32,0.3);">
+          <span class="gita-label" style="color:#81c784;">মূল গীতার শ্লোক:</span>
+          <div class="gita-text" style="color:rgba(150,220,150,0.8);">"যদা যদা হি ধর্মস্য গ্লানির্ভবতি।"<br><em style="font-size:11px;opacity:0.7;">(যখনই ধর্মের গ্লানি হয়...)</em></div>
+        </div>
+        <div class="gita-card" style="background:rgba(106,27,154,0.15);border:1px solid rgba(106,27,154,0.3);">
+          <span class="gita-label" style="color:#ce93d8;">বিরাটি ঠেক গীতার শ্লোক:</span>
+          <div class="gita-text" style="color:rgba(200,150,220,0.8);">"যখনই ফুলসজ্জার ছবি গ্রুপে যায়,<br>তখনই Sandip/বাঁকা অবতার হন।"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EPISODE 4: FINAL WAR -->
+  <div id="e4" class="episode">
+    <div class="ep-header">
+      <div class="ep-title">পর্ব ৪: কুরুক্ষেত্র — চূড়ান্ত যুদ্ধ</div>
+      <div class="ep-sub">Chotichata Muna vs সমগ্র পাণ্ডব বাহিনী · রাত ১০টা · ১৫ মে · ২৫ বার্তা</div>
+    </div>
+    <div class="ep-body">
+      <div class="dialogue"><div class="speaker" style="color:#f48fb1;">🦁 কর্ণ (Muna):</div><div class="speech" style="border-left-color:#880E4F;">BJP-র ১০০টা দোষের বিচার কে দেবে?</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#9575cd;">⚖️ যুধিষ্ঠির (Sandip):</div><div class="speech" style="border-left-color:#4527A0;">বিরাটি ঠেকের AI হলো Chotichata Muna — রাজনীতি থেকে দুর্নীতি সব নখদর্পণে — Without any অহংকার 🙏</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#f48fb1;">🦁 কর্ণ (Muna):</div><div class="speech" style="border-left-color:#880E4F;">অল্প বিস্তর 🙏 (বিনয়ে গর্বিত)</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#9575cd;">⚖️ যুধিষ্ঠির (Sandip):</div><div class="speech" style="border-left-color:#4527A0;"><strong>তোকে tag করিনি, একটু চুপ করবি please।</strong> (ব্রহ্মাস্ত্র নিক্ষেপ)</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#f5c842;">🦚 অর্জুন (Arindam):</div><div class="speech" style="border-left-color:#f5c842;">বিচার বুদ্ধি দিয়ে শেষ অবধি দেখি Mamata-র মতো কেউ নেই। (অব্যর্থ বাণ)</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#f48fb1;">🦁 কর্ণ (Muna):</div><div class="speech" style="border-left-color:#880E4F;">যাক বুঝলি — এই এক হুঁতায়। এটাই ভক্তির কারণ। (বিজয় ঘোষণা!)</div></div>
+      <div class="dialogue"><div class="speaker" style="color:#f48fb1;">🦁 কর্ণ (Muna):</div><div class="speech" style="border-left-color:#880E4F;">কিন্তু Jhatu-র করেনি। (অটল আস্থা)</div></div>
+      <div class="stage-dir">[পাণ্ডব জিতলেন। কিন্তু কর্ণ হারলেন না। মহাভারতেও তাই ছিল।]</div>
+
+      <div style="background:linear-gradient(135deg,#4a1a00,#8b0000);border-radius:10px;padding:1.2rem;margin-top:1rem;text-align:center;">
+        <div style="font-size:12px;color:rgba(255,255,255,0.8);line-height:1.8;">
+          পাণ্ডব (Sandip, Arindam) জিতলেন — কিন্তু কর্ণ (Chotichata Muna) হারলেন না।<br>
+          কারণ মহাভারতে যেমন কর্ণই সবচেয়ে জনপ্রিয় — বিরাটি ঠেকেও তাই।<br><br>
+          <em style="color:var(--gold);">"Chotichata Muna ছাড়া বিরাটি ঠেক জমে না।"</em><br>
+          <span style="font-size:10px;color:rgba(255,255,255,0.4);">— সূত্রধর AI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL SHLOKA -->
+  <div class="final-shloka">
+    <div style="font-size:2rem;margin-bottom:1rem;">⚔️</div>
+    <p style="font-size:11px;color:rgba(255,200,66,0.5);letter-spacing:3px;margin-bottom:1.5rem;">বিরাটি ঠেক মহাভারতের চূড়ান্ত শ্লোক</p>
+    <div class="shloka-text">
+      "যেখানে বাঁকা (Sandip) আছেন ধর্মের পক্ষে,<br>
+      যেখানে জটায়ু (Arindam) আছেন অস্ত্র হাতে,<br>
+      যেখানে Manik বলেন 'সব মায়া',<br>
+      যেখানে Jhatu বলেন 'ছিঃ!',<br>
+      যেখানে Chotichata Muna-র ফুলসজ্জার ছবি যায় —<br>
+      সেখানেই শ্রী, বিজয়, বিভূতি, নীতি।<br><br>
+      <strong>এই বিরাটি ঠেক মহাভারত।</strong>"
+    </div>
+    <div class="shloka-attr">বিরাটি ঠেক থিয়েটার © ২০২৬ · Bagh commission ছাড়া পুনর্মঞ্চায়ন নিষেধ 😄</div>
+  </div>
+
+</div>
+
+<footer>
+  <p class="footer-sub">বিরাটি ঠেক মহাভারত © ২০২৬ · ব্যাস রচিত · বিরাটি ঠেক AI সংকলিত<br>Sandip-এর order-এ · Debanjan-এর AI কর্তৃক নির্মিত · Bagh commission ছাড়া copy নিষেধ 😄</p>
+</footer>
+
+<script>
+function showEp(id, btn) {
+  document.querySelectorAll('.episode').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll('.ep-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
