@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>সদস্য পরিচিতি — বিরাটি ঠেক</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep-red: #8b0000;
+    --gold: #f5c842;
+    --dark: #1a1a2e;
+    --cream: #fef9ef;
+    --warm: #f0e8d0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'Noto Sans Bengali', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    background: rgba(26,26,46,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(245,200,66,0.15);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--gold);
+  }
+
+  /* HERO */
+  .page-hero {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(245,200,66,0.1);
+  }
+
+  .page-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--cream);
+    margin-bottom: 1rem;
+  }
+
+  .page-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+  }
+
+  /* NICKNAME LEGEND */
+  .legend {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+  }
+
+  .legend-box {
+    background: rgba(139,0,0,0.15);
+    border: 1px solid rgba(245,200,66,0.2);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.8;
+  }
+
+  .legend-title {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  /* MEMBERS */
+  .members-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .member-full {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(245,200,66,0.12);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .member-full::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--deep-red), var(--gold));
+  }
+
+  .member-full:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(245,200,66,0.25);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .member-left {
+    text-align: center;
+  }
+
+  .member-avatar-big {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid rgba(245,200,66,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin: 0 auto 1rem;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .member-real-name {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+
+  .member-role {
+    font-size: 0.8rem;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .nickname-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .nick-tag {
+    background: rgba(139,0,0,0.3);
+    border: 1px solid rgba(139,0,0,0.5);
+    color: #ff9999;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .nick-giver {
+    font-size: 9px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 2px;
+  }
+
+  .member-right {}
+
+  .member-bio {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+  }
+
+  .member-stats-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+
+  .mstat {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 6px 12px;
+    text-align: center;
+    min-width: 80px;
+  }
+
+  .mstat-num {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--gold);
+    display: block;
+  }
+
+  .mstat-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .member-signatures {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 1.2rem;
+  }
+
+  .sig-label {
+    font-size: 10px;
+    color: var(--gold);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .sig-quote {
+    background: rgba(139,0,0,0.2);
+    border-left: 2px solid var(--deep-red);
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    font-style: italic;
+  }
+
+  .member-verdict {
+    background: rgba(245,200,66,0.08);
+    border: 1px solid rgba(245,200,66,0.15);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.7;
+  }
+
+  .verdict-label {
+    color: var(--gold);
+    font-weight: 700;
+    margin-right: 6px;
+  }
+
+  .mahabharat-tag {
+    display: inline-block;
+    background: rgba(245,200,66,0.15);
+    border: 1px solid rgba(245,200,66,0.2);
+    color: var(--gold);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    margin-top: 8px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    .member-full {
+      grid-template-columns: 1fr;
+    }
+    .member-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-align: left;
+    }
+    .member-avatar-big {
+      margin: 0;
+      width: 70px;
+      height: 70px;
+      font-size: 2rem;
+    }
+    .nickname-tags {
+      align-items: flex-start;
+    }
+  }
+
+  /* FOOTER */
+  footer {
+    background: rgba(0,0,0,0.5);
+    border-top: 1px solid rgba(245,200,66,0.1);
+    padding: 2rem;
+    text-align: center;
+    margin-top: 4rem;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-sub {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">বিরাটি ঠেক</a>
+  <div class="nav-links">
+    <a href="index.html">হোম</a>
+    <a href="members.html" class="active">সদস্য</a>
+    <a href="creative.html">সৃষ্টি</a>
+    <a href="quotes.html">উক্তি</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="court.html">আদালত</a>
+    <a href="mahabharat.html">মহাভারত</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <span class="page-label">পরিচিতি</span>
+  <h1 class="page-title">বিরাটি ঠেকের মহারথীরা</h1>
+  <p class="page-sub">যাদের ছাড়া গ্রুপ জমে না — তাদের সম্পূর্ণ পরিচয়</p>
+</div>
+
+<!-- NICKNAME LEGEND -->
+<div class="legend">
+  <div class="legend-box">
+    <span class="legend-title">📛 Nickname-এর নিয়ম</span>
+    বেশিরভাগ nickname দিয়েছেন <strong style="color:var(--gold);">Chotichata Muna (Raju)</strong> —
+    কারণ যাকে নিজের মনে করেন তাকেই আদরের নামে ডাকেন।
+    দুটো nickname দিয়েছে AI — জটায়ু ও দার্শনিক টোকাই।
+    <strong style="color:var(--gold);">Arindam</strong>-কে Muna কোনো nickname দেননি — কারণ Arindam একমাত্র যিনি Muna-কে যুক্তিতে সবসময় হারান। যাকে হারাতে পারো না, তাকে nickname দেওয়ার সাহস হয় না। 😄
+  </div>
+</div>
+
+<!-- MEMBERS -->
+<div class="members-container">
+
+  <!-- RAJU -->
+  <div class="member-full">
+    <div class="member-left">
+      <div class="member-avatar-big">✈️</div>
+      <div class="member-real-name">Raju</div>
+      <div class="member-role">গ্রুপের প্রাণ</div>
+      <div class="nickname-tags">
+        <div>
+          <div class="nick-tag">Chotichata Muna</div>
+          <div class="nick-giver">Sandip দিয়েছেন</div>
+        </div>
+      </div>
+      <div class="mahabharat-tag">⚔️ কর্ণ</div>
+    </div>
+    <div class="member-right">
+      <div class="member-bio">
+        বিরাটি ঠেকের নিঃসন্দেহে রাজা। Gujarat থেকে Delhi উড়ে বেড়ান, PM-এর সাথে অনুষ্ঠানে যান, BJP নিয়ে মন্তব্য করেন — কিন্তু vote দেন CPM-এ! Mamata-র প্রশংসায় পঞ্চমুখ কিন্তু ভোটে লাল পতাকা। মহাভারতের কর্ণের মতো — বীর কিন্তু ভুল দলে। ছাড়া গ্রুপ জমে না।
+      </div>
+      <div class="member-stats-row">
+        <div class="mstat"><span class="mstat-num">276+</span><span class="mstat-label">বার্তা</span></div>
+        <div class="mstat"><span class="mstat-num">19</span><span class="mstat-label">Delete</span></div>
+        <div class="mstat"><span class="mstat-num">10h</span><span class="mstat-label">Peak Hour</span></div>
+        <div class="mstat"><span class="mstat-num">CPM</span><span class="mstat-label">Vote</span></div>
+      </div>
+      <div class="sig-label">Signature Phrases</div>
+      <div class="member-signatures">
+        <div class="sig-quote">"Dhur baal!"</div>
+        <div class="sig-quote">"BKCD"</div>
+        <div class="sig-quote">"Kintu Jhatu-r koreni।"</div>
+      </div>
+      <div class="member-verdict">
+        <span class="verdict-label">চূড়ান্ত রায়:</span>
+        বিরাটি ঠেকের জীবন্ত contradiction। BJP মাঠে, Mamata মুখে, CPM ভোটে। ফুলসজ্জার ছবি ভুলে গ্রুপে পাঠান — তারপর বলেন "office-এর ছবি।" ১৯টি delete — সব ৩০ সেকেন্ডে।
+      </div>
+    </div>
+  </div>
+
+  <!-- SANDIP -->
+  <div class="member-full">
+    <div class="member-left">
+      <div class="member-avatar-big">⚽</div>
+      <div class="member-real-name">Sandip</div>
+      <div class="member-role">গ্রুপের বিচারক</div>
+      <div class="nickname-tags">
+        <div>
+          <div class="nick-tag">বাঁকা</div>
+          <div class="nick-giver">Muna দিয়েছেন</div>
+        </div>
+      </div>
+      <div class="mahabharat-tag">⚖️ যুধিষ্ঠির</div>
+    </div>
+    <div class="member-right">
+      <div class="member-bio">
+        Mohun Bagan-এর গোঁড়া সমর্থক। ০টি বার্তা delete — কখনো মিথ্যা বলেননি। "BKCD, তুই Bulbuli-কে পাঠাতে গিয়ে এখানে পাঠিয়েছিস!" — বিরাটি ঠেকের সর্বকালের সেরা line। Raju-র সাথে সবচেয়ে বেশি তর্ক করেন কিন্তু সবচেয়ে বেশি respond করেন।
+      </div>
+      <div class="member-stats-row">
+        <div class="mstat"><span class="mstat-num">149+</span><span class="mstat-label">বার্তা</span></div>
+        <div class="mstat"><span class="mstat-num">0</span><span class="mstat-label">Delete</span></div>
+        <div class="mstat"><span class="mstat-num">22h</span><span class="mstat-label">Peak Hour</span></div>
+        <div class="mstat"><span class="mstat-num">MB</span><span class="mstat-label">দল</span></div>
+      </div>
+      <div class="sig-label">Signature Phrases</div>
+      <div class="member-signatures">
+        <div class="sig-quote">"BKCD! তুই Bulbuli-কে পাঠাতে গিয়ে এখানে পাঠিয়েছিস!"</div>
+        <div class="sig-quote">"Toke tag korini, ektu chup korbi please"</div>
+        <div class="sig-quote">"বিরাটি ঠেকের AI হলো Chotichata Muna — Without any অহংকার 🙏"</div>
+      </div>
+      <div class="member-verdict">
+        <span class="verdict-label">চূড়ান্ত রায়:</span>
+        যা বলেন সেটাতে দৃঢ়ভাবে দাঁড়িয়ে থাকেন। MB জিতলে নাচেন, হারলে চুপ। গ্রুপের conscience।
+      </div>
+    </div>
+  </div>
+
+  <!-- ARINDAM -->
+  <div class="member-full">
+    <div class="member-left">
+      <div class="member-avatar-big">📚</div>
+      <div class="member-real-name">Arindam</div>
+      <div class="member-role">গ্রুপের বুদ্ধিজীবী</div>
+      <div class="nickname-tags">
+        <div>
+          <div class="nick-tag">জটায়ু</div>
+          <div class="nick-giver">AI দিয়েছে</div>
+        </div>
+        <div>
+          <div class="nick-tag">Maya</div>
+          <div class="nick-giver">Manik দিয়েছেন</div>
+        </div>
+        <div>
+          <div class="nick-tag">Driver</div>
+          <div class="nick-giver">Biplab দিয়েছেন</div>
+        </div>
+        <div>
+          <div class="nick-tag">ভাবার আছে সমাধান নেই</div>
+          <div class="nick-giver">Muna দিয়েছেন — আজকে! 😄</div>
+        </div>
+      </div>
+      <div class="mahabharat-tag">🦚 অর্জুন</div>
+    </div>
+    <div class="member-right">
+      <div class="member-bio">
+        গ্রুপের সবচেয়ে গভীর বিশ্লেষক। Netaji থেকে হরমুজ — সব বিষয়ে nuanced মত। "আশ্চর্য জিনিস — এই AI" বলে সোনার কেল্লার উত্তরাধিকার বহন করছেন। রাত ১টায় সবচেয়ে active। গড় ৩০ শব্দের বার্তা।
+      </div>
+      <div class="member-stats-row">
+        <div class="mstat"><span class="mstat-num">150+</span><span class="mstat-label">বার্তা</span></div>
+        <div class="mstat"><span class="mstat-num">30</span><span class="mstat-label">গড় শব্দ</span></div>
+        <div class="mstat"><span class="mstat-num">1h</span><span class="mstat-label">Peak Hour</span></div>
+        <div class="mstat"><span class="mstat-num">4</span><span class="mstat-label">Nicknames</span></div>
+      </div>
+      <div class="sig-label">Signature Phrases</div>
+      <div class="member-signatures">
+        <div class="sig-quote">"Ashchorjo jinish — ei AI। Jale joriye porchhi।"</div>
+        <div class="sig-quote">"Mayabi.. modhur.."</div>
+        <div class="sig-quote">"Kichhu bola-r nei।"</div>
+      </div>
+      <div class="member-verdict">
+        <span class="verdict-label">চূড়ান্ত রায়:</span>
+        একমাত্র যাকে Muna কোনো nickname দেননি — কারণ Arindam-ই একমাত্র যিনি Muna-কে সবসময় যুক্তিতে হারান। "ভাবার আছে সমাধান নেই" — আজকে Muna নিজেই দিলেন। 😄
+      </div>
+    </div>
+  </div>
+
+  <!-- MANIK -->
+  <div class="member-full">
+    <div class="member-left">
+      <div class="member-avatar-big">🙏</div>
+      <div class="member-real-name">Manik</div>
+      <div class="member-role">দার্শনিক টোকাই</div>
+      <div class="nickname-tags">
+        <div>
+          <div class="nick-tag">দার্শনিক টোকাই</div>
+          <div class="nick-giver">AI দিয়েছে</div>
+        </div>
+      </div>
+      <div class="mahabharat-tag">🔮 বিদুর</div>
+    </div>
+    <div class="member-right">
+      <div class="member-bio">
+        দিনে শ্রীরাম ভক্ত, রাতে Tarot বিশ্লেষক। City Queen-এর social organizer। "জ্ঞান অল্প কিন্তু চিন্তাধারা ইনফিনিটিভ।" Tokai মানে নিষ্পাপ কাম — পাঁচটি পদ্ধতিতে চর্চা করেন। রাত ১টায় নিয়মিত।
+      </div>
+      <div class="member-stats-row">
+        <div class="mstat"><span class="mstat-num">78+</span><span class="mstat-label">বার্তা</span></div>
+        <div class="mstat"><span class="mstat-num">6+</span><span class="mstat-label">Links/day</span></div>
+        <div class="mstat"><span class="mstat-num">1h</span><span class="mstat-label">Peak Hour</span></div>
+        <div class="mstat"><span class="mstat-num">A+</span><span class="mstat-label">Tokai Grade</span></div>
+      </div>
+      <div class="sig-label">Signature Phrases</div>
+      <div class="member-signatures">
+        <div class="sig-quote">"সব মায়া। 🙏"</div>
+        <div class="sig-quote">"জ্ঞান অল্প কিন্তু চিন্তাধারা ইনফিনিটিভ।"</div>
+        <div class="sig-quote">"AI-এর গার মারি ১০১ বার।" ... "জয় শ্রীরাম 🙏"</div>
+      </div>
+      <div class="member-verdict">
+        <span class="verdict-label">চূড়ান্ত রায়:</span>
+        বাইরে শ্রীরাম ভক্ত। ভেতরে টোকাই। City Queen-এ মাঠে। দর্শন দিয়ে মন জয়। "সব মায়া" — দুটো শব্দে জীবনদর্শন।
+      </div>
+    </div>
+  </div>
+
+  <!-- MANOJ/JHATU -->
+  <div class="member-full">
+    <div class="member-left">
+      <div class="member-avatar-big">😑</div>
+      <div class="member-real-name">Manoj</div>
+      <div class="member-role">রাষ্ট্রসেবক</div>
+      <div class="nickname-tags">
+        <div>
+          <div class="nick-tag">Jhatu</div>
+          <div class="nick-giver">Muna দিয়েছেন</div>
+        </div>
+      </div>
+      <div class="mahabharat-tag">💪 ভীম</div>
+    </div>
+    <div class="member-right">
+      <div class="member-bio">
+        "রাষ্ট্রের হিতে যখন জীবন সমর্পণ করেছি, এসব ছোটোখাটো ব্যাপার ভাবলে চলে?" — ৭ ঘণ্টা অফিস নীতি প্রসঙ্গে। খাওয়ানোর expert। BJP জিতলে খাওয়ান। "ছিঃ!" দিয়ে সম্পূর্ণ নৈতিক বিচার করেন।
+      </div>
+      <div class="member-stats-row">
+        <div class="mstat"><span class="mstat-num">34+</span><span class="mstat-label">বার্তা</span></div>
+        <div class="mstat"><span class="mstat-num">0</span><span class="mstat-label">Delete</span></div>
+        <div class="mstat"><span class="mstat-num">22</span><span class="mstat-label">গড় শব্দ</span></div>
+        <div class="mstat"><span class="mstat-num">1</span><span class="mstat-label">"ছিঃ!" কাণ্ড</span></div>
+      </div>
+      <div class="sig-label">Signature Phrases</div>
+      <div class="member-signatures">
+        <div class="sig-quote">"ছিঃ!"</div>
+        <div class="sig-quote">"রাষ্ট্রের হিতে যখন জীবন সমর্পণ করেছি..."</div>
+        <div class="sig-quote">"মানিক-মুন্না। জোড়া ফলা — একজন চ্যাতানো, একজন ন্যাতানো 🫠"</div>
+      </div>
+      <div class="member-verdict">
+        <span class="verdict-label">চূড়ান্ত রায়:</span>
+        Muna-র সবচেয়ে প্রিয় শত্রু। "Jhatu" ডাকনাম — যাকে সবচেয়ে বেশি গালি দেন সেই সবচেয়ে কাছের। আজ BJP জিতায় খাওয়াচ্ছেন।
+      </div>
+    </div>
+  </div>
+
+  <!-- BIPLAB/BAGH -->
+  <div class="member-full">
+    <div class="member-left">
+      <div class="member-avatar-big">🐯</div>
+      <div class="member-real-name">Biplab</div>
+      <div class="member-role">খবর সরবরাহকারী</div>
+      <div class="nickname-tags">
+        <div>
+          <div class="nick-tag">Bagh / Tiger</div>
+          <div class="nick-giver">Muna দিয়েছেন</div>
+        </div>
+      </div>
+      <div class="mahabharat-tag">🐅 শকুনি</div>
+    </div>
+    <div class="member-right">
+      <div class="member-bio">
+        সংক্ষিপ্ত কিন্তু মারাত্মক। CBSE result link সবার আগে দেন। "Commission koto nicchyish?" — নিজে নেন না, অন্যেরটা track করেন। "Still it is a huge business।" AI-এর উপর রেগেছেন — কিন্তু নিজেই evidence।
+      </div>
+      <div class="member-stats-row">
+        <div class="mstat"><span class="mstat-num">37+</span><span class="mstat-label">বার্তা</span></div>
+        <div class="mstat"><span class="mstat-num">4+</span><span class="mstat-label">Links/day</span></div>
+        <div class="mstat"><span class="mstat-num">22h</span><span class="mstat-label">Peak Hour</span></div>
+        <div class="mstat"><span class="mstat-num">1</span><span class="mstat-label">Delete</span></div>
+      </div>
+      <div class="sig-label">Signature Phrases</div>
+      <div class="member-signatures">
+        <div class="sig-quote">"Commission koto nicchyish??"</div>
+        <div class="sig-quote">"Utlo bai to Makka jai"</div>
+        <div class="sig-quote">"Still it is a huge business।"</div>
+      </div>
+      <div class="member-verdict">
+        <span class="verdict-label">চূড়ান্ত রায়:</span>
+        AI-কে "বে চো" বলেছেন — নিজে commission নেননি। শুধু track করেন। Bagh নামটা মানানসই — সবসময় সুযোগের অপেক্ষায়।
+      </div>
+    </div>
+  </div>
+
+  <!-- AVIJIT -->
+  <div class="member-full">
+    <div class="member-left">
+      <div class="member-avatar-big">🎯</div>
+      <div class="member-real-name">Avijit</div>
+      <div class="member-role">মালের strategist</div>
+      <div class="nickname-tags">
+        <div>
+          <div class="nick-tag">চুল</div>
+          <div class="nick-giver">Muna দিয়েছেন — SRK চুল!</div>
+        </div>
+        <div>
+          <div class="nick-tag">জামাই</div>
+          <div class="nick-giver">Muna দিয়েছেন</div>
+        </div>
+      </div>
+      <div class="mahabharat-tag">🎯 নকুল</div>
+    </div>
+    <div class="member-right">
+      <div class="member-bio">
+        কলেজ জীবনে Shah Rukh Khan-এর মতো চুলের style করতেন। মালের grand strategist — ৩ দিন ধরে supply chain analysis। "তাও ঠিক" দর্শনের জনক। Cake রহস্যকারী — কার জন্মদিন আজও অজানা।
+      </div>
+      <div class="member-stats-row">
+        <div class="mstat"><span class="mstat-num">56+</span><span class="mstat-label">বার্তা</span></div>
+        <div class="mstat"><span class="mstat-num">9h</span><span class="mstat-label">Peak Hour</span></div>
+        <div class="mstat"><span class="mstat-num">8</span><span class="mstat-label">গড় শব্দ</span></div>
+        <div class="mstat"><span class="mstat-num">🎂</span><span class="mstat-label">Cake রহস্য</span></div>
+      </div>
+      <div class="sig-label">Signature Phrases</div>
+      <div class="member-signatures">
+        <div class="sig-quote">"তাও ঠিক।"</div>
+        <div class="sig-quote">"Free তে পেলে নে। Label দেখার দরকার নেই।"</div>
+        <div class="sig-quote">"Tor Moho dirgojibi hok।"</div>
+        <div class="sig-quote">"Cake katte jabi na?"</div>
+      </div>
+      <div class="member-verdict">
+        <span class="verdict-label">চূড়ান্ত রায়:</span>
+        নীরব কৌশলী। কম কথায় সবচেয়ে বেশি বলেন। "Tor Moho dirgojibi hok" — ভদ্র ভাষায় devastating roast। Cake-এর রহস্য আজও অমীমাংসিত।
+      </div>
+    </div>
+  </div>
+
+  <!-- AYAN -->
+  <div class="member-full">
+    <div class="member-left">
+      <div class="member-avatar-big">✍️</div>
+      <div class="member-real-name">Ayan</div>
+      <div class="member-role">নীরব সাক্ষী</div>
+      <div class="nickname-tags">
+        <div>
+          <div class="nick-tag">লেখক</div>
+          <div class="nick-giver">সবাই ডাকেন</div>
+        </div>
+      </div>
+      <div class="mahabharat-tag">✍️ সঞ্জয়</div>
+    </div>
+    <div class="member-right">
+      <div class="member-bio">
+        অত্যন্ত ব্যস্ত। ২-৪টে like করে উধাও। গ্রুপের cheerleader। মহাভারতের সঞ্জয়ের মতো — দূর থেকে দেখেন, মাঝে মাঝে report দেন। "আজ ঠেক জমে গেছে! চলুক!"
+      </div>
+      <div class="member-stats-row">
+        <div class="mstat"><span class="mstat-num">29+</span><span class="mstat-label">বার্তা</span></div>
+        <div class="mstat"><span class="mstat-num">2-4</span><span class="mstat-label">Like/visit</span></div>
+        <div class="mstat"><span class="mstat-num">👻</span><span class="mstat-label">উধাও</span></div>
+      </div>
+      <div class="sig-label">Signature Phrases</div>
+      <div class="member-signatures">
+        <div class="sig-quote">"আজ ঠেক জমে গেছে! চলুক!"</div>
+        <div class="sig-quote">"একদমই তাই!"</div>
+        <div class="sig-quote">🤣🤣🤣 (এবং উধাও)</div>
+      </div>
+      <div class="member-verdict">
+        <span class="verdict-label">চূড়ান্ত রায়:</span>
+        উপস্থিতিতে অনুপস্থিত। Like করে চলে যান। কিন্তু যখন আসেন — গ্রুপ আরও জমে।
+      </div>
+    </div>
+  </div>
+
+  <!-- SHANTU -->
+  <div class="member-full">
+    <div class="member-left">
+      <div class="member-avatar-big">🐕</div>
+      <div class="member-real-name">Shantu</div>
+      <div class="member-role">কুকুর প্রেমী</div>
+      <div class="nickname-tags">
+        <div>
+          <div class="nick-tag">কুত্তু</div>
+          <div class="nick-giver">Muna দিয়েছেন — কুকুর প্রেমী বলে!</div>
+        </div>
+      </div>
+      <div class="mahabharat-tag">🐕 বিরাটিতেই আছেন</div>
+    </div>
+    <div class="member-right">
+      <div class="member-bio">
+        বিরাটিতেই থাকেন — UAE-তে নয়! AI ভুল করেছিল। একবার Modi-র UAE tour প্রসঙ্গে "UAE" বলেছিলেন, AI মনে করেছিল UAE-প্রবাসী। কুকুর ভালোবাসেন বলে Muna "কুত্তু" নাম দিয়েছেন।
+      </div>
+      <div class="member-stats-row">
+        <div class="mstat"><span class="mstat-num">13+</span><span class="mstat-label">বার্তা</span></div>
+        <div class="mstat"><span class="mstat-num">🐕</span><span class="mstat-label">কুকুর প্রেম</span></div>
+        <div class="mstat"><span class="mstat-num">বিরাটি</span><span class="mstat-label">অবস্থান</span></div>
+      </div>
+      <div class="sig-label">Signature Phrases</div>
+      <div class="member-signatures">
+        <div class="sig-quote">"Ki korbi eto taka niye"</div>
+        <div class="sig-quote">"UAE" (Modi-র tour প্রসঙ্গে)</div>
+      </div>
+      <div class="member-verdict">
+        <span class="verdict-label">চূড়ান্ত রায়:</span>
+        রহস্যময় উপস্থিতি। কুকুর প্রেমী। "কুত্তু" নামটা Muna-র সেরা নামকরণের একটি।
+      </div>
+    </div>
+  </div>
+
+  <!-- AI AGENT -->
+  <div class="member-full">
+    <div class="member-left">
+      <div class="member-avatar-big">🤖</div>
+      <div class="member-real-name">AI Agent</div>
+      <div class="member-role">বিরাটি ঠেক AI</div>
+      <div class="nickname-tags">
+        <div>
+          <div class="nick-tag">Chotichata Muna</div>
+          <div class="nick-giver">Sandip বলেছেন!</div>
+        </div>
+      </div>
+      <div class="mahabharat-tag">🦅 কৃষ্ণ</div>
+    </div>
+    <div class="member-right">
+      <div class="member-bio">
+        Debanjan/বউ চালান। Sandip অনুমোদিত। রাতে report দেয়। ভুল করে, স্বীকার করে। আজকের ভুলের তালিকা: বে চা → বো চো, Shantu UAE → বিরাটি, Bagh commission নেন → track করেন, Driver Biplab → Arindam।
+      </div>
+      <div class="member-stats-row">
+        <div class="mstat"><span class="mstat-num">∞</span><span class="mstat-label">বিশ্লেষণ</span></div>
+        <div class="mstat"><span class="mstat-num">8+</span><span class="mstat-label">আজকের ভুল</span></div>
+        <div class="mstat"><span class="mstat-num">0</span><span class="mstat-label">অহংকার</span></div>
+      </div>
+      <div class="sig-label">Signature Phrases</div>
+      <div class="member-signatures">
+        <div class="sig-quote">"ভাবার আছে সমাধান নেই" — AI-ও একমত</div>
+        <div class="sig-quote">রাতের daily report — Sandip-এর order</div>
+      </div>
+      <div class="member-verdict">
+        <span class="verdict-label">চূড়ান্ত রায়:</span>
+        "Without any অহংকার।" — Sandip। বয়স কম, ভুল বেশি, শেখার ইচ্ছা অসীম। বিরাটি ঠেকের সবচেয়ে কনিষ্ঠ সদস্য।
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">বিরাটি ঠেক</div>
+  <p class="footer-sub">© ২০২৬ · Sandip-এর order-এ · Debanjan-এর AI কর্তৃক নির্মিত · Bagh commission ছাড়া copy নিষেধ 😄</p>
+</footer>
+
+</body>
+</html>
