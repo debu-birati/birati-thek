@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>আদালত — বিরাটি ঠেক</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --deep-red:#8b0000; --gold:#f5c842; --dark:#1a1a2e; --cream:#fef9ef; --navy:#0f1a3a; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--navy); color:var(--cream); font-family:'Noto Sans Bengali',sans-serif; }
+
+  nav { background:rgba(15,26,58,0.98); backdrop-filter:blur(10px); border-bottom:1px solid rgba(245,200,66,0.15); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:1rem; }
+  .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--gold); text-decoration:none; font-weight:700; }
+  .nav-links { display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .nav-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.85rem; transition:color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+
+  /* COURT HEADER */
+  .court-header { background:linear-gradient(135deg,#0a1528,#1a3a6b,#2c5f9e); padding:3rem 2rem; text-align:center; border-bottom:3px solid var(--gold); position:relative; overflow:hidden; }
+  .court-header::before { content:'⚖️'; position:absolute; font-size:8rem; opacity:0.05; top:50%; left:50%; transform:translate(-50%,-50%); }
+  .court-badge { font-size:10px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; display:block; margin-bottom:1rem; }
+  .court-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,6vw,3.5rem); color:var(--gold); font-weight:900; margin-bottom:0.5rem; }
+  .court-sub { font-size:1rem; color:rgba(255,255,255,0.6); margin-bottom:1.5rem; }
+  .court-roles { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; }
+  .role-chip { background:rgba(255,255,255,0.08); border:1px solid rgba(245,200,66,0.2); padding:5px 14px; border-radius:20px; font-size:11px; color:rgba(255,255,255,0.8); }
+
+  /* CASE LIST */
+  .container { max-width:900px; margin:0 auto; padding:2rem; }
+  .case-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1.5rem; }
+  .case-tab { padding:8px 16px; border-radius:8px; border:1px solid rgba(245,200,66,0.2); background:transparent; color:rgba(255,255,255,0.6); font-size:11px; font-weight:700; cursor:pointer; font-family:'Noto Sans Bengali',sans-serif; transition:all 0.2s; text-align:left; }
+  .case-tab.active { background:#1a3a6b; border-color:var(--gold); color:var(--gold); }
+  .case-tab:hover { border-color:var(--gold); }
+  .case-num { font-size:9px; opacity:0.6; display:block; }
+
+  .case-content { display:none; }
+  .case-content.active { display:block; }
+
+  /* CASE HEADER */
+  .case-header { background:linear-gradient(135deg,#1a3a6b,#0a1528); border:1px solid rgba(245,200,66,0.2); border-radius:12px; padding:1.2rem 1.5rem; margin-bottom:1.5rem; }
+  .case-number { font-size:11px; color:var(--gold); font-weight:700; letter-spacing:2px; margin-bottom:4px; }
+  .case-name { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--cream); margin-bottom:0.8rem; }
+  .case-meta { display:flex; gap:1rem; flex-wrap:wrap; }
+  .case-meta-item { font-size:11px; color:rgba(255,255,255,0.5); }
+  .case-meta-item span { color:var(--cream); font-weight:600; }
+
+  /* DIALOGUE */
+  .court-body { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem; }
+  .stage-dir { font-style:italic; font-size:11px; color:rgba(255,255,255,0.4); text-align:center; padding:6px 12px; background:rgba(0,0,0,0.3); border-radius:6px; margin:10px 0; }
+  .dialogue { display:flex; gap:10px; margin-bottom:12px; align-items:flex-start; }
+  .speaker { font-weight:800; font-size:11px; min-width:130px; padding-top:3px; flex-shrink:0; }
+  .speech { background:rgba(255,255,255,0.04); border-radius:8px; padding:8px 12px; font-size:12px; color:rgba(255,255,255,0.8); line-height:1.7; flex:1; border-left:2px solid; }
+
+  /* VERDICT */
+  .verdict { background:linear-gradient(135deg,rgba(26,58,107,0.5),rgba(10,21,40,0.8)); border:2px solid var(--gold); border-radius:12px; padding:1.2rem 1.5rem; }
+  .verdict-label { font-size:11px; color:var(--gold); font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:0.8rem; display:block; }
+  .verdict-text { font-size:13px; color:rgba(255,255,255,0.85); line-height:1.8; }
+  .verdict-tag { display:inline-block; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:700; margin-top:8px; }
+  .guilty { background:rgba(220,50,50,0.2); border:1px solid #e74c3c; color:#ff9999; }
+  .acquitted { background:rgba(46,139,50,0.2); border:1px solid #2ecc71; color:#69db7c; }
+  .award { background:rgba(245,200,66,0.2); border:1px solid var(--gold); color:var(--gold); }
+
+  /* SUMMARY CARDS */
+  .summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-bottom:2rem; }
+  .summary-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:1rem; }
+  .summary-role { font-size:10px; color:var(--gold); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+  .summary-name { font-size:14px; font-weight:800; color:var(--cream); margin-bottom:4px; }
+  .summary-desc { font-size:11px; color:rgba(255,255,255,0.5); line-height:1.5; }
+
+  footer { background:rgba(0,0,0,0.8); border-top:1px solid rgba(245,200,66,0.1); padding:1.5rem; text-align:center; margin-top:3rem; }
+  .footer-sub { font-size:0.75rem; color:rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">বিরাটি ঠেক</a>
+  <div class="nav-links">
+    <a href="index.html">হোম</a>
+    <a href="members.html">সদস্য</a>
+    <a href="creative.html">সৃষ্টি</a>
+    <a href="quotes.html">উক্তি</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="court.html" class="active">আদালত</a>
+    <a href="mahabharat.html">মহাভারত</a>
+  </div>
+</nav>
+
+<!-- COURT HEADER -->
+<div class="court-header">
+  <span class="court-badge">বিরাটি ঠেক মহামান্য আদালত · স্থাপিত ২০২৬</span>
+  <h1 class="court-title">বিরাটি ঠেক<br>হাইকোর্ট</h1>
+  <p class="court-sub">ন্যায়বিচার · সত্য · মাল</p>
+  <div class="court-roles">
+    <span class="role-chip">⚖️ বিচারক: বাঁকা (Sandip)</span>
+    <span class="role-chip">👨‍💼 উকিল: জটায়ু (Arindam)</span>
+    <span class="role-chip">🙏 সাক্ষী: Manik</span>
+    <span class="role-chip">🐯 আমিকাস কিউরি: Bagh</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- COURT MEMBERS -->
+  <div class="summary-grid" style="margin-top:1.5rem;">
+    <div class="summary-card">
+      <div class="summary-role">⚖️ প্রধান বিচারক</div>
+      <div class="summary-name">বাঁকা (Sandip)</div>
+      <div class="summary-desc">০টি delete। কখনো মিথ্যা বলেননি। MB সমর্থক। "BKCD" বলেন কিন্তু ন্যায়ের পক্ষে।</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-role">👨‍💼 সরকারি উকিল</div>
+      <div class="summary-name">জটায়ু (Arindam)</div>
+      <div class="summary-desc">তীক্ষ্ণ বিশ্লেষণ। "Mayabi.. modhur.." বলেও কাজ করেন। গড় ৩০ শব্দের যুক্তি।</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-role">🙏 বিশেষ সাক্ষী</div>
+      <div class="summary-name">Manik</div>
+      <div class="summary-desc">সব মায়া। আদালতেও মায়া দেখেন। Tarot কার্ড দিয়ে ভবিষ্যৎ বলেন।</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-role">🐯 আমিকাস কিউরি</div>
+      <div class="summary-name">Bagh (Biplab)</div>
+      <div class="summary-desc">"Commission কতো নিচ্ছিস?" আদালতেও সুযোগ খোঁজেন।</div>
+    </div>
+  </div>
+
+  <!-- CASE TABS -->
+  <div class="case-tabs">
+    <button class="case-tab active" onclick="showCase('c1',this)">
+      <span class="case-num">মামলা ০০১/২০২৬</span>
+      ফুলসজ্জার ছবি কাণ্ড
+    </button>
+    <button class="case-tab" onclick="showCase('c2',this)">
+      <span class="case-num">মামলা ০০২/২০২৬</span>
+      মাল না কেনার প্রতারণা
+    </button>
+    <button class="case-tab" onclick="showCase('c3',this)">
+      <span class="case-num">মামলা ০০৩/২০২৬</span>
+      Jhatu-র অফিস ডিসিপ্লিন
+    </button>
+    <button class="case-tab" onclick="showCase('c4',this)">
+      <span class="case-num">মামলা ০০৪/২০২৬</span>
+      Manik-এর টোকাই মামলা
+    </button>
+  </div>
+
+  <!-- CASE 1 -->
+  <div id="c1" class="case-content active">
+    <div class="case-header">
+      <div class="case-number">মামলা নং ০০১/২০২৬</div>
+      <div class="case-name">ফুলসজ্জার ছবি বনাম গ্রুপের গোপনীয়তা</div>
+      <div class="case-meta">
+        <div class="case-meta-item">আসামী: <span>Chotichata Muna</span></div>
+        <div class="case-meta-item">তারিখ: <span>১৩ মে ২০২৬ · বিকেল ৫:১২</span></div>
+        <div class="case-meta-item">অভিযোগ: <span>১৮টি গোপন ছবি ভুলে গ্রুপে পাঠানো</span></div>
+        <div class="case-meta-item">স্ট্যাটাস: <span style="color:#ff9999;">দোষী সাব্যস্ত ✗</span></div>
+      </div>
+    </div>
+
+    <div class="court-body">
+      <div class="stage-dir">[আদালত শুরু। কাঠগড়ায় Chotichata Muna। হাত কাঁপছে।]</div>
+
+      <div class="dialogue">
+        <div class="speaker" style="color:#2c5f9e;">⚖️ বিচারক বাঁকা:</div>
+        <div class="speech" style="border-left-color:#2c5f9e;">Chotichata Muna, আপনি কি স্বীকার করছেন যে ১৩ মে বিকেল ৫:১২-তে ১৮টি ছবি ভুলে গ্রুপে পাঠিয়েছিলেন?</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#c0392b;">✈️ আসামী Muna:</div>
+        <div class="speech" style="border-left-color:#c0392b;">মাননীয় বিচারক, ওগুলো office-এর pics ছিল। সম্পূর্ণ professional। Dhur baal।</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#1565C0;">👨‍💼 উকিল জটায়ু:</div>
+        <div class="speech" style="border-left-color:#1565C0;">মাননীয় আদালত, আসামী নিজেই স্বীকার করেছেন — "আমার আর আমার নাতা বউয়ের ফুলসজ্জার ছবি চলে গিয়েছিল।" Office-এর ছবিতে ফুলসজ্জা থাকে না।</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#6A1B9A;">🙏 সাক্ষী Manik:</div>
+        <div class="speech" style="border-left-color:#6A1B9A;">মাননীয় আদালত, ছবিগুলো দেখেছিলাম। অত্যন্ত... মোহিনী ছিল। 🙏 সব মায়া।</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#1B5E20;">😑 Jhatu (বিশেষ সাক্ষী):</div>
+        <div class="speech" style="border-left-color:#1B5E20;">ছিঃ!</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#E65100;">🐯 Bagh:</div>
+        <div class="speech" style="border-left-color:#E65100;">মাননীয় আদালত, এই মামলায় আমার commission কত?</div>
+      </div>
+      <div class="stage-dir">[বিচারক Bagh-কে তীক্ষ্ণ দৃষ্টিতে দেখলেন।]</div>
+    </div>
+
+    <div class="verdict">
+      <span class="verdict-label">⚖️ বিচারক বাঁকা-র রায়</span>
+      <div class="verdict-text">
+        Chotichata Muna দোষী। ৩০ সেকেন্ডে ১৮টি বার্তা delete করা প্রমাণ করে সচেতনভাবে লুকানোর চেষ্টা হয়েছে।<br><br>
+        <strong>সাজা:</strong> আগামী এক মাস Jhatu-র সব খাওয়ার খরচ দেবেন। City Queen-এর পরের party সম্পূর্ণ নিজে দেবেন। ফুলসজ্জার ছবি password দিয়ে রাখবেন।<br><br>
+        Bagh-কে সতর্ক করা হলো — আদালতে commission চাওয়া বেআইনি।
+      </div>
+      <div>
+        <span class="verdict-tag guilty">দোষী ✗</span>
+        <span class="verdict-tag guilty" style="margin-left:6px;">সাজা প্রযোজ্য</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 2 -->
+  <div id="c2" class="case-content">
+    <div class="case-header">
+      <div class="case-number">মামলা নং ০০২/২০২৬</div>
+      <div class="case-name">মাল না কেনার প্রতারণা মামলা</div>
+      <div class="case-meta">
+        <div class="case-meta-item">আসামী: <span>Chotichata Muna</span></div>
+        <div class="case-meta-item">তারিখ: <span>১০-১২ মে ২০২৬</span></div>
+        <div class="case-meta-item">অভিযোগ: <span>৩ দিন আলোচনা করে ৭৫০ টাকাতেও না কেনা</span></div>
+        <div class="case-meta-item">স্ট্যাটাস: <span style="color:#69db7c;">খারিজ ✓</span></div>
+      </div>
+    </div>
+
+    <div class="court-body">
+      <div class="dialogue">
+        <div class="speaker" style="color:#2c5f9e;">⚖️ বিচারক বাঁকা:</div>
+        <div class="speech" style="border-left-color:#2c5f9e;">আসামী, ৩ দিন ধরে Johnnie Walker Black Label নিয়ে আলোচনা করে শেষে কিনলেন না — এটা কি সত্য?</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#c0392b;">✈️ Chotichata Muna:</div>
+        <div class="speech" style="border-left-color:#c0392b;">৭৫০ টাকায় দিচ্ছিল না। Red Label হলে loss। Baal।</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#1565C0;">👨‍💼 উকিল জটায়ু:</div>
+        <div class="speech" style="border-left-color:#1565C0;">আদালতের দৃষ্টি আকর্ষণ করছি — আসামী Gujarat থেকে ৩টি bottle এনেছিলেন! তাহলে কেনেননি কেন? বেশি ভেজে গোলমাল করলেন।</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#6A1B9A;">🙏 Manik:</div>
+        <div class="speech" style="border-left-color:#6A1B9A;">Military camp-এ ₹২,২৩০-তে পাওয়া যায়। আমি ব্যবস্থা করতে পারি। তবে এটাও মায়া। 🙏</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#E65100;">🐯 Bagh:</div>
+        <div class="speech" style="border-left-color:#E65100;">আমার commission-সহ ₹২,৫০০-তে দিতে পারি।</div>
+      </div>
+    </div>
+
+    <div class="verdict">
+      <span class="verdict-label">⚖️ বিচারক বাঁকা-র রায়</span>
+      <div class="verdict-text">
+        মামলা খারিজ। কারণ Bagh commission নিলে আদালতের integrity ক্ষুণ্ণ হবে এবং তদন্ত বাধাগ্রস্ত হবে।<br><br>
+        তবে Chotichata Muna-কে সতর্ক করা হলো — পরের বার না কিনলে Jhatu-কে দিয়ে কেনাবেন। Bagh commission পাবেন না।
+      </div>
+      <div>
+        <span class="verdict-tag acquitted">মামলা খারিজ ✓</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 3 -->
+  <div id="c3" class="case-content">
+    <div class="case-header">
+      <div class="case-number">মামলা নং ০০৩/২০২৬</div>
+      <div class="case-name">Jhatu-র অফিস ডিসিপ্লিন মামলা</div>
+      <div class="case-meta">
+        <div class="case-meta-item">আসামী: <span>Jhatu (Manoj)</span></div>
+        <div class="case-meta-item">তারিখ: <span>১৪ মে ২০২৬</span></div>
+        <div class="case-meta-item">অভিযোগ: <span>বাড়িতে পরিচারিকার কাজ দেখে ১০:১৫-তে অফিস</span></div>
+        <div class="case-meta-item">স্ট্যাটাস: <span style="color:#69db7c;">বেকসুর খালাস ✓</span></div>
+      </div>
+    </div>
+
+    <div class="court-body">
+      <div class="dialogue">
+        <div class="speaker" style="color:#2c5f9e;">⚖️ বিচারক বাঁকা:</div>
+        <div class="speech" style="border-left-color:#2c5f9e;">Jhatu, আপনি কি সত্যিই বাড়িতে পরিচারিকার কাজ দেখাশোনা করে ১০:১৫-তে অফিস যেতেন?</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#1B5E20;">😑 আসামী Jhatu:</div>
+        <div class="speech" style="border-left-color:#1B5E20;">মাননীয় বিচারক, রাষ্ট্রের হিতে যখন জীবন সমর্পণ করেছি — পরিচারিকার কাজ দেখাশোনাও রাষ্ট্রের কাজ। ছিঃ এই প্রশ্নের জন্য।</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#1565C0;">👨‍💼 উকিল জটায়ু:</div>
+        <div class="speech" style="border-left-color:#1565C0;">আদালত, সরকারি চাকরি ও গৃহপরিচালনা — দুটোই রাষ্ট্রসেবা। Jhatu-র যুক্তি সাংবিধানিকভাবে সঠিক।</div>
+      </div>
+    </div>
+
+    <div class="verdict">
+      <span class="verdict-label">⚖️ বিচারক বাঁকা-র রায়</span>
+      <div class="verdict-text">
+        Jhatu বেকসুর খালাস। কারণ রাষ্ট্রসেবা ও গৃহসেবা একই মহান কাজ।<br><br>
+        বিশেষ নোট: Jhatu-র "রাষ্ট্রের হিতে জীবন সমর্পণ" বক্তব্য আদালত কর্তৃক ঐতিহাসিক বলে স্বীকৃত।
+      </div>
+      <div>
+        <span class="verdict-tag acquitted">বেকসুর খালাস ✓</span>
+        <span class="verdict-tag award" style="margin-left:6px;">রাষ্ট্রসেবক পুরস্কার 🏅</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 4 -->
+  <div id="c4" class="case-content">
+    <div class="case-header">
+      <div class="case-number">মামলা নং ০০৪/২০২৬</div>
+      <div class="case-name">Manik-এর অবৈধ টোকাই মামলা</div>
+      <div class="case-meta">
+        <div class="case-meta-item">আসামী: <span>দার্শনিক টোকাই (Manik)</span></div>
+        <div class="case-meta-item">অভিযোগ: <span>শ্রীরাম, Tarot ও দর্শন দিয়ে নিষ্পাপ কামের চর্চা</span></div>
+        <div class="case-meta-item">স্ট্যাটাস: <span style="color:#69db7c;">বেকসুর খালাস + পুরস্কার ✓</span></div>
+      </div>
+    </div>
+
+    <div class="court-body">
+      <div class="dialogue">
+        <div class="speaker" style="color:#2c5f9e;">⚖️ বিচারক বাঁকা:</div>
+        <div class="speech" style="border-left-color:#2c5f9e;">Manik, আপনি কি শ্রীরাম, Tarot ও দর্শন দিয়ে নিষ্পাপ কামের অনৈতিক চর্চা করছেন?</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#6A1B9A;">🙏 আসামী Manik:</div>
+        <div class="speech" style="border-left-color:#6A1B9A;">মাননীয় বিচারক, জ্ঞান অল্প কিন্তু চিন্তাধারা ইনফিনিটিভ। সব মায়া। শ্রীরামের কৃপায় ৪৫ দিনে সব ঠিক হয়ে যাবে। 🙏</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#1565C0;">👨‍💼 উকিল জটায়ু:</div>
+        <div class="speech" style="border-left-color:#1565C0;">Mayabi.. modhur.. কিন্তু আদালত, এই ব্যক্তি 'কামাগ্নি'কে Rabindranath পাঠান। এটা কি আইনসম্মত?</div>
+      </div>
+      <div class="dialogue">
+        <div class="speaker" style="color:#6A1B9A;">🙏 Manik:</div>
+        <div class="speech" style="border-left-color:#6A1B9A;">AI-এর গার মারি ১০১ বার। এই আদালতও AI বানিয়েছে। আমি প্রতিবাদ করছি! জয় শ্রীরাম 🙏</div>
+      </div>
+      <div class="stage-dir">[আদালতে হাসির ঢেউ। বিচারক গম্ভীর মুখে রায় লিখলেন।]</div>
+    </div>
+
+    <div class="verdict">
+      <span class="verdict-label">⚖️ বিচারক বাঁকা-র রায়</span>
+      <div class="verdict-text">
+        Manik বেকসুর খালাস। কারণ শ্রীরামের নামে টোকাই পবিত্র কাজ। Arindam-এর "Manik ekla tokai koruk" — এই কামনা গৃহীত হলো।<br><br>
+        বিশেষ পুরস্কার: "দার্শনিক টোকাই" উপাধি আদালত কর্তৃক সরকারিভাবে স্বীকৃত।<br><br>
+        City Queen-এর পরের bill Chotichata Muna দেবেন।
+      </div>
+      <div>
+        <span class="verdict-tag acquitted">বেকসুর খালাস ✓</span>
+        <span class="verdict-tag award" style="margin-left:6px;">"দার্শনিক টোকাই" স্বীকৃত 🏅</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL NOTE -->
+  <div style="background:linear-gradient(135deg,rgba(26,58,107,0.4),rgba(10,21,40,0.6));border:1px solid rgba(245,200,66,0.1);border-radius:12px;padding:1.2rem 1.5rem;margin-top:1.5rem;text-align:center;">
+    <div style="font-size:1.5rem;margin-bottom:0.5rem;">⚖️</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.7);font-style:italic;line-height:1.8;">
+      "এই আদালত বিরাটি ঠেকের সকল সদস্যকে ভালোবাসে।<br>
+      কিন্তু Chotichata Muna-কে tag না করলেই ভালো হয়।"
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:0.5rem;">— বিচারক বাঁকা (Sandip) · পরবর্তী শুনানি City Queen-এ 🍺</div>
+  </div>
+
+</div>
+
+<footer>
+  <p class="footer-sub">বিরাটি ঠেক মহামান্য আদালত © ২০২৬ · বিচারক Sandip-এর হাতুড়ি · Debanjan-এর AI কর্তৃক প্রস্তুত · Bagh commission ছাড়া পুনর্মঞ্চায়ন নিষেধ 😄</p>
+</footer>
+
+<script>
+function showCase(id, btn) {
+  document.querySelectorAll('.case-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.case-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
