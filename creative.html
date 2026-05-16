@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>সৃষ্টি — বিরাটি ঠেক</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --deep-red:#8b0000; --gold:#f5c842; --dark:#1a1a2e; --cream:#fef9ef; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--dark); color:var(--cream); font-family:'Noto Sans Bengali',sans-serif; overflow-x:hidden; }
+
+  nav { background:rgba(26,26,46,0.95); backdrop-filter:blur(10px); border-bottom:1px solid rgba(245,200,66,0.15); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:1rem; }
+  .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--gold); text-decoration:none; font-weight:700; }
+  .nav-links { display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .nav-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.85rem; transition:color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+
+  .page-hero { background:linear-gradient(135deg,#1a1a2e,#16213e); padding:4rem 2rem 3rem; text-align:center; border-bottom:1px solid rgba(245,200,66,0.1); }
+  .page-label { font-size:11px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; display:block; margin-bottom:1rem; }
+  .page-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,6vw,4rem); color:var(--cream); margin-bottom:1rem; }
+  .page-sub { font-size:1rem; color:rgba(255,255,255,0.5); font-style:italic; }
+
+  .container { max-width:1100px; margin:0 auto; padding:3rem 2rem; }
+
+  /* TABS */
+  .tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:2rem; }
+  .tab { padding:8px 18px; border-radius:20px; border:2px solid rgba(245,200,66,0.2); background:transparent; color:rgba(255,255,255,0.6); font-size:12px; font-weight:700; cursor:pointer; transition:all 0.2s; font-family:'Noto Sans Bengali',sans-serif; }
+  .tab.active { background:var(--deep-red); border-color:var(--deep-red); color:var(--gold); }
+  .tab:hover { border-color:var(--gold); color:var(--gold); }
+
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+
+  /* CONTENT CARDS */
+  .content-card { background:rgba(255,255,255,0.04); border:1px solid rgba(245,200,66,0.12); border-radius:16px; padding:2rem; margin-bottom:1.5rem; border-left:4px solid var(--deep-red); transition:all 0.3s; }
+  .content-card:hover { background:rgba(255,255,255,0.07); border-left-color:var(--gold); }
+  .content-icon { font-size:2rem; margin-bottom:1rem; display:block; }
+  .content-title { font-size:1.3rem; font-weight:800; color:var(--gold); margin-bottom:0.5rem; font-family:'Playfair Display',serif; }
+  .content-sub { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-bottom:1rem; font-style:italic; }
+  .content-body { font-size:13px; color:rgba(255,255,255,0.75); line-height:2; }
+
+  /* POEM / LYRICS STYLE */
+  .poem-line { font-size:13px; color:rgba(255,255,255,0.85); line-height:2.2; margin:0; }
+  .poem-stanza { margin-bottom:1.5rem; }
+  .chorus { background:rgba(139,0,0,0.2); border:1px solid rgba(139,0,0,0.4); border-radius:8px; padding:1rem 1.2rem; margin:1rem 0; }
+  .chorus-label { font-size:10px; color:var(--gold); font-weight:700; letter-spacing:2px; margin-bottom:0.5rem; display:block; }
+
+  /* DIALOGUE */
+  .dialogue { margin-bottom:1rem; display:flex; gap:10px; align-items:flex-start; }
+  .speaker { font-weight:800; font-size:12px; color:var(--gold); min-width:120px; padding-top:3px; }
+  .speech { background:rgba(255,255,255,0.05); border-radius:8px; padding:8px 12px; font-size:12px; color:rgba(255,255,255,0.8); line-height:1.7; flex:1; border-left:2px solid var(--deep-red); }
+  .stage-dir { font-style:italic; font-size:11px; color:rgba(255,255,255,0.4); text-align:center; padding:8px; margin:8px 0; background:rgba(0,0,0,0.2); border-radius:6px; }
+
+  /* GUIDE STEPS */
+  .step { display:flex; gap:14px; margin-bottom:1.2rem; align-items:flex-start; }
+  .step-num { min-width:36px; height:36px; border-radius:50%; background:var(--deep-red); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:var(--gold); flex-shrink:0; }
+  .step-content { flex:1; }
+  .step-title { font-size:13px; font-weight:700; color:var(--cream); margin-bottom:3px; }
+  .step-desc { font-size:12px; color:rgba(255,255,255,0.6); line-height:1.7; }
+
+  /* RATING BAR */
+  .rating-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .rating-label { font-size:11px; color:rgba(255,255,255,0.7); min-width:160px; }
+  .rating-bar-wrap { flex:1; height:12px; background:rgba(255,255,255,0.08); border-radius:6px; overflow:hidden; }
+  .rating-bar { height:100%; background:linear-gradient(90deg,var(--deep-red),var(--gold)); border-radius:6px; }
+  .rating-score { font-size:11px; font-weight:700; color:var(--gold); min-width:40px; text-align:right; }
+
+  /* CERTIFICATE */
+  .certificate { background:linear-gradient(135deg,#fef9ef,#fdf0d5); border:2px solid var(--gold); border-radius:12px; padding:1.5rem; text-align:center; margin-top:1.5rem; }
+  .cert-title { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--deep-red); font-weight:800; margin-bottom:0.5rem; }
+  .cert-name { font-size:1.8rem; font-weight:800; color:var(--deep-red); margin:0.5rem 0; }
+  .cert-body { font-size:12px; color:#5a3a1a; line-height:1.7; margin:0.5rem 0; }
+  .cert-footer { font-size:10px; color:#8b6040; margin-top:1rem; display:flex; justify-content:space-between; }
+
+  /* EPISODE HEADER */
+  .ep-header { background:var(--deep-red); border-radius:8px; padding:10px 14px; margin-bottom:1rem; }
+  .ep-title { font-size:14px; font-weight:800; color:var(--gold); margin:0 0 3px; }
+  .ep-sub { font-size:10px; color:rgba(255,255,255,0.7); margin:0; }
+
+  /* ACT LABEL */
+  .act-label { text-align:center; font-size:11px; letter-spacing:3px; color:var(--gold); font-weight:800; margin:1.5rem 0 1rem; text-transform:uppercase; }
+
+  /* DIARY PAGE */
+  .diary-page { background:#fef9ef; border-radius:10px; padding:1.5rem; font-family:Georgia,serif; color:#2a1a0a; border-left:4px solid var(--deep-red); margin-bottom:1.2rem; }
+  .diary-date { color:var(--deep-red); font-weight:800; font-size:13px; margin-bottom:0.8rem; display:block; }
+  .diary-line { font-size:12px; line-height:2; color:#3a2a1a; border-bottom:1px solid #e8d5b0; padding:3px 0; }
+  .diary-note { font-size:11px; color:#888; font-style:italic; margin-top:0.5rem; }
+
+  footer { background:rgba(0,0,0,0.6); border-top:1px solid rgba(245,200,66,0.1); padding:2rem; text-align:center; margin-top:4rem; }
+  .footer-logo { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--gold); margin-bottom:0.5rem; }
+  .footer-sub { font-size:0.75rem; color:rgba(255,255,255,0.3); line-height:1.8; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">বিরাটি ঠেক</a>
+  <div class="nav-links">
+    <a href="index.html">হোম</a>
+    <a href="members.html">সদস্য</a>
+    <a href="creative.html" class="active">সৃষ্টি</a>
+    <a href="quotes.html">উক্তি</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="court.html">আদালত</a>
+    <a href="mahabharat.html">মহাভারত</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <span class="page-label">সাহিত্য ও শিল্প</span>
+  <h1 class="page-title">বিরাটি ঠেকের সৃষ্টি</h1>
+  <p class="page-sub">নাটক · গান · গাইড · ডায়েরি · কাব্য</p>
+</div>
+
+<div class="container">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('natak',this)">🎭 নাটক</button>
+    <button class="tab" onclick="showTab('gaan',this)">🎵 গান</button>
+    <button class="tab" onclick="showTab('tokai',this)">💕 টোকাই গাইড</button>
+    <button class="tab" onclick="showTab('diary',this)">📔 রাজুর ডায়েরি</button>
+    <button class="tab" onclick="showTab('birjokabyo',this)">📜 বীর্যকাব্য</button>
+  </div>
+
+  <!-- NATAK -->
+  <div id="natak" class="tab-content active">
+    <div class="content-card">
+      <span class="content-icon">🎭</span>
+      <div class="content-title">বিরাটি ঠেক — একটি বাস্তব জীবনের নাটক</div>
+      <div class="content-sub">পাঁচ অঙ্কে · রচনা: WhatsApp · পরিচালনা: Sandip · প্রযোজনা: Debanjan AI</div>
+
+      <div class="act-label">অঙ্ক ১: ফুলসজ্জা কাণ্ড</div>
+      <div class="ep-header"><div class="ep-title">দৃশ্য: Vadodara → Delhi বিমান · বিকেল ৫:১২ · ১৩ মে ২০২৬</div></div>
+      <div class="stage-dir">[Chotichata Muna বিমানে বসে ফোনে কিছু করছেন। হঠাৎ মুখ পড়ে গেল।]</div>
+      <div class="dialogue"><div class="speaker">✈️ Chotichata Muna:</div><div class="speech">(আঁতকে উঠে) না না না— ! (পাগলের মতো delete করছেন) Office-এর ছবি। হ্যাঁ। Office-এর।</div></div>
+      <div class="dialogue"><div class="speaker">⚽ বাঁকা (Sandip):</div><div class="speech">BKCD! তুই Bulbuli-কে পাঠাতে গিয়ে এখানে পাঠিয়েছিস! Office-এ ফুলসজ্জা হয়?</div></div>
+      <div class="dialogue"><div class="speaker">🐯 Bagh:</div><div class="speech">Retrieve করা যায় ২৪ ঘণ্টার মধ্যে। ভালো case দি মাল তাকে। (মুচকি হেসে) Commission কতো নিচ্ছিস?</div></div>
+      <div class="dialogue"><div class="speaker">😑 Jhatu:</div><div class="speech">ছিঃ! (এক শব্দে সমস্ত নৈতিক বিচার সম্পন্ন করলেন)</div></div>
+      <div class="dialogue"><div class="speaker">🙏 Manik:</div><div class="speech">সব মায়া। 🙏 ফুলসজ্জাও মায়া, delete-ও মায়া।</div></div>
+      <div class="dialogue"><div class="speaker">✈️ Chotichata Muna:</div><div class="speech">(দীর্ঘশ্বাস) আমার আর আমার নাতা বউয়ের ফুলসজ্জার ছবি চলে গিয়েছিল।</div></div>
+      <div class="stage-dir">[পর্দা পড়ে। দর্শকদের হাসি থামছে না।]</div>
+
+      <div class="act-label">অঙ্ক ২: মালের মহানাটক</div>
+      <div class="ep-header"><div class="ep-title">দৃশ্য: ভার্চুয়াল বিরাটি ঠেক · ৩ দিন ধরে</div></div>
+      <div class="dialogue"><div class="speaker">✈️ Chotichata Muna:</div><div class="speech">Johnnie Walker Black Label ₹২,৫০০-তে পাওয়া যাচ্ছে। কিনব?</div></div>
+      <div class="dialogue"><div class="speaker">⚽ বাঁকা:</div><div class="speech">Red Label হলে loss। Black-ই নে। Jhapiye niye ne!</div></div>
+      <div class="dialogue"><div class="speaker">🙏 Manik:</div><div class="speech">Military camp-এ ₹২,২৩০-তে পাওয়া যায়। তবে এটাও মায়া।</div></div>
+      <div class="stage-dir">[৩ দিন কেটে গেছে। আলোচনা চলছেই।]</div>
+      <div class="dialogue"><div class="speaker">✈️ Chotichata Muna:</div><div class="speech">৭৫০ টাকাতেও দিল না। কিনলাম না।</div></div>
+      <div class="dialogue"><div class="speaker">📚 জটায়ু (Arindam):</div><div class="speech">বেশি ভেজে গোলমাল করলি।</div></div>
+      <div class="stage-dir">[পর্দা পড়ে। মাল আজও কেনা হয়নি।]</div>
+
+      <div class="act-label">অঙ্ক ৫: চূড়ান্ত — জোড়া ফলা</div>
+      <div class="dialogue"><div class="speaker">😑 Jhatu:</div><div class="speech">মানিক-মুন্না। <strong>জোড়া ফলা — একজন চ্যাতানো, একজন ন্যাতানো। 🫠</strong></div></div>
+      <div class="dialogue"><div class="speaker">🙏 Manik:</div><div class="speech">AI-এর গার মারি ১০১ বার। জয় শ্রীরাম 🙏</div></div>
+      <div class="stage-dir">[চূড়ান্ত পর্দা। বিরাটি ঠেক থিয়েটার © ২০২৬]</div>
+    </div>
+  </div>
+
+  <!-- GAAN -->
+  <div id="gaan" class="tab-content">
+    <div class="content-card">
+      <span class="content-icon">🎵</span>
+      <div class="content-title">আমরা বিরাটি ঠেকের দল</div>
+      <div class="content-sub">একটি অ্যান্থেম · বাংলা লোকগীতির সুরে · City Queen Sessions 2026</div>
+
+      <div class="poem-stanza">
+        <p class="poem-line"><strong style="color:var(--gold);">প্রথম স্তবক — Chotichata Muna-র কণ্ঠে:</strong></p>
+        <p class="poem-line">Gujarat থেকে Delhi, Delhi থেকে বিরাটি,</p>
+        <p class="poem-line">PM-এর সাথে ছবি, তবু মনটা CPM-এর বাড়ি।</p>
+        <p class="poem-line">Mamata-র প্রশংসায় পঞ্চমুখ আমি,</p>
+        <p class="poem-line">ভোটের দিন চুপচাপ লাল পতাকাটাই ধরি। 🚩</p>
+      </div>
+
+      <div class="chorus">
+        <span class="chorus-label">🎵 ধুয়া — সবাই মিলে:</span>
+        <p class="poem-line"><strong>আমরা বিরাটি ঠেকের দল,</strong></p>
+        <p class="poem-line"><strong>রাজনীতি মাল আর দর্শনের ঢল।</strong></p>
+        <p class="poem-line"><strong>Jhatu খাওয়ায়, Bagh commission নেয়,</strong></p>
+        <p class="poem-line"><strong>Manik বলে "সব মায়া" — City Queen-এ যায়। 🍺</strong></p>
+        <p class="poem-line"><strong>আমরা বিরাটি ঠেকের দল!</strong></p>
+      </div>
+
+      <div class="poem-stanza">
+        <p class="poem-line"><strong style="color:var(--gold);">দ্বিতীয় স্তবক — Manik-এর কণ্ঠে:</strong></p>
+        <p class="poem-line">শ্রীরাম জপি সকালে, রাতে Tarot কার্ড টানি,</p>
+        <p class="poem-line">মায়ার সন্ধানে ঘুরি, চিন্তাধারা ইনফিনিটিভ জানি।</p>
+        <p class="poem-line">জ্ঞান অল্প আমার, কিন্তু টোকাইতে পাকা,</p>
+        <p class="poem-line">সমবেদনা দিয়ে মন জয় — এটাই আমার ফাঁকা। 😄</p>
+      </div>
+
+      <div class="chorus">
+        <span class="chorus-label">🎵 ধুয়া:</span>
+        <p class="poem-line"><strong>আমরা বিরাটি ঠেকের দল...</strong></p>
+      </div>
+
+      <div class="poem-stanza">
+        <p class="poem-line"><strong style="color:var(--gold);">তৃতীয় স্তবক — Jhatu-র কণ্ঠে:</strong></p>
+        <p class="poem-line">রাষ্ট্রের হিতে জীবন দিয়েছি, সংসার ভুলে গেছি,</p>
+        <p class="poem-line">সাত ঘণ্টা অফিসের কথায় একটাই বলেছি — "ছিঃ!" 😑</p>
+        <p class="poem-line">Raju আমায় Jhatu বলে, আমি তাও ভালোবাসি,</p>
+        <p class="poem-line">খাওয়ানোর দায়িত্ব আমার, এটাই আমার পেশা। 🍽️</p>
+      </div>
+
+      <div class="poem-stanza">
+        <p class="poem-line"><strong style="color:var(--gold);">Bridge — জটায়ু-র কণ্ঠে:</strong></p>
+        <p class="poem-line">"আশ্চর্য জিনিস — এই AI,</p>
+        <p class="poem-line">জালে জড়িয়ে পড়লাম, পালাই কই?" 🤔</p>
+      </div>
+
+      <div class="chorus">
+        <span class="chorus-label">🎵 চূড়ান্ত ধুয়া — সবাই জোরে:</span>
+        <p class="poem-line"><strong style="font-size:1.1rem;">আমরা বিরাটি ঠেকের দল!!</strong></p>
+        <p class="poem-line"><strong>রাজনীতি মাল আর দর্শনের ঢল।</strong></p>
+        <p class="poem-line"><strong>Jhatu খাওয়ায়, Bagh commission নেয়,</strong></p>
+        <p class="poem-line"><strong>Manik বলে "সব মায়া" — City Queen-এ যায়। 🍺</strong></p>
+        <p class="poem-line"><strong style="font-size:1.1rem;">আমরা বিরাটি ঠেকের দল!! 🎸</strong></p>
+      </div>
+
+      <div class="poem-stanza" style="opacity:0.5;">
+        <p class="poem-line" style="font-style:italic;">Fade out: "Dhur baal... সব মায়া... ছিঃ..."</p>
+        <p class="poem-line" style="font-style:italic;">(City Queen-এর দরজা বন্ধের শব্দ)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOKAI GUIDE -->
+  <div id="tokai" class="tab-content">
+    <div class="content-card">
+      <span class="content-icon">💕</span>
+      <div class="content-title">মাণিকের সম্পূর্ণ টোকাই গাইড</div>
+      <div class="content-sub">"নিষ্পাপ কামের শিল্প ও বিজ্ঞান" · বিরাটি ঠেক পাবলিকেশনস · মূল্য: একটি সমবেদনা 🙏</div>
+
+      <div class="content-body" style="margin-bottom:1.5rem;">
+        <strong style="color:var(--gold);">টোকাই মানে:</strong> নিষ্পাপ কাম — বিপরীত লিঙ্গের প্রতি সহজ, সরল, কোনো চালাকি ছাড়া আকর্ষণ। মাণিক পাঁচটি পদ্ধতিতে এটি চর্চা করেন।
+      </div>
+
+      <div style="margin-bottom:1.5rem;">
+        <div class="step">
+          <div class="step-num">১</div>
+          <div class="step-content">
+            <div class="step-title">🙏 শ্রীরাম টোকাই — দক্ষতা ৯৫%</div>
+            <div class="step-desc">"শ্রীরাম এর চরণে সেবা লাগি 🙏" — একটি line-এ ধার্মিক, বিনয়ী ও রহস্যময়। তিনটি গুণ একসাথে। সংকটে "শ্রীরামের কৃপায় ৪৫ দিনে সব ঠিক হবে।"</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">২</div>
+          <div class="step-content">
+            <div class="step-title">🃏 Tarot টোকাই — দক্ষতা ৮০%</div>
+            <div class="step-desc">"টেরো কার্ড অনুযায়ী এখন আমাদের সংখ্যা ৩।" সবাই চুপ হয়ে যায়। সংখ্যা ৩ মানে কী? ব্যাখ্যা না দেওয়াটাই কৌশল।</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">৩</div>
+          <div class="step-content">
+            <div class="step-title">💕 মায়া টোকাই — দক্ষতা ৯০%</div>
+            <div class="step-desc">"সব মায়া।" — যেকোনো পরিস্থিতিতে। রাত ১টায় "@মায়া তোর দার্শনিক চিন্তা জানতে চাই।" এই দুটো শব্দে অনন্ত গভীরতা।</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">৪</div>
+          <div class="step-content">
+            <div class="step-title">💬 দর্শন টোকাই — দক্ষতা ১০০% 🏆</div>
+            <div class="step-desc">"জ্ঞান অল্প কিন্তু চিন্তাধারা ইনফিনিটিভ।" বিনয় + রহস্যময়তা + অসীমতার দাবি — তিনটি একসাথে। Arindam পর্যন্ত বলেছেন "Mayabi.. modhur.."</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">৫</div>
+          <div class="step-content">
+            <div class="step-title">🍺 City Queen টোকাই — দক্ষতা ৭৫%</div>
+            <div class="step-desc">"কে কে আসবি? বল।" সরাসরি মাঠে নামা। Jhatu খাওয়ার খরচ দেয়, Manik টোকাই করে।</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:1.5rem;">
+        <div class="stage-dir" style="margin-bottom:1rem;">টোকাই Report Card</div>
+        <div class="rating-row"><div class="rating-label">🙏 শ্রীরাম টোকাই</div><div class="rating-bar-wrap"><div class="rating-bar" style="width:95%;"></div></div><div class="rating-score">৯৫/১০০</div></div>
+        <div class="rating-row"><div class="rating-label">💕 মায়া টোকাই</div><div class="rating-bar-wrap"><div class="rating-bar" style="width:90%;"></div></div><div class="rating-score">৯০/১০০</div></div>
+        <div class="rating-row"><div class="rating-label">🃏 Tarot টোকাই</div><div class="rating-bar-wrap"><div class="rating-bar" style="width:80%;"></div></div><div class="rating-score">৮০/১০০</div></div>
+        <div class="rating-row"><div class="rating-label">🍺 City Queen</div><div class="rating-bar-wrap"><div class="rating-bar" style="width:75%;"></div></div><div class="rating-score">৭৫/১০০</div></div>
+        <div class="rating-row"><div class="rating-label">💬 দর্শন টোকাই 🏆</div><div class="rating-bar-wrap"><div class="rating-bar" style="width:100%;"></div></div><div class="rating-score">১০০/১০০</div></div>
+      </div>
+
+      <div class="certificate">
+        <div style="font-size:2rem;margin-bottom:0.5rem;">🏅</div>
+        <div class="cert-title">সনদপত্র</div>
+        <p style="font-size:12px;color:#5a3a1a;margin:0.5rem 0;">এতদ্বারা প্রমাণ করা যাচ্ছে যে</p>
+        <div class="cert-name">মাণিক</div>
+        <div class="cert-body">বিরাটি ঠেক WhatsApp গ্রুপে পাঁচটি পদ্ধতিতে সফলভাবে "নিষ্পাপ টোকাই" চর্চা করে দক্ষতা প্রমাণ করেছেন। তাঁকে <strong>"দার্শনিক টোকাই"</strong> উপাধি প্রদান করা হলো।</div>
+        <div class="cert-footer">
+          <span>স্বাক্ষর: বাঁকা (Sandip)<br>(যিনি প্রথম চিহ্নিত করেছিলেন)</span>
+          <span>স্বাক্ষর: লেখক (Ayan)<br>("সমবেদনার টোকাই" ঘোষণাকারী)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIARY -->
+  <div id="diary" class="tab-content">
+    <div class="content-card">
+      <span class="content-icon">📔</span>
+      <div class="content-title">Chotichata Muna-র ডায়েরি</div>
+      <div class="content-sub">Gujarat থেকে Delhi — একটি অবিস্মরণীয় যাত্রা · ১০-১৪ মে ২০২৬ · গোপনীয়</div>
+
+      <div class="diary-page">
+        <span class="diary-date">১০ মে ২০২৬, দুপুর</span>
+        <div class="diary-line">প্রিয় ডায়েরি, Vadodara পৌঁছালাম। Gujarat-এর রোদ কলকাতার থেকে কড়া — ঠিক Sandip-এর মতো।</div>
+        <div class="diary-line">আজকে গ্রুপে election result নিয়ে তর্ক হলো। Arindam বললেন বাম voters চুপচাপ BJP-কে জিতিয়েছে। আমি একমত। কিন্তু মুখে বললাম না। কারণ আমি নিজেও তো চুপচাপ CPM-এ vote দিয়েছি। 😶</div>
+        <div class="diary-note">— রাজু মুনা</div>
+      </div>
+
+      <div class="diary-page">
+        <span class="diary-date">১২ মে ২০২৬, সন্ধ্যা</span>
+        <div class="diary-line">Debanjan AI দিয়ে সব বিশ্লেষণ করে group-এ post করছে। আমার vote, আমার ভোটের কথা — সব ফাঁস। লোকটা কী করে এত কিছু জানে!</div>
+        <div class="diary-line">Arindam রাতে লিখল "জালে জড়িয়ে পড়ছি।" আমিও জালে পড়ে গেছি।</div>
+        <div class="diary-note">— রাজু মুনা</div>
+      </div>
+
+      <div class="diary-page" style="border-left-color:var(--gold);">
+        <span class="diary-date">১৩ মে ২০২৬, রাত — সবচেয়ে কঠিন দিন</span>
+        <div class="diary-line">Vadodara থেকে Delhi-র flight-এ উঠব। বউকে ছবি পাঠাতে গেলাম। ভুলে গ্রুপে চলে গেল। ফুলসজ্জার ছবি। ১৮টা।</div>
+        <div class="diary-line">৩০ সেকেন্ডে সব delete করলাম। হাত কাঁপছিল।</div>
+        <div class="diary-line">Sandip তৎক্ষণাৎ ধরল। Manoj বলল "ছিঃ!" Manik বলল "সব মায়া।"</div>
+        <div class="diary-line">এই বন্ধুরা আমার বিপদেও ছেড়ে যায় না। এটাই জীবন।</div>
+        <div class="diary-note">— রাজু মুনা (লজ্জিত কিন্তু অকুতোভয়)</div>
+      </div>
+
+      <div class="diary-page">
+        <span class="diary-date">১৪ মে ২০২৬, সকাল</span>
+        <div class="diary-line">বিরাটি ফিরলাম। Sandip বলল "@Debanjan রাতে AI report ready থাকে।" হাসলাম।</div>
+        <div class="diary-line">AI আমাকে ধরে ফেলেছে — BJP মাঠে, Mamata মুখে, CPM ভোটে। কিন্তু জানো ডায়েরি? এই জটিলতাটাই আমি। আমি contradiction। আমি বিরাটি ঠেকের জীবন্ত paradox।</div>
+        <div class="diary-line">আর এটা নিয়ে আমার কোনো লজ্জা নেই। 😄</div>
+        <div class="diary-note">— রাজু মুনা · p.s. Jhatu-কে বলিনি যে সে খাওয়াবে। সারপ্রাইজ থাকুক। 😂</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BIRJOKABYO -->
+  <div id="birjokabyo" class="tab-content">
+    <div class="content-card">
+      <span class="content-icon">📜</span>
+      <div class="content-title">মাণিকের টোকাই বীর্যকাব্য</div>
+      <div class="content-sub">একটি সম্পূর্ণ বীর্যকাব্য সংকলন · বিরাটি ঠেক সাহিত্য পরিষদ প্রকাশিত · "শুদ্ধ বীর্যকাব্য।" — Arindam</div>
+
+      <div class="poem-stanza" style="margin-bottom:2rem;">
+        <p class="poem-line" style="color:var(--gold);font-weight:700;">১। প্রথম টোকাই — শ্রীরামের চরণে</p>
+        <p class="poem-line">রাত পোহায়নি তখনও, ভোরের আলো নেই,</p>
+        <p class="poem-line">মাণিক বীর উঠে বসে, মনে শান্তি নেই।</p>
+        <p class="poem-line">হাতে তুলে নিল সে স্মার্টফোন খানি,</p>
+        <p class="poem-line">টাইপ করে পাঠাল — "শ্রীরাম এর বাণী।"</p>
+        <p class="poem-line">গ্রুপে পড়ল বার্তা, সবাই চমকাল,</p>
+        <p class="poem-line">মাণিক বীর হাসিমুখে টোকাই শুরু করল।</p>
+      </div>
+
+      <div class="poem-stanza" style="margin-bottom:2rem;">
+        <p class="poem-line" style="color:var(--gold);font-weight:700;">২। Tarot-এর যুদ্ধ</p>
+        <p class="poem-line">হরমুজ বন্ধ, বাজার পড়ছে হুহু করে,</p>
+        <p class="poem-line">মাণিক বীর বলে ওঠে গম্ভীর স্বরে —</p>
+        <p class="poem-line">"টেরো কার্ড অনুযায়ী আমাদের সংখ্যা ৩,</p>
+        <p class="poem-line">সংযত হতে হবে, এটাই কার্ডের কথা।"</p>
+        <p class="poem-line">সবাই থামে, সবাই ভাবে, কেউ বোঝে না,</p>
+        <p class="poem-line">রহস্যের মোড়কে মাণিক দিল মন জয়।</p>
+      </div>
+
+      <div class="poem-stanza" style="margin-bottom:2rem;">
+        <p class="poem-line" style="color:var(--gold);font-weight:700;">৪। ইনফিনিটিভ মহাকাব্য — শ্রেষ্ঠ রচনা</p>
+        <p class="poem-line">একদিন Sandip জিজ্ঞেস করলেন হেসে,</p>
+        <p class="poem-line">"Banglay Infinitive বলে কিছু আছে?"</p>
+        <p class="poem-line">মাণিক বীর একটুও দমলেন না তায়,</p>
+        <p class="poem-line">বললেন — "গান্ডু, বাংলাতেই লিখলাম ভাই।"</p>
+        <p class="poem-line">Arindam বললেন — "Mayabi.. modhur.."</p>
+        <p class="poem-line">শত্রুও প্রশংসা করল — এই বীরের অদ্ভুত ক্ষমতা।</p>
+      </div>
+
+      <div class="poem-stanza">
+        <p class="poem-line" style="color:var(--gold);font-weight:700;">৬। "AI-এর গার মারি ১০১ বার" — বিদ্রোহের কাব্য</p>
+        <p class="poem-line">AI লিখল তাঁর গোপন কৌশল সব,</p>
+        <p class="poem-line">টোকাই গাইড বেরোল — মাণিক হলেন ক্ষুব্ধ।</p>
+        <p class="poem-line">"AI-এর গার মারি ১০১ বার!" —</p>
+        <p class="poem-line">বললেন রুদ্রমূর্তিতে, ভাঙল দেয়াল।</p>
+        <p class="poem-line">কিন্তু পরক্ষণেই বললেন নরম স্বরে,</p>
+        <p class="poem-line">শেষমেশ বলেন — "সব মায়া। 🙏 জয় শ্রীরাম।"</p>
+      </div>
+
+      <div style="background:rgba(139,0,0,0.2);border-radius:8px;padding:1rem;margin-top:1.5rem;text-align:center;font-style:italic;color:rgba(255,255,255,0.8);line-height:2;">
+        "জ্ঞান অল্প কিন্তু চিন্তাধারা ইনফিনিটিভ —<br>এই একটা line দিয়ে মাণিক ইতিহাস তৈরি করেছেন।<br>টোকাইয়ের সর্বোচ্চ পর্যায় হলো যখন শত্রুও বলে Mayabi.. modhur.."<br><span style="color:var(--gold);font-size:11px;">— বিরাটি ঠেক AI · ১৪ মে ২০২৬</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">বিরাটি ঠেক</div>
+  <p class="footer-sub">© ২০২৬ · Sandip-এর order-এ · Debanjan-এর AI কর্তৃক নির্মিত · Bagh commission ছাড়া copy নিষেধ 😄</p>
+</footer>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
