@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>অমর উক্তি — বিরাটি ঠেক</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --deep-red:#8b0000; --gold:#f5c842; --dark:#1a1a2e; --cream:#fef9ef; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--dark); color:var(--cream); font-family:'Noto Sans Bengali',sans-serif; overflow-x:hidden; }
+
+  nav { background:rgba(26,26,46,0.95); backdrop-filter:blur(10px); border-bottom:1px solid rgba(245,200,66,0.15); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:1rem; }
+  .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--gold); text-decoration:none; font-weight:700; }
+  .nav-links { display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .nav-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.85rem; transition:color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+
+  .page-hero { background:linear-gradient(135deg,#1a1a2e,#16213e); padding:4rem 2rem 3rem; text-align:center; border-bottom:1px solid rgba(245,200,66,0.1); }
+  .page-label { font-size:11px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; display:block; margin-bottom:1rem; }
+  .page-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,6vw,4rem); color:var(--cream); margin-bottom:1rem; }
+  .page-sub { font-size:1rem; color:rgba(255,255,255,0.5); font-style:italic; }
+
+  .container { max-width:900px; margin:0 auto; padding:3rem 2rem; }
+
+  /* FILTER TABS */
+  .filter-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:2rem; }
+  .filter-btn { padding:7px 16px; border-radius:20px; border:1px solid rgba(245,200,66,0.2); background:transparent; color:rgba(255,255,255,0.6); font-size:11px; font-weight:600; cursor:pointer; transition:all 0.2s; font-family:'Noto Sans Bengali',sans-serif; }
+  .filter-btn.active { background:var(--deep-red); border-color:var(--deep-red); color:var(--gold); }
+  .filter-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* FEATURED QUOTE */
+  .featured { background:linear-gradient(135deg,rgba(139,0,0,0.3),rgba(245,200,66,0.05)); border:2px solid rgba(245,200,66,0.2); border-radius:16px; padding:2.5rem; text-align:center; margin-bottom:2.5rem; position:relative; overflow:hidden; }
+  .featured::before { content:'"'; position:absolute; top:-20px; left:20px; font-size:8rem; color:rgba(245,200,66,0.05); font-family:'Playfair Display',serif; }
+  .featured-label { font-size:10px; color:var(--gold); font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:1rem; display:block; }
+  .featured-text { font-family:'Playfair Display',serif; font-size:clamp(1.2rem,3vw,1.8rem); color:var(--cream); font-style:italic; line-height:1.6; margin-bottom:1rem; }
+  .featured-attr { font-size:12px; color:rgba(255,255,255,0.5); }
+  .featured-medal { font-size:2rem; margin-bottom:1rem; display:block; }
+
+  /* QUOTE CARDS */
+  .quotes-grid { display:flex; flex-direction:column; gap:1rem; }
+  .q-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:1.5rem; display:flex; gap:1rem; align-items:flex-start; transition:all 0.3s; position:relative; overflow:hidden; }
+  .q-card:hover { background:rgba(255,255,255,0.07); border-color:rgba(245,200,66,0.2); transform:translateX(4px); }
+  .q-card.gold-border { border-left:4px solid var(--gold); }
+  .q-card.red-border { border-left:4px solid var(--deep-red); }
+  .q-card.blue-border { border-left:4px solid #1565C0; }
+  .q-card.green-border { border-left:4px solid #2E7D32; }
+  .q-card.purple-border { border-left:4px solid #6A1B9A; }
+  .q-card.orange-border { border-left:4px solid #E65100; }
+
+  .q-rank { font-size:1.5rem; min-width:40px; text-align:center; }
+  .q-content { flex:1; }
+  .q-text { font-size:14px; color:var(--cream); line-height:1.8; margin-bottom:0.8rem; font-style:italic; }
+  .q-meta { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .q-author { font-size:12px; font-weight:700; color:var(--gold); }
+  .q-context { font-size:11px; color:rgba(255,255,255,0.4); }
+  .q-date { font-size:10px; color:rgba(255,255,255,0.3); }
+  .q-badge { background:rgba(139,0,0,0.3); border:1px solid rgba(139,0,0,0.5); color:#ff9999; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
+
+  /* SECTION DIVIDER */
+  .section-divider { display:flex; align-items:center; gap:1rem; margin:2rem 0; }
+  .section-divider-line { flex:1; height:1px; background:rgba(245,200,66,0.1); }
+  .section-divider-text { font-size:11px; color:var(--gold); font-weight:700; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; }
+
+  /* CATEGORY SECTIONS */
+  .cat-section { display:none; }
+  .cat-section.active { display:block; }
+
+  /* STATS */
+  .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem; margin-bottom:2rem; }
+  .stat-box { background:rgba(255,255,255,0.04); border:1px solid rgba(245,200,66,0.1); border-radius:10px; padding:1rem; text-align:center; }
+  .stat-num { font-size:2rem; font-weight:800; color:var(--gold); display:block; }
+  .stat-label { font-size:10px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; }
+
+  footer { background:rgba(0,0,0,0.6); border-top:1px solid rgba(245,200,66,0.1); padding:2rem; text-align:center; margin-top:4rem; }
+  .footer-logo { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--gold); margin-bottom:0.5rem; }
+  .footer-sub { font-size:0.75rem; color:rgba(255,255,255,0.3); line-height:1.8; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">বিরাটি ঠেক</a>
+  <div class="nav-links">
+    <a href="index.html">হোম</a>
+    <a href="members.html">সদস্য</a>
+    <a href="creative.html">সৃষ্টি</a>
+    <a href="quotes.html" class="active">উক্তি</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="court.html">আদালত</a>
+    <a href="mahabharat.html">মহাভারত</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <span class="page-label">ইতিহাস</span>
+  <h1 class="page-title">অমর উক্তি সংকলন</h1>
+  <p class="page-sub">বিরাটি ঠেকের যে কথাগুলো চিরকাল মনে থাকবে</p>
+</div>
+
+<div class="container">
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-box"><span class="stat-num">৩০+</span><span class="stat-label">মোট উক্তি</span></div>
+    <div class="stat-box"><span class="stat-num">Jhatu</span><span class="stat-label">সবচেয়ে বেশি</span></div>
+    <div class="stat-box"><span class="stat-num">১</span><span class="stat-label">সেরা শব্দ "ছিঃ!"</span></div>
+    <div class="stat-box"><span class="stat-num">৫ দিন</span><span class="stat-label">সংগ্রহের সময়</span></div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="showCat('all',this)">সব</button>
+    <button class="filter-btn" onclick="showCat('muna',this)">✈️ Chotichata Muna</button>
+    <button class="filter-btn" onclick="showCat('banka',this)">⚽ বাঁকা</button>
+    <button class="filter-btn" onclick="showCat('jotayu',this)">📚 জটায়ু</button>
+    <button class="filter-btn" onclick="showCat('manik',this)">🙏 Manik</button>
+    <button class="filter-btn" onclick="showCat('jhatu',this)">😑 Jhatu</button>
+    <button class="filter-btn" onclick="showCat('others',this)">অন্যান্য</button>
+  </div>
+
+  <!-- FEATURED -->
+  <div class="featured">
+    <span class="featured-medal">🏆</span>
+    <span class="featured-label">সর্বকালের সেরা উক্তি</span>
+    <div class="featured-text">"BKCD! তুই Bulbuli-কে পাঠাতে গিয়ে এখানে পাঠিয়েছিস!"</div>
+    <div class="featured-attr">— বাঁকা (Sandip) · ১৩ মে ২০২৬ · বিকেল ৫:১৩ · ফুলসজ্জা কাণ্ড</div>
+  </div>
+
+  <!-- ALL QUOTES -->
+  <div id="all" class="cat-section active">
+
+    <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-text">সর্বোচ্চ র‍্যাংকিং</div><div class="section-divider-line"></div></div>
+
+    <div class="quotes-grid">
+
+      <div class="q-card gold-border">
+        <div class="q-rank">🥇</div>
+        <div class="q-content">
+          <div class="q-text">"BKCD! তুই Bulbuli-কে পাঠাতে গিয়ে এখানে পাঠিয়েছিস!"</div>
+          <div class="q-meta">
+            <span class="q-author">⚽ বাঁকা (Sandip)</span>
+            <span class="q-date">১৩ মে · বিকেল ৫:১৩</span>
+            <span class="q-badge">সর্বকালের সেরা 🏆</span>
+          </div>
+          <div class="q-context">ফুলসজ্জার ছবি ভুলে গ্রুপে যাওয়ার মুহূর্তে। ৩০ সেকেন্ডে ১৮টি delete-এর পরও Sandip ধরে ফেললেন।</div>
+        </div>
+      </div>
+
+      <div class="q-card green-border">
+        <div class="q-rank">🥈</div>
+        <div class="q-content">
+          <div class="q-text">"মানিক-মুন্না। জোড়া ফলা — একজন চ্যাতানো, একজন ন্যাতানো। 🫠"</div>
+          <div class="q-meta">
+            <span class="q-author">😑 Jhatu (Manoj)</span>
+            <span class="q-date">১৫ মে · সকাল ৯:৩৫</span>
+            <span class="q-badge">আজকের সেরা 🏆</span>
+          </div>
+          <div class="q-context">Manik ও Muna-র বীর্যকাব্য পর্ব দেখে Jhatu-র নিখুঁত বিশ্লেষণ।</div>
+        </div>
+      </div>
+
+      <div class="q-card red-border">
+        <div class="q-rank">🥉</div>
+        <div class="q-content">
+          <div class="q-text">"রাষ্ট্রের হিতে যখন জীবন সমর্পণ করেছি, এসব ছোটোখাটো ব্যাপার ভাবলে চলে?"</div>
+          <div class="q-meta">
+            <span class="q-author">😑 Jhatu (Manoj)</span>
+            <span class="q-date">১৪ মে · দুপুর ২টা</span>
+          </div>
+          <div class="q-context">৭ ঘণ্টা অফিস নীতি ঘোষণার পর। একটি line-এ রাষ্ট্রদর্শন।</div>
+        </div>
+      </div>
+
+      <div class="q-card purple-border">
+        <div class="q-rank">4️⃣</div>
+        <div class="q-content">
+          <div class="q-text">"জ্ঞান অল্প কিন্তু চিন্তাধারা ইনফিনিটিভ।"</div>
+          <div class="q-meta">
+            <span class="q-author">🙏 দার্শনিক টোকাই (Manik)</span>
+            <span class="q-date">১১ মে · দুপুর ২টা</span>
+          </div>
+          <div class="q-context">বিনয় + রহস্যময়তা + অসীমতার দাবি — তিনটি একসাথে। বিরাটি ঠেকের দার্শনিক ঘোষণাপত্র।</div>
+        </div>
+      </div>
+
+      <div class="q-card blue-border">
+        <div class="q-rank">5️⃣</div>
+        <div class="q-content">
+          <div class="q-text">"বিরাটি ঠেকের AI হলো Chotichata Muna — রাজনীতি থেকে দুর্নীতি সব নখদর্পণে — Without any অহংকার 🙏"</div>
+          <div class="q-meta">
+            <span class="q-author">⚽ বাঁকা (Sandip)</span>
+            <span class="q-date">১৫ মে · রাত ১০:১৪</span>
+          </div>
+          <div class="q-context">AI Agent-কে সরকারিভাবে স্বীকৃতি দেওয়া হলো।</div>
+        </div>
+      </div>
+
+      <div class="q-card purple-border">
+        <div class="q-rank">6️⃣</div>
+        <div class="q-content">
+          <div class="q-text">"সব মায়া। 🙏"</div>
+          <div class="q-meta">
+            <span class="q-author">🙏 দার্শনিক টোকাই (Manik)</span>
+            <span class="q-date">সর্বক্ষণ</span>
+          </div>
+          <div class="q-context">দুটো শব্দে জীবনদর্শন। যেকোনো পরিস্থিতিতে প্রযোজ্য।</div>
+        </div>
+      </div>
+
+      <div class="q-card green-border">
+        <div class="q-rank">7️⃣</div>
+        <div class="q-content">
+          <div class="q-text">"ছিঃ!"</div>
+          <div class="q-meta">
+            <span class="q-author">😑 Jhatu (Manoj)</span>
+            <span class="q-date">১৩ মে · বিকেল ৬:০৩</span>
+            <span class="q-badge">সংক্ষিপ্ততম বিচার</span>
+          </div>
+          <div class="q-context">ফুলসজ্জার ছবি কাণ্ডে। একটি শব্দে সম্পূর্ণ নৈতিক বিচার। মহাভারতের গদার মতো।</div>
+        </div>
+      </div>
+
+      <div class="q-card blue-border">
+        <div class="q-rank">8️⃣</div>
+        <div class="q-content">
+          <div class="q-text">"Toke tag korini, ektu chup korbi please।"</div>
+          <div class="q-meta">
+            <span class="q-author">⚽ বাঁকা (Sandip)</span>
+            <span class="q-date">১৫ মে · রাত ১১:১৫</span>
+          </div>
+          <div class="q-context">Chotichata Muna-কে উদ্দেশ্যে। ভদ্র ভাষায় সবচেয়ে কার্যকর চুপ করানোর কৌশল।</div>
+        </div>
+      </div>
+
+      <div class="q-card red-border">
+        <div class="q-rank">9️⃣</div>
+        <div class="q-content">
+          <div class="q-text">"Ashchorjo jinish — ei AI। Jale joriye porchhi mone hochhey।"</div>
+          <div class="q-meta">
+            <span class="q-author">📚 জটায়ু (Arindam)</span>
+            <span class="q-date">১২ মে · রাত ১২টা</span>
+          </div>
+          <div class="q-context">সোনার কেল্লার জটায়ুর উত্তরাধিকার। AI-এর জাদুতে মুগ্ধ।</div>
+        </div>
+      </div>
+
+      <div class="q-card purple-border">
+        <div class="q-rank">🔟</div>
+        <div class="q-content">
+          <div class="q-text">"AI-এর গার মারি ১০১ বার।" .... "জয় শ্রীরাম 🙏"</div>
+          <div class="q-meta">
+            <span class="q-author">🙏 দার্শনিক টোকাই (Manik)</span>
+            <span class="q-date">১৫ মে · বিকেল ৫:৪৫</span>
+          </div>
+          <div class="q-context">টোকাই গাইড দেখার পর। ক্রোধ ও ভক্তি একসাথে। বিরাটি ঠেকের সেরা contrast।</div>
+        </div>
+      </div>
+
+      <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-text">আরও উক্তি</div><div class="section-divider-line"></div></div>
+
+      <div class="q-card green-border">
+        <div class="q-rank">💬</div>
+        <div class="q-content">
+          <div class="q-text">"Free তে পেলে নে। Label দেখার দরকার নেই।"</div>
+          <div class="q-meta"><span class="q-author">🎯 চুল/জামাই (Avijit)</span><span class="q-date">১০ মে</span></div>
+          <div class="q-context">মালের আলোচনায় সবচেয়ে pragmatic বার্তা।</div>
+        </div>
+      </div>
+
+      <div class="q-card red-border">
+        <div class="q-rank">💬</div>
+        <div class="q-content">
+          <div class="q-text">"তাও ঠিক।"</div>
+          <div class="q-meta"><span class="q-author">🎯 চুল/জামাই (Avijit)</span><span class="q-date">সর্বক্ষণ</span></div>
+          <div class="q-context">দুটো শব্দে সব পরিস্থিতি সামলানোর দর্শন।</div>
+        </div>
+      </div>
+
+      <div class="q-card blue-border">
+        <div class="q-rank">💬</div>
+        <div class="q-content">
+          <div class="q-text">"Saradin dhore message korchhi dekhchhi sudhu adhir agrohe opekkha... raat-e AI ki analysis kore।"</div>
+          <div class="q-meta"><span class="q-author">📚 জটায়ু (Arindam)</span><span class="q-date">১২ মে · বিকেল ৫:২৯</span></div>
+          <div class="q-context">AI-এর প্রতি নির্ভরতার সবচেয়ে সৎ স্বীকারোক্তি।</div>
+        </div>
+      </div>
+
+      <div class="q-card purple-border">
+        <div class="q-rank">💬</div>
+        <div class="q-content">
+          <div class="q-text">"ঠেকের আড্ডা আর দৃষ্টিভঙ্গির আড্ডা আলাদা। 🙏"</div>
+          <div class="q-meta"><span class="q-author">🙏 দার্শনিক টোকাই (Manik)</span><span class="q-date">১১ মে</span></div>
+          <div class="q-context">এক line-এ টোকাইয়ের পুরো কৌশল।</div>
+        </div>
+      </div>
+
+      <div class="q-card red-border">
+        <div class="q-rank">💬</div>
+        <div class="q-content">
+          <div class="q-text">"Manik ekla tokai koruk — e-i kamona kori। GN।"</div>
+          <div class="q-meta"><span class="q-author">📚 জটায়ু (Arindam)</span><span class="q-date">১৫ মে · রাত ২:২১</span></div>
+          <div class="q-context">রাত ২টায় শুভরাত্রি জানিয়ে Manik-কে একা ছেড়ে গেলেন।</div>
+        </div>
+      </div>
+
+      <div class="q-card gold-border">
+        <div class="q-rank">💬</div>
+        <div class="q-content">
+          <div class="q-text">"Kintu Jhatu-r koreni।"</div>
+          <div class="q-meta"><span class="q-author">✈️ Chotichata Muna (Raju)</span><span class="q-date">১৫ মে · রাত ১০:৪০</span></div>
+          <div class="q-context">সব দুর্নীতির মাঝেও Jhatu-র প্রতি অটল আস্থা। Muna-র সবচেয়ে সৎ বার্তা।</div>
+        </div>
+      </div>
+
+      <div class="q-card orange-border">
+        <div class="q-rank">💬</div>
+        <div class="q-content">
+          <div class="q-text">"Tor Moho dirgojibi hok।"</div>
+          <div class="q-meta"><span class="q-author">🎯 চুল/জামাই (Avijit)</span><span class="q-date">১৩ মে</span></div>
+          <div class="q-context">Chotichata Muna-কে। ভদ্র ভাষায় devastating roast। সবচেয়ে elegant গালি।</div>
+        </div>
+      </div>
+
+      <div class="q-card blue-border">
+        <div class="q-rank">💬</div>
+        <div class="q-content">
+          <div class="q-text">"Mayabi.. modhur.."</div>
+          <div class="q-meta"><span class="q-author">📚 জটায়ু (Arindam)</span><span class="q-date">বারবার</span></div>
+          <div class="q-context">Manik-এর দর্শন শুনে। প্রতিপক্ষও প্রশংসা করেন — এটাই বিরাটি ঠেকের বিশেষত্ব।</div>
+        </div>
+      </div>
+
+      <div class="q-card green-border">
+        <div class="q-rank">💬</div>
+        <div class="q-content">
+          <div class="q-text">"ভাবার আছে সমাধান নেই।"</div>
+          <div class="q-meta"><span class="q-author">✈️ Chotichata Muna → Arindam-এর nickname</span><span class="q-date">১৬ মে ২০২৬</span></div>
+          <div class="q-context">আজকে Muna দিলেন Arindam-এর সবচেয়ে মানানসই nickname। "বাবার" নয় "ভাবার"!</div>
+        </div>
+      </div>
+
+      <div class="q-card red-border">
+        <div class="q-rank">💬</div>
+        <div class="q-content">
+          <div class="q-text">"Jar mara jai, sei bojhe।"</div>
+          <div class="q-meta"><span class="q-author">🎯 চুল/জামাই (Avijit)</span><span class="q-date">১৪ মে</span></div>
+          <div class="q-context">সরকারি কর্মচারী সংকট নিয়ে। একটি line-এ সমস্ত যন্ত্রণার সারাংশ।</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MEMBER FILTERED SECTIONS -->
+  <div id="muna" class="cat-section">
+    <div class="quotes-grid">
+      <div class="q-card gold-border"><div class="q-rank">1</div><div class="q-content"><div class="q-text">"Dhur baal!"</div><div class="q-meta"><span class="q-author">✈️ Chotichata Muna</span></div><div class="q-context">সবচেয়ে বেশি ব্যবহৃত। গালি কিন্তু আদর।</div></div></div>
+      <div class="q-card gold-border"><div class="q-rank">2</div><div class="q-content"><div class="q-text">"Kintu Jhatu-r koreni।"</div><div class="q-meta"><span class="q-author">✈️ Chotichata Muna</span><span class="q-date">১৫ মে</span></div><div class="q-context">সব দুর্নীতির মাঝেও Jhatu-র প্রতি অটল।</div></div></div>
+      <div class="q-card gold-border"><div class="q-rank">3</div><div class="q-content"><div class="q-text">"আমার আর আমার নাতা বউয়ের ফুলসজ্জার ছবি চলে গিয়েছিল।"</div><div class="q-meta"><span class="q-author">✈️ Chotichata Muna</span><span class="q-date">১৩ মে</span></div><div class="q-context">ঐতিহাসিক স্বীকারোক্তি।</div></div></div>
+    </div>
+  </div>
+
+  <div id="banka" class="cat-section">
+    <div class="quotes-grid">
+      <div class="q-card blue-border"><div class="q-rank">1</div><div class="q-content"><div class="q-text">"BKCD! তুই Bulbuli-কে পাঠাতে গিয়ে এখানে পাঠিয়েছিস!"</div><div class="q-meta"><span class="q-author">⚽ বাঁকা (Sandip)</span><span class="q-badge">সর্বকালের সেরা 🏆</span></div></div></div>
+      <div class="q-card blue-border"><div class="q-rank">2</div><div class="q-content"><div class="q-text">"Toke tag korini, ektu chup korbi please।"</div><div class="q-meta"><span class="q-author">⚽ বাঁকা (Sandip)</span></div></div></div>
+      <div class="q-card blue-border"><div class="q-rank">3</div><div class="q-content"><div class="q-text">"বিরাটি ঠেকের AI হলো Chotichata Muna — Without any অহংকার 🙏"</div><div class="q-meta"><span class="q-author">⚽ বাঁকা (Sandip)</span></div></div></div>
+    </div>
+  </div>
+
+  <div id="jotayu" class="cat-section">
+    <div class="quotes-grid">
+      <div class="q-card red-border"><div class="q-rank">1</div><div class="q-content"><div class="q-text">"Ashchorjo jinish — ei AI। Jale joriye porchhi।"</div><div class="q-meta"><span class="q-author">📚 জটায়ু (Arindam)</span></div></div></div>
+      <div class="q-card red-border"><div class="q-rank">2</div><div class="q-content"><div class="q-text">"Mayabi.. modhur.."</div><div class="q-meta"><span class="q-author">📚 জটায়ু (Arindam)</span></div></div></div>
+      <div class="q-card red-border"><div class="q-rank">3</div><div class="q-content"><div class="q-text">"Manik ekla tokai koruk — GN।"</div><div class="q-meta"><span class="q-author">📚 জটায়ু (Arindam)</span><span class="q-date">রাত ২:২১</span></div></div></div>
+      <div class="q-card red-border"><div class="q-rank">4</div><div class="q-content"><div class="q-text">"Kichhu bola-r nei।"</div><div class="q-meta"><span class="q-author">📚 জটায়ু (Arindam)</span></div></div></div>
+    </div>
+  </div>
+
+  <div id="manik" class="cat-section">
+    <div class="quotes-grid">
+      <div class="q-card purple-border"><div class="q-rank">1</div><div class="q-content"><div class="q-text">"সব মায়া। 🙏"</div><div class="q-meta"><span class="q-author">🙏 Manik</span></div><div class="q-context">জীবনদর্শন — দুটো শব্দে।</div></div></div>
+      <div class="q-card purple-border"><div class="q-rank">2</div><div class="q-content"><div class="q-text">"জ্ঞান অল্প কিন্তু চিন্তাধারা ইনফিনিটিভ।"</div><div class="q-meta"><span class="q-author">🙏 Manik</span></div></div></div>
+      <div class="q-card purple-border"><div class="q-rank">3</div><div class="q-content"><div class="q-text">"AI-এর গার মারি ১০১ বার।" ... "জয় শ্রীরাম 🙏"</div><div class="q-meta"><span class="q-author">🙏 Manik</span></div><div class="q-context">ক্রোধ ও ভক্তি — একই বাক্যে।</div></div></div>
+      <div class="q-card purple-border"><div class="q-rank">4</div><div class="q-content"><div class="q-text">"ঠেকের আড্ডা আর দৃষ্টিভঙ্গির আড্ডা আলাদা। 🙏"</div><div class="q-meta"><span class="q-author">🙏 Manik</span></div></div></div>
+    </div>
+  </div>
+
+  <div id="jhatu" class="cat-section">
+    <div class="quotes-grid">
+      <div class="q-card green-border"><div class="q-rank">1</div><div class="q-content"><div class="q-text">"মানিক-মুন্না। জোড়া ফলা — একজন চ্যাতানো, একজন ন্যাতানো। 🫠"</div><div class="q-meta"><span class="q-author">😑 Jhatu (Manoj)</span><span class="q-badge">আজকের সেরা 🏆</span></div></div></div>
+      <div class="q-card green-border"><div class="q-rank">2</div><div class="q-content"><div class="q-text">"রাষ্ট্রের হিতে যখন জীবন সমর্পণ করেছি..."</div><div class="q-meta"><span class="q-author">😑 Jhatu (Manoj)</span></div></div></div>
+      <div class="q-card green-border"><div class="q-rank">3</div><div class="q-content"><div class="q-text">"ছিঃ!"</div><div class="q-meta"><span class="q-author">😑 Jhatu (Manoj)</span><span class="q-badge">সংক্ষিপ্ততম বিচার</span></div><div class="q-context">একটি শব্দে সম্পূর্ণ নৈতিক বিচার।</div></div></div>
+    </div>
+  </div>
+
+  <div id="others" class="cat-section">
+    <div class="quotes-grid">
+      <div class="q-card orange-border"><div class="q-rank">💬</div><div class="q-content"><div class="q-text">"Free তে পেলে নে। Label দেখার দরকার নেই।"</div><div class="q-meta"><span class="q-author">🎯 Avijit (চুল/জামাই)</span></div></div></div>
+      <div class="q-card orange-border"><div class="q-rank">💬</div><div class="q-content"><div class="q-text">"তাও ঠিক।"</div><div class="q-meta"><span class="q-author">🎯 Avijit (চুল/জামাই)</span></div></div></div>
+      <div class="q-card orange-border"><div class="q-rank">💬</div><div class="q-content"><div class="q-text">"Tor Moho dirgojibi hok।"</div><div class="q-meta"><span class="q-author">🎯 Avijit (চুল/জামাই)</span></div><div class="q-context">Muna-কে। সবচেয়ে elegant roast।</div></div></div>
+      <div class="q-card orange-border"><div class="q-rank">💬</div><div class="q-content"><div class="q-text">"Commission koto nicchyish??"</div><div class="q-meta"><span class="q-author">🐯 Bagh (Biplab)</span></div></div></div>
+      <div class="q-card orange-border"><div class="q-rank">💬</div><div class="q-content"><div class="q-text">"Ki korbi eto taka niye"</div><div class="q-meta"><span class="q-author">🐕 কুত্তু (Shantu)</span></div></div></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">বিরাটি ঠেক</div>
+  <p class="footer-sub">© ২০২৬ · Sandip-এর order-এ · Debanjan-এর AI কর্তৃক নির্মিত · Bagh commission ছাড়া copy নিষেধ 😄</p>
+</footer>
+
+<script>
+function showCat(id, btn) {
+  document.querySelectorAll('.cat-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
