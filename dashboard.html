@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Dashboard — বিরাটি ঠেক</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --deep-red:#8b0000; --gold:#f5c842; --dark:#1a1a2e; --cream:#fef9ef; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0f0f1a; color:var(--cream); font-family:'Noto Sans Bengali',sans-serif; }
+
+  nav { background:rgba(15,15,26,0.98); backdrop-filter:blur(10px); border-bottom:1px solid rgba(245,200,66,0.15); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:1rem; }
+  .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--gold); text-decoration:none; font-weight:700; }
+  .nav-links { display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .nav-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.85rem; transition:color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+
+  /* BTNN HEADER */
+  .btnn-header { background:linear-gradient(135deg,#8b0000,#c0392b); padding:12px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  .btnn-logo { display:flex; align-items:center; gap:10px; }
+  .btnn-icon { background:#fff; border-radius:50%; width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+  .btnn-name { font-size:16px; font-weight:800; color:#fff; letter-spacing:1px; }
+  .btnn-sub { font-size:9px; color:rgba(255,255,255,0.8); }
+  .btnn-live { display:flex; align-items:center; gap:6px; }
+  .live-dot { width:8px; height:8px; background:#ffff00; border-radius:50%; animation:blink 1s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .live-text { font-size:12px; color:#fff; font-weight:700; }
+
+  /* TICKER */
+  .ticker-wrap { background:#1a1a1a; padding:6px 0; overflow:hidden; border-bottom:1px solid rgba(245,200,66,0.1); }
+  .ticker { white-space:nowrap; display:inline-block; animation:scroll 35s linear infinite; font-size:11px; font-weight:600; color:var(--gold); }
+  @keyframes scroll { 0%{transform:translateX(100vw)} 100%{transform:translateX(-100%)} }
+
+  /* MAIN */
+  .main { max-width:1100px; margin:0 auto; padding:1.5rem; }
+
+  /* DATE BAR */
+  .date-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:8px; }
+  .date-label { font-size:13px; font-weight:700; color:var(--gold); }
+  .date-tabs { display:flex; gap:6px; }
+  .date-tab { padding:5px 14px; border-radius:14px; border:1px solid rgba(245,200,66,0.2); background:transparent; color:rgba(255,255,255,0.5); font-size:11px; font-weight:600; cursor:pointer; font-family:'Noto Sans Bengali',sans-serif; transition:all 0.2s; }
+  .date-tab.active { background:var(--deep-red); border-color:var(--deep-red); color:var(--gold); }
+
+  /* STAT CARDS */
+  .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-bottom:1.5rem; }
+  .stat-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:14px; text-align:center; }
+  .stat-card.highlight { background:rgba(139,0,0,0.2); border-color:rgba(139,0,0,0.4); }
+  .stat-num { font-size:2rem; font-weight:800; color:var(--gold); display:block; }
+  .stat-label { font-size:10px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+  .stat-sub { font-size:11px; color:rgba(255,255,255,0.6); margin-top:4px; }
+
+  /* TWO COLUMN */
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; }
+  @media(max-width:700px) { .two-col { grid-template-columns:1fr; } }
+
+  /* CARDS */
+  .card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:1rem; }
+  .card-title { font-size:12px; font-weight:700; color:var(--gold); letter-spacing:1px; text-transform:uppercase; margin-bottom:1rem; display:flex; align-items:center; gap:6px; }
+
+  /* LEADERBOARD */
+  .leader-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+  .leader-row:last-child { border-bottom:none; }
+  .leader-rank { font-size:1rem; min-width:28px; }
+  .leader-emoji { font-size:1.2rem; min-width:28px; }
+  .leader-name { font-size:12px; font-weight:700; color:var(--cream); flex:1; }
+  .leader-nick { font-size:10px; color:rgba(255,255,255,0.4); }
+  .leader-bar-wrap { width:80px; height:8px; background:rgba(255,255,255,0.08); border-radius:4px; overflow:hidden; }
+  .leader-bar { height:100%; background:linear-gradient(90deg,var(--deep-red),var(--gold)); border-radius:4px; }
+  .leader-count { font-size:12px; font-weight:700; color:var(--gold); min-width:30px; text-align:right; }
+
+  /* HOURLY CHART */
+  .hour-chart { display:flex; gap:3px; align-items:flex-end; height:80px; background:rgba(0,0,0,0.3); padding:6px; border-radius:8px; }
+  .hour-col { display:flex; flex-direction:column; align-items:center; justify-content:flex-end; flex:1; }
+  .hour-bar { width:100%; background:#8b0000; border-radius:2px 2px 0 0; min-height:2px; transition:height 0.5s ease; }
+  .hour-bar.peak { background:linear-gradient(180deg,var(--gold),#c0392b); }
+  .hour-label { font-size:7px; color:rgba(255,255,255,0.3); margin-top:2px; }
+  .hour-label.peak { color:var(--gold); font-weight:700; }
+
+  /* QUOTES */
+  .quote-item { padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+  .quote-item:last-child { border-bottom:none; }
+  .quote-medal { font-size:1rem; margin-bottom:4px; display:block; }
+  .quote-text { font-size:12px; color:rgba(255,255,255,0.85); line-height:1.6; font-style:italic; margin-bottom:4px; }
+  .quote-attr { font-size:10px; color:var(--gold); font-weight:700; }
+
+  /* EVENTS */
+  .event-item { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); align-items:flex-start; }
+  .event-item:last-child { border-bottom:none; }
+  .event-time { font-size:10px; color:rgba(255,255,255,0.4); min-width:55px; padding-top:2px; }
+  .event-dot { width:8px; height:8px; border-radius:50%; margin-top:4px; flex-shrink:0; }
+  .event-text { font-size:11px; color:rgba(255,255,255,0.75); line-height:1.5; flex:1; }
+
+  /* MYSTERIES */
+  .mystery-item { display:flex; gap:8px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); align-items:center; }
+  .mystery-item:last-child { border-bottom:none; }
+  .mystery-q { font-size:12px; color:rgba(255,255,255,0.7); flex:1; }
+  .mystery-a { font-size:11px; font-weight:700; color:var(--gold); white-space:nowrap; }
+
+  /* AI ERRORS */
+  .error-item { display:flex; gap:8px; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:11px; }
+  .error-item:last-child { border-bottom:none; }
+  .error-x { color:#ff6b6b; font-weight:700; min-width:16px; }
+  .error-right { color:rgba(255,255,255,0.6); }
+  .error-arrow { color:rgba(255,255,255,0.3); margin:0 4px; }
+  .error-correct { color:#69db7c; }
+
+  /* FULL WIDTH */
+  .full-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:1rem; margin-bottom:1rem; }
+
+  /* FOOTER */
+  footer { background:rgba(0,0,0,0.8); border-top:1px solid rgba(245,200,66,0.1); padding:1.5rem; text-align:center; margin-top:2rem; }
+  .footer-sub { font-size:0.75rem; color:rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">বিরাটি ঠেক</a>
+  <div class="nav-links">
+    <a href="index.html">হোম</a>
+    <a href="members.html">সদস্য</a>
+    <a href="creative.html">সৃষ্টি</a>
+    <a href="quotes.html">উক্তি</a>
+    <a href="dashboard.html" class="active">Dashboard</a>
+    <a href="court.html">আদালত</a>
+    <a href="mahabharat.html">মহাভারত</a>
+  </div>
+</nav>
+
+<!-- BTNN HEADER -->
+<div class="btnn-header">
+  <div class="btnn-logo">
+    <div class="btnn-icon">📺</div>
+    <div>
+      <div class="btnn-name">BTNN</div>
+      <div class="btnn-sub">BIRATI THEK NEWS NETWORK</div>
+    </div>
+  </div>
+  <div class="btnn-live">
+    <div class="live-dot"></div>
+    <span class="live-text">LIVE</span>
+    <span style="font-size:11px;color:rgba(255,255,255,0.6);margin-left:10px;">১৫ মে ২০২৬ · Sandip-এর order-এ</span>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">⚡ Manik: "AI-এর গার মারি ১০১ বার" · Chotichata Muna আজও অন্ধভক্ত · Sandip: "Toke tag korini" · Jhatu BJP জেতায় খাওয়াচ্ছেন · NEET CBT আগামী বছর · "জোড়া ফলা — চ্যাতানো ও ন্যাতানো" · AI-এর আজকের ভুল: ৮টি 😅 · City Queen-এ পরের শুনানি · ⚡</div>
+</div>
+
+<div class="main">
+
+  <!-- DATE SELECTOR -->
+  <div class="date-bar">
+    <div class="date-label">📊 Daily Dashboard</div>
+    <div class="date-tabs">
+      <button class="date-tab" onclick="showDay('d13',this)">১৩ মে</button>
+      <button class="date-tab" onclick="showDay('d14',this)">১৪ মে</button>
+      <button class="date-tab active" onclick="showDay('d15',this)">১৫ মে</button>
+    </div>
+  </div>
+
+  <!-- DAY 15 -->
+  <div id="d15" class="day-content">
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card highlight">
+        <span class="stat-num">153</span>
+        <div class="stat-label">মোট বার্তা</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">Arindam</span>
+        <div class="stat-label">সবচেয়ে active</div>
+        <div class="stat-sub">33 বার্তা</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">Jhatu</span>
+        <div class="stat-label">সবচেয়ে গভীর</div>
+        <div class="stat-sub">গড় ২২ শব্দ</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">Manik</span>
+        <div class="stat-label">link king</div>
+        <div class="stat-sub">৫টি link</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">লেখক</span>
+        <div class="stat-label">ব্যস্ততম</div>
+        <div class="stat-sub">2 like + উধাও 👻</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">8</span>
+        <div class="stat-label">AI-এর ভুল</div>
+        <div class="stat-sub">record! 😅</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- LEADERBOARD -->
+      <div class="card">
+        <div class="card-title">🏆 লিডারবোর্ড</div>
+        <div class="leader-row">
+          <span class="leader-rank">🥇</span>
+          <span class="leader-emoji">📚</span>
+          <div><div class="leader-name">Arindam</div><div class="leader-nick">জটায়ু</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:100%;"></div></div>
+          <span class="leader-count">33</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">🥈</span>
+          <span class="leader-emoji">⚽</span>
+          <div><div class="leader-name">Sandip</div><div class="leader-nick">বাঁকা</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:94%;"></div></div>
+          <span class="leader-count">31</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">🥉</span>
+          <span class="leader-emoji">🙏</span>
+          <div><div class="leader-name">Manik</div><div class="leader-nick">দার্শনিক টোকাই</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:85%;"></div></div>
+          <span class="leader-count">28</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">4️⃣</span>
+          <span class="leader-emoji">✈️</span>
+          <div><div class="leader-name">Chotichata Muna</div><div class="leader-nick">অন্ধভক্ত</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:76%;"></div></div>
+          <span class="leader-count">25</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">5️⃣</span>
+          <span class="leader-emoji">🐯</span>
+          <div><div class="leader-name">Bagh</div><div class="leader-nick">commission tracker</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:52%;"></div></div>
+          <span class="leader-count">17</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">6️⃣</span>
+          <span class="leader-emoji">😑</span>
+          <div><div class="leader-name">Jhatu</div><div class="leader-nick">রাষ্ট্রসেবক</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:30%;"></div></div>
+          <span class="leader-count">10</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">7️⃣</span>
+          <span class="leader-emoji">✍️</span>
+          <div><div class="leader-name">লেখক (Ayan)</div><div class="leader-nick">like করে উধাও</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:6%;"></div></div>
+          <span class="leader-count">2 👻</span>
+        </div>
+      </div>
+
+      <!-- HOURLY CHART -->
+      <div class="card">
+        <div class="card-title">⏰ ঘণ্টার activity</div>
+        <div class="hour-chart">
+          <div class="hour-col"><div class="hour-bar" style="height:13px;"></div><div class="hour-label">0</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:19px;"></div><div class="hour-label">1</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:3px;"></div><div class="hour-label">2</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">3</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">4</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">5</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">6</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:3px;"></div><div class="hour-label">7</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:16px;"></div><div class="hour-label">8</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:35px;"></div><div class="hour-label peak">9</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:22px;"></div><div class="hour-label">10</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:35px;"></div><div class="hour-label">11</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">12</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:25px;"></div><div class="hour-label">13</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:32px;"></div><div class="hour-label">14</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:6px;"></div><div class="hour-label">15</div></div>
+          <div class="hour-col"><div class="hour-bar peak" style="height:65px;"></div><div class="hour-label peak">16🔥</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:48px;"></div><div class="hour-label">17</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:13px;"></div><div class="hour-label">18</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:6px;"></div><div class="hour-label">19</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:13px;"></div><div class="hour-label">20</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:6px;"></div><div class="hour-label">21</div></div>
+          <div class="hour-col"><div class="hour-bar peak" style="height:80px;"></div><div class="hour-label peak">22🔥</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:48px;"></div><div class="hour-label">23</div></div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:6px;">বিকেল ৪টা: অভয়া নিয়ে মহাবিতর্ক · রাত ১০টা: Chotichata Muna vs সবাই</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- TOP QUOTES -->
+      <div class="card">
+        <div class="card-title">💬 আজকের সেরা উক্তি</div>
+        <div class="quote-item">
+          <span class="quote-medal">🥇</span>
+          <div class="quote-text">"মানিক-মুন্না। জোড়া ফলা — একজন চ্যাতানো, একজন ন্যাতানো 🫠"</div>
+          <div class="quote-attr">— Jhatu (Manoj) · সকাল ৯:৩৫</div>
+        </div>
+        <div class="quote-item">
+          <span class="quote-medal">🥈</span>
+          <div class="quote-text">"বিরাটি ঠেকের AI হলো Chotichata Muna — Without any অহংকার 🙏"</div>
+          <div class="quote-attr">— বাঁকা (Sandip) · রাত ১০:১৪</div>
+        </div>
+        <div class="quote-item">
+          <span class="quote-medal">🥉</span>
+          <div class="quote-text">"Toke tag korini, ektu chup korbi please"</div>
+          <div class="quote-attr">— বাঁকা (Sandip) · রাত ১১:১৫</div>
+        </div>
+        <div class="quote-item">
+          <span class="quote-medal">4️⃣</span>
+          <div class="quote-text">"AI-এর গার মারি ১০১ বার।"</div>
+          <div class="quote-attr">— Manik · বিকেল ৫:৪৫</div>
+        </div>
+      </div>
+
+      <!-- EVENTS TIMELINE -->
+      <div class="card">
+        <div class="card-title">📅 আজকের ঘটনা</div>
+        <div class="event-item">
+          <div class="event-time">রাত ১-২টা</div>
+          <div class="event-dot" style="background:#9b59b6;"></div>
+          <div class="event-text">বীর্যকাব্য রাত্রি — Manik "@লেখক সমাধান কর" · Arindam "শুদ্ধ বীর্যকাব্য"</div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">সকাল ৯টা</div>
+          <div class="event-dot" style="background:#f39c12;"></div>
+          <div class="event-text">পেট্রোল বিতর্ক · SGST analysis · Jhatu-র ডিসিপ্লিন নিয়ে আলোচনা</div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">দুপুর ১টা</div>
+          <div class="event-dot" style="background:#e91e63;"></div>
+          <div class="event-text">টোকাই দুপুর — Manik Rabindranath পাঠালেন · Arindam "Muna আর Manik কার?"</div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">বিকেল ৪টা</div>
+          <div class="event-dot" style="background:#1565C0;"></div>
+          <div class="event-text">🔥 অভয়া মহাবিতর্ক — RG Kar, কামদুনি pattern · গভীর আলোচনা</div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">রাত ১০টা</div>
+          <div class="event-dot" style="background:#c0392b;"></div>
+          <div class="event-text">💥 Chotichata Muna vs সবাই · Sandip-এর "Without any অহংকার" ঘোষণা</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- MYSTERIES -->
+      <div class="card">
+        <div class="card-title">🔍 অমীমাংসিত রহস্য</div>
+        <div class="mystery-item"><div class="mystery-q">Cake কার জন্মদিন?</div><div class="mystery-a">অজানা 🎂</div></div>
+        <div class="mystery-item"><div class="mystery-q">দামু মানে কী?</div><div class="mystery-a">রহস্য</div></div>
+        <div class="mystery-item"><div class="mystery-q">Chotichata Muna শোধরাবেন?</div><div class="mystery-a">না 😄</div></div>
+        <div class="mystery-item"><div class="mystery-q">City Queen কবে?</div><div class="mystery-a">এই মাসে</div></div>
+        <div class="mystery-item"><div class="mystery-q">Manik-এর "সংখ্যা ৩" মানে?</div><div class="mystery-a">অজানা 🃏</div></div>
+        <div class="mystery-item"><div class="mystery-q">Bubai কে?</div><div class="mystery-a">রহস্য 👻</div></div>
+      </div>
+
+      <!-- AI ERRORS -->
+      <div class="card">
+        <div class="card-title">🤖 AI-এর আজকের ভুল (৮টি)</div>
+        <div class="error-item"><span class="error-x">✗</span><span class="error-right">বে চা</span><span class="error-arrow">→</span><span class="error-correct">বো চো ✓</span></div>
+        <div class="error-item"><span class="error-x">✗</span><span class="error-right">Shantu UAE-তে</span><span class="error-arrow">→</span><span class="error-correct">বিরাটিতে ✓</span></div>
+        <div class="error-item"><span class="error-x">✗</span><span class="error-right">Bagh commission নেন</span><span class="error-arrow">→</span><span class="error-correct">track করেন ✓</span></div>
+        <div class="error-item"><span class="error-x">✗</span><span class="error-right">Driver = Biplab</span><span class="error-arrow">→</span><span class="error-correct">Driver = Arindam ✓</span></div>
+        <div class="error-item"><span class="error-x">✗</span><span class="error-right">বাবার আছে সমাধান নেই</span><span class="error-arrow">→</span><span class="error-correct">ভাবার আছে ✓</span></div>
+        <div class="error-item"><span class="error-x">✗</span><span class="error-right">Maya = person</span><span class="error-arrow">→</span><span class="error-correct">Maya = আবেগ ✓</span></div>
+        <div class="error-item"><span class="error-x">✗</span><span class="error-right">Avijit nickname নেই</span><span class="error-arrow">→</span><span class="error-correct">চুল + জামাই ✓</span></div>
+        <div class="error-item"><span class="error-x">✗</span><span class="error-right">Arindam-এর nickname নেই</span><span class="error-arrow">→</span><span class="error-correct">জটায়ু + Maya ✓</span></div>
+        <div style="margin-top:8px;padding:6px 10px;background:rgba(139,0,0,0.2);border-radius:6px;font-size:10px;color:rgba(255,255,255,0.5);">AI ক্ষমাপ্রার্থী। "Without any অহংকার।" — Sandip</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DAY 14 -->
+  <div id="d14" class="day-content" style="display:none;">
+    <div class="stats-grid">
+      <div class="stat-card highlight"><span class="stat-num">87</span><div class="stat-label">মোট বার্তা</div></div>
+      <div class="stat-card"><span class="stat-num">Arindam</span><div class="stat-label">সবচেয়ে active</div><div class="stat-sub">24 বার্তা</div></div>
+      <div class="stat-card"><span class="stat-num">Jhatu</span><div class="stat-label">সবচেয়ে গভীর</div><div class="stat-sub">গড় ১৯ শব্দ</div></div>
+      <div class="stat-card"><span class="stat-num">৭ ঘণ্টা</span><div class="stat-label">অফিস নীতি</div><div class="stat-sub">Sandip ক্ষুব্ধ</div></div>
+    </div>
+    <div class="full-card">
+      <div class="card-title">💬 ১৪ মে-র সেরা উক্তি</div>
+      <div class="quote-item"><span class="quote-medal">🥇</span><div class="quote-text">"রাষ্ট্রের হিতে যখন জীবন সমর্পণ করেছি, এসব ছোটোখাটো ব্যাপার ভাবলে চলে?"</div><div class="quote-attr">— Jhatu (Manoj) · ৭ ঘণ্টা অফিস নীতি প্রসঙ্গে</div></div>
+      <div class="quote-item"><span class="quote-medal">🥈</span><div class="quote-text">"@Debanjan রাতে জানো সবার AI report ready থাকে।"</div><div class="quote-attr">— বাঁকা (Sandip) · বিকেল ৫টা</div></div>
+      <div class="quote-item"><span class="quote-medal">🥉</span><div class="quote-text">"Jar mara jai, sei bojhe।"</div><div class="quote-attr">— চুল/জামাই (Avijit)</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 13 -->
+  <div id="d13" class="day-content" style="display:none;">
+    <div class="stats-grid">
+      <div class="stat-card highlight"><span class="stat-num">76+</span><div class="stat-label">মোট বার্তা</div></div>
+      <div class="stat-card"><span class="stat-num">CBSE</span><div class="stat-label">বড় ঘটনা</div><div class="stat-sub">Results out!</div></div>
+      <div class="stat-card"><span class="stat-num">19</span><div class="stat-label">Muna-র delete</div><div class="stat-sub">৩০ সেকেন্ডে!</div></div>
+      <div class="stat-card"><span class="stat-num">96.6%</span><div class="stat-label">Neel-এর result</div><div class="stat-sub">Sandip-এর ছেলে 🎉</div></div>
+    </div>
+    <div class="full-card">
+      <div class="card-title">🌸 ১৩ মে — ফুলসজ্জা কাণ্ড</div>
+      <div class="event-item" style="padding:10px 0;">
+        <div class="event-time">বিকেল ৫:১২</div>
+        <div class="event-dot" style="background:#c0392b;width:10px;height:10px;"></div>
+        <div class="event-text"><strong style="color:var(--gold);">ঐতিহাসিক মুহূর্ত!</strong> Chotichata Muna ১৮টি ছবি ভুলে গ্রুপে পাঠিয়ে ৩০ সেকেন্ডে delete করলেন। Sandip তৎক্ষণাৎ ধরলেন। Jhatu বললেন "ছিঃ!" বিরাটি ঠেকের ইতিহাসে এই মুহূর্ত অমর।</div>
+      </div>
+      <div class="quote-item"><span class="quote-medal">🏆</span><div class="quote-text">"BKCD! তুই Bulbuli-কে পাঠাতে গিয়ে এখানে পাঠিয়েছিস!"</div><div class="quote-attr">— বাঁকা (Sandip) · সর্বকালের সেরা line</div></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p class="footer-sub">BTNN © ২০২৬ · বিরাটি ঠেক নিউজ নেটওয়ার্ক · Sandip-এর order-এ · Debanjan-এর AI কর্তৃক প্রস্তুত · Bagh commission ছাড়া পুনর্মুদ্রণ নিষেধ 😄</p>
+</footer>
+
+<script>
+function showDay(id, btn) {
+  document.querySelectorAll('.day-content').forEach(d => d.style.display = 'none');
+  document.querySelectorAll('.date-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).style.display = 'block';
+  btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
