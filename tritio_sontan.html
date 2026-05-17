@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>তৃতীয় সন্তান সংগ্রাম — বিরাটি ঠেক</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&family=Playfair+Display:wght@700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep-red:#8b0000; --gold:#f5c842; --dark:#1a1a2e; --cream:#fef9ef;
+    --green:#27ae60; --orange:#e67e22; --blue:#2980b9;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0a0a0f; color:var(--cream); font-family:'Noto Sans Bengali',sans-serif; overflow-x:hidden; }
+
+  /* NAV */
+  nav { background:rgba(15,15,26,0.98); backdrop-filter:blur(10px); border-bottom:1px solid rgba(245,200,66,0.15); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:1rem; }
+  .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--gold); text-decoration:none; font-weight:700; }
+  .nav-links { display:flex; gap:1.5rem; flex-wrap:wrap; }
+  .nav-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.85rem; transition:color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+
+  /* HERO */
+  .hero { position:relative; min-height:340px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:3rem 2rem 2rem; overflow:hidden; }
+  .hero-bg { position:absolute; inset:0; background: radial-gradient(ellipse at 30% 50%, rgba(139,0,0,0.35) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(245,200,66,0.1) 0%, transparent 60%), linear-gradient(180deg,#0a0a0f 0%, #12080a 100%); }
+  .hero-emoji { font-size:4rem; margin-bottom:0.5rem; animation: float 3s ease-in-out infinite; position:relative; z-index:1; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .hero-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,6vw,3.8rem); font-weight:900; color:var(--gold); position:relative; z-index:1; line-height:1.1; text-shadow:0 0 40px rgba(245,200,66,0.3); }
+  .hero-sub { font-size:clamp(0.85rem,2vw,1rem); color:rgba(255,255,255,0.5); margin-top:0.75rem; position:relative; z-index:1; }
+  .prize-badge { display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#8b0000,#c0392b); border:1px solid var(--gold); border-radius:30px; padding:8px 20px; margin-top:1.2rem; position:relative; z-index:1; }
+  .prize-amount { font-size:1.5rem; font-weight:800; color:var(--gold); }
+  .prize-label { font-size:0.8rem; color:rgba(255,255,255,0.8); }
+
+  /* TICKER */
+  .ticker-wrap { background:#1a0000; padding:6px 0; overflow:hidden; border-bottom:1px solid rgba(245,200,66,0.1); border-top:1px solid rgba(245,200,66,0.1); }
+  .ticker { white-space:nowrap; display:inline-block; animation:scroll 30s linear infinite; font-size:11px; font-weight:700; color:var(--gold); letter-spacing:0.5px; }
+  @keyframes scroll { 0%{transform:translateX(100vw)} 100%{transform:translateX(-100%)} }
+
+  /* MAIN */
+  .main { max-width:1100px; margin:0 auto; padding:2rem 1.5rem; }
+  .section-title { font-size:11px; font-weight:700; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:1.2rem; display:flex; align-items:center; gap:8px; }
+  .section-title::after { content:''; flex:1; height:1px; background:rgba(245,200,66,0.2); }
+
+  /* RACE TRACK */
+  .race-section { margin-bottom:2rem; }
+  .race-card { background:linear-gradient(135deg,rgba(139,0,0,0.15),rgba(0,0,0,0.4)); border:1px solid rgba(139,0,0,0.4); border-radius:16px; padding:1.5rem; margin-bottom:1rem; position:relative; overflow:hidden; transition:transform 0.2s, box-shadow 0.2s; }
+  .race-card:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(139,0,0,0.2); }
+  .race-card.gold-card { background:linear-gradient(135deg,rgba(245,200,66,0.1),rgba(0,0,0,0.4)); border-color:rgba(245,200,66,0.3); }
+  .race-card.gold-card:hover { box-shadow:0 8px 30px rgba(245,200,66,0.15); }
+  .race-header { display:flex; align-items:center; gap:14px; margin-bottom:1rem; }
+  .race-rank { font-size:2.2rem; min-width:44px; }
+  .race-name { font-size:1.2rem; font-weight:800; color:var(--cream); }
+  .race-nick { font-size:0.8rem; color:rgba(255,255,255,0.45); margin-top:2px; }
+  .race-odds { margin-left:auto; text-align:right; }
+  .odds-num { font-size:2rem; font-weight:800; color:var(--gold); display:block; }
+  .odds-label { font-size:10px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; }
+
+  /* PROGRESS BAR */
+  .progress-wrap { height:10px; background:rgba(255,255,255,0.07); border-radius:5px; overflow:hidden; margin-bottom:1rem; }
+  .progress-bar { height:100%; border-radius:5px; position:relative; overflow:hidden; }
+  .progress-bar::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent); animation:shimmer 2s infinite; }
+  @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+
+  /* STATS ROW */
+  .race-stats { display:flex; gap:12px; flex-wrap:wrap; }
+  .race-stat { background:rgba(0,0,0,0.3); border-radius:8px; padding:8px 14px; }
+  .race-stat-label { font-size:9px; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:1px; }
+  .race-stat-value { font-size:13px; font-weight:700; color:var(--cream); margin-top:2px; }
+
+  /* PROBLEM BADGE */
+  .problem-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(231,76,60,0.15); border:1px solid rgba(231,76,60,0.3); border-radius:20px; padding:5px 12px; font-size:11px; color:#e74c3c; margin-top:8px; }
+
+  /* QUOTES SECTION */
+  .quotes-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:2rem; }
+  @media(max-width:650px) { .quotes-grid { grid-template-columns:1fr; } }
+  .quote-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:1rem; border-left:3px solid var(--gold); }
+  .quote-text { font-size:12.5px; color:rgba(255,255,255,0.85); line-height:1.7; font-style:italic; margin-bottom:8px; }
+  .quote-attr { font-size:10px; color:var(--gold); font-weight:700; }
+
+  /* GOVT SCHEME */
+  .scheme-box { background:linear-gradient(135deg,rgba(39,174,96,0.1),rgba(0,0,0,0.4)); border:1px solid rgba(39,174,96,0.3); border-radius:16px; padding:1.5rem; margin-bottom:2rem; }
+  .scheme-header { display:flex; align-items:center; gap:12px; margin-bottom:1rem; }
+  .scheme-flag { font-size:2rem; }
+  .scheme-title { font-size:1rem; font-weight:800; color:#27ae60; }
+  .scheme-sub { font-size:0.8rem; color:rgba(255,255,255,0.5); }
+  .scheme-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; }
+  .scheme-item { background:rgba(0,0,0,0.3); border-radius:8px; padding:12px; text-align:center; }
+  .scheme-item-num { font-size:1.4rem; font-weight:800; color:#27ae60; display:block; }
+  .scheme-item-label { font-size:10px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
+
+  /* JHATU VERDICT */
+  .verdict-box { background:linear-gradient(135deg,rgba(41,128,185,0.1),rgba(0,0,0,0.4)); border:1px solid rgba(41,128,185,0.3); border-radius:12px; padding:1.2rem; margin-bottom:2rem; display:flex; gap:14px; align-items:flex-start; }
+  .verdict-icon { font-size:2rem; flex-shrink:0; }
+  .verdict-title { font-size:11px; font-weight:700; color:#2980b9; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+  .verdict-text { font-size:12px; color:rgba(255,255,255,0.75); line-height:1.7; }
+
+  /* APPLICATION */
+  .application-box { background:rgba(255,255,255,0.03); border:2px dashed rgba(245,200,66,0.2); border-radius:16px; padding:1.5rem; margin-bottom:2rem; }
+  .app-header { text-align:center; border-bottom:1px solid rgba(245,200,66,0.15); padding-bottom:1rem; margin-bottom:1.2rem; }
+  .app-title { font-size:1rem; font-weight:800; color:var(--gold); }
+  .app-sub { font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:4px; }
+  .app-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dotted rgba(255,255,255,0.07); font-size:12px; }
+  .app-label { color:rgba(255,255,255,0.45); }
+  .app-value { color:var(--cream); font-weight:600; }
+  .app-stamp { text-align:center; margin-top:1rem; }
+  .stamp { display:inline-block; border:3px solid #e74c3c; border-radius:8px; padding:8px 20px; color:#e74c3c; font-weight:800; font-size:1.1rem; transform:rotate(-5deg); opacity:0.8; letter-spacing:2px; }
+
+  /* FOOTER */
+  footer { background:rgba(0,0,0,0.8); border-top:1px solid rgba(245,200,66,0.1); padding:1.5rem; text-align:center; margin-top:2rem; }
+  .footer-sub { font-size:0.75rem; color:rgba(255,255,255,0.3); }
+
+  /* DECORATIVE BG NUMBERS */
+  .bg-text { position:fixed; top:50%; right:-2%; transform:translateY(-50%); font-size:25vw; font-family:'Bebas Neue',sans-serif; color:rgba(139,0,0,0.04); pointer-events:none; z-index:0; line-height:1; }
+
+</style>
+</head>
+<body>
+
+<div class="bg-text">3</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">বিরাটি ঠেক</a>
+  <div class="nav-links">
+    <a href="index.html">হোম</a>
+    <a href="members.html">সদস্য</a>
+    <a href="creative.html">সৃষ্টি</a>
+    <a href="quotes.html">উক্তি</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="court.html">আদালত</a>
+    <a href="mahabharat.html">মহাভারত</a>
+    <a href="tritio_sontan.html" class="active">তৃতীয় সংগ্রাম</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-emoji">👶</div>
+  <h1 class="hero-title">তৃতীয় সন্তান সংগ্রাম</h1>
+  <p class="hero-sub">বিরাটি ঠেকের ঐতিহাসিক প্রজনন প্রতিযোগিতা · ১৭ মে ২০২৬ থেকে শুরু</p>
+  <div class="prize-badge">
+    <span>🏆</span>
+    <div>
+      <div class="prize-amount">₹৩০,০০০</div>
+      <div class="prize-label">অন্ধ্রপ্রদেশ সরকার · তৃতীয় সন্তানে পুরস্কার</div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">🍼 Arindam link শেয়ার করলেন — ঠেকে race শুরু! · Muna: "O Bou tumi agrahi hole ami raji" 😂 · Jhatu verdict: "শীঘ্রই যদি পতন হবে, তবে জায়গা মত পড়বে কি ভাবে?" · Sandip: "Tui ki ebare teleguchodao hobi?" · Debanjan: "পতনের এই হিসাব একমাত্র তপন মেলাতে পারে" 🏆 · 🍼</div>
+</div>
+
+<div class="main">
+
+  <!-- GOVT SCHEME -->
+  <div class="section-title">🏛️ সরকারি প্রকল্প</div>
+  <div class="scheme-box">
+    <div class="scheme-header">
+      <div class="scheme-flag">🇮🇳</div>
+      <div>
+        <div class="scheme-title">অন্ধ্রপ্রদেশ তৃতীয় সন্তান প্রণোদনা প্রকল্প</div>
+        <div class="scheme-sub">ঘোষণা: ১৭ মে ২০২৬ · Arindam কর্তৃক বিরাটি ঠেকে সম্প্রচারিত</div>
+      </div>
+    </div>
+    <div class="scheme-grid">
+      <div class="scheme-item">
+        <span class="scheme-item-num">₹৩০,০০০</span>
+        <div class="scheme-item-label">তৃতীয় সন্তানে পুরস্কার</div>
+      </div>
+      <div class="scheme-item">
+        <span class="scheme-item-num">৩</span>
+        <div class="scheme-item-label">প্রতিযোগীর সংখ্যা</div>
+      </div>
+      <div class="scheme-item">
+        <span class="scheme-item-num">৭০%</span>
+        <div class="scheme-item-label">Jony-র সম্ভাবনা</div>
+      </div>
+      <div class="scheme-item">
+        <span class="scheme-item-num">০%</span>
+        <div class="scheme-item-label">Sandip-এর আগ্রহ 😄</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RACE LEADERBOARD -->
+  <div class="section-title">🏁 race leaderboard</div>
+  <div class="race-section">
+
+    <!-- JONY - 1st -->
+    <div class="race-card gold-card">
+      <div class="race-header">
+        <div class="race-rank">🥇</div>
+        <div>
+          <div class="race-name">Jony (Tapan)</div>
+          <div class="race-nick">বিরাটি ঠেকের সবচেয়ে কনিষ্ঠ মানুষ · গ্রুপে ০ বার্তা, কিন্তু race-এ প্রথম!</div>
+        </div>
+        <div class="race-odds">
+          <span class="odds-num">৭০%</span>
+          <div class="odds-label">জয়ের সম্ভাবনা</div>
+        </div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar" style="width:70%;background:linear-gradient(90deg,#f5c842,#e67e22);"></div>
+      </div>
+      <div class="race-stats">
+        <div class="race-stat">
+          <div class="race-stat-label">বয়স</div>
+          <div class="race-stat-value">সবচেয়ে কম 🔥</div>
+        </div>
+        <div class="race-stat">
+          <div class="race-stat-label">শারীরিক সক্ষমতা</div>
+          <div class="race-stat-value">সর্বোচ্চ ✅</div>
+        </div>
+        <div class="race-stat">
+          <div class="race-stat-label">Debanjan verdict</div>
+          <div class="race-stat-value">"Most promising" 👑</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.5);font-style:italic;">"পতনের এই হিসাব একমাত্র তপন মেলাতে পারে।" — Debanjan</div>
+    </div>
+
+    <!-- MUNA - 2nd -->
+    <div class="race-card">
+      <div class="race-header">
+        <div class="race-rank">🥈</div>
+        <div>
+          <div class="race-name">Chotichata Muna (Raju)</div>
+          <div class="race-nick">TMC-Mamata জয়গানকারী · race-এ দ্বিতীয়</div>
+        </div>
+        <div class="race-odds">
+          <span class="odds-num">২০%</span>
+          <div class="odds-label">জয়ের সম্ভাবনা</div>
+        </div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar" style="width:20%;background:linear-gradient(90deg,#8b0000,#c0392b);"></div>
+      </div>
+      <div class="race-stats">
+        <div class="race-stat">
+          <div class="race-stat-label">উৎসাহ</div>
+          <div class="race-stat-value">অপরিসীম 💪</div>
+        </div>
+        <div class="race-stat">
+          <div class="race-stat-label">বাধা</div>
+          <div class="race-stat-value">শীঘ্রপতন 😅</div>
+        </div>
+        <div class="race-stat">
+          <div class="race-stat-label">নিজের দাবি</div>
+          <div class="race-stat-value">"Tumi jano ki korte pari"</div>
+        </div>
+      </div>
+      <div class="problem-badge">⚠️ প্রধান বাধা: শীঘ্রপতন সমস্যা</div>
+      <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.5);font-style:italic;">"O Bou tumi agrahi hole ami raji।" — Muna (Debanjan-কে!) 😂</div>
+    </div>
+
+    <!-- ARINDAM - 3rd -->
+    <div class="race-card">
+      <div class="race-header">
+        <div class="race-rank">🥉</div>
+        <div>
+          <div class="race-name">Arindam (জটায়ু)</div>
+          <div class="race-nick">বুদ্ধিজীবী · link শেয়ার করেন, নিজে race-এ নামেন না</div>
+        </div>
+        <div class="race-odds">
+          <span class="odds-num">১০%</span>
+          <div class="odds-label">জয়ের সম্ভাবনা</div>
+        </div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar" style="width:10%;background:linear-gradient(90deg,#2980b9,#1abc9c);"></div>
+      </div>
+      <div class="race-stats">
+        <div class="race-stat">
+          <div class="race-stat-label">ভূমিকা</div>
+          <div class="race-stat-value">Link sender 🔗</div>
+        </div>
+        <div class="race-stat">
+          <div class="race-stat-label">বাধা</div>
+          <div class="race-stat-value">বিশ্লেষণে ব্যস্ত 📊</div>
+        </div>
+        <div class="race-stat">
+          <div class="race-stat-label">কৌশল</div>
+          <div class="race-stat-value">"Thek-er keu agrahi?"</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.5);font-style:italic;">Race শুরু করলেন Arindam, নিজে কিন্তু সাবধানে দূরে! — "Kichhu bola-r nei।"</div>
+    </div>
+
+  </div>
+
+  <!-- JHATU SPECIAL VERDICT -->
+  <div class="section-title">⚖️ বিশেষ মন্তব্য</div>
+  <div class="verdict-box">
+    <div class="verdict-icon">😑</div>
+    <div>
+      <div class="verdict-title">Jhatu (Manoj) — রাষ্ট্রসেবকের দার্শনিক প্রশ্ন</div>
+      <div class="verdict-text">"শীঘ্রই যদি পতন হবে, তবে জায়গা মত পড়বে কি ভাবে? দুটো দেখে হিসেব মেলাশ না।"<br><br>
+      <span style="color:rgba(255,255,255,0.4);font-size:11px;">জানা গেছে, Jhatu আগের দিনই (১৬ মে) এই ₹৩০,০০০ প্রকল্পের বিষয়ে আলোচনা করেছিলেন এবং "খুব প্রয়োজন" বলেছিলেন। কিন্তু race-এ নামেননি — রাষ্ট্রের হিতে জীবন সমর্পণ করলে এসব সময় কোথায়? 😄</span></div>
+    </div>
+  </div>
+
+  <div class="verdict-box" style="border-color:rgba(245,200,66,0.3);">
+    <div class="verdict-icon">🏛️</div>
+    <div>
+      <div class="verdict-title" style="color:var(--gold);">Sandip (বাঁকা) — বিচারকের রায়</div>
+      <div class="verdict-text">"Tui ki ebare teleguchodao hobi?"<br><br>
+      <span style="color:rgba(255,255,255,0.4);font-size:11px;">Sandip নিজে race-এ নেই, কিন্তু বিচারক হিসেবে প্রশ্ন করছেন। ০ delete, ০ compromise।</span></div>
+    </div>
+  </div>
+
+  <!-- BEST QUOTES -->
+  <div class="section-title">💬 race-এর সেরা উক্তি</div>
+  <div class="quotes-grid">
+    <div class="quote-card">
+      <div class="quote-text">"Tui aar Muna — ei 2 jon achish ei race e. Muna-r sambhabona beshi due to Sighropaton।"</div>
+      <div class="quote-attr">— Debanjan (বউ) · ১৭ মে সকাল ১০:৫৬ 😂</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"O Bou tumi agrahi hole ami raji।"</div>
+      <div class="quote-attr">— Chotichata Muna (Raju) · Debanjan-কে direct proposal! 😂</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"Johnny aachhe। Kora competition।"</div>
+      <div class="quote-attr">— জটায়ু (Arindam) · race-এর দিকে নিরপেক্ষ দৃষ্টিপাত</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"পতনের এই হিসাব একমাত্র তপন মেলাতে পারে।"</div>
+      <div class="quote-attr">— Debanjan · Jony-কে champion ঘোষণা 🏆</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"শীঘ্রই যদি পতন হবে, তবে জায়গা মত পড়বে কি ভাবে? দুটো দেখে হিসেব মেলাশ না।"</div>
+      <div class="quote-attr">— Jhatu (Manoj) · দার্শনিক প্রশ্ন 🤔</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"নিজের একাউন্টে কি নিতে হবে?"</div>
+      <div class="quote-attr">— Manik · সরকারি প্রকল্পের আর্থিক দিক নিয়ে গুরুত্বপূর্ণ প্রশ্ন 🙏</div>
+    </div>
+  </div>
+
+  <!-- APPLICATION FORM -->
+  <div class="section-title">📋 আনুষ্ঠানিক আবেদনপত্র</div>
+  <div class="application-box">
+    <div class="app-header">
+      <div class="app-title">অন্ধ্রপ্রদেশ তৃতীয় সন্তান প্রণোদনা প্রকল্প — আবেদনপত্র</div>
+      <div class="app-sub">বিরাটি ঠেক বিশেষ সংস্করণ · ফর্ম নং: BT-2026-3C</div>
+    </div>
+    <div class="app-row"><span class="app-label">আবেদনকারীর নাম:</span><span class="app-value">Chotichata Muna (প্রাথমিক)</span></div>
+    <div class="app-row"><span class="app-label">প্রতিযোগী:</span><span class="app-value">Jony (Tapan) — সবচেয়ে বিপজ্জনক</span></div>
+    <div class="app-row"><span class="app-label">পুরস্কারের পরিমাণ:</span><span class="app-value">₹৩০,০০০ (AP সরকার)</span></div>
+    <div class="app-row"><span class="app-label">আবেদনকারীর মূল বাধা:</span><span class="app-value">শীঘ্রপতন (documented)</span></div>
+    <div class="app-row"><span class="app-label">Jhatu-র মতামত:</span><span class="app-value">"খুব প্রয়োজন"</span></div>
+    <div class="app-row"><span class="app-label">Sandip-এর রায়:</span><span class="app-value">"Teleguchodao hobi?"</span></div>
+    <div class="app-row"><span class="app-label">Manik-এর প্রশ্ন:</span><span class="app-value">নিজের account-এ নিতে হবে? 🙏</span></div>
+    <div class="app-row"><span class="app-label">Debanjan-এর verdict:</span><span class="app-value">Jony most promising 👑</span></div>
+    <div class="app-stamp">
+      <div class="stamp">PENDING ⏳</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p class="footer-sub">তৃতীয় সন্তান সংগ্রাম © ২০২৬ · বিরাটি ঠেক · Sandip অনুমোদিত · Debanjan-এর AI কর্তৃক প্রস্তুত · "Without any অহংকার।" 🙏</p>
+</footer>
+
+</body>
+</html>
