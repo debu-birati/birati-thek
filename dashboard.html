@@ -125,6 +125,7 @@
     <a href="dashboard.html" class="active">Dashboard</a>
     <a href="court.html">আদালত</a>
     <a href="mahabharat.html">মহাভারত</a>
+    <a href="tritio_sontan.html">তৃতীয় সংগ্রাম</a>
   </div>
 </nav>
 
@@ -146,7 +147,7 @@
 
 <!-- TICKER -->
 <div class="ticker-wrap">
-  <div class="ticker">⚡ Manik: "AI-এর গার মারি ১০১ বার" · Chotichata Muna আজও অন্ধভক্ত · Sandip: "Toke tag korini" · Jhatu BJP জেতায় খাওয়াচ্ছেন · NEET CBT আগামী বছর · "জোড়া ফলা — চ্যাতানো ও ন্যাতানো" · AI-এর আজকের ভুল: ৮টি 😅 · City Queen-এ পরের শুনানি · ⚡</div>
+  <div class="ticker">⚡ Muna-র সাথে Bagh-এর জোট! · Manik: "ফিদা হয়ে গেলাম AI-এর প্রতি" · Arindam: "AI anek-ta Muna-r moto" · তৃতীয় সন্তান race শুরু · Jony এগিয়ে ৭০% · Sandip party miss করলেন · Avijit-এর porota ফাঁদে Arindam! · "Ekhon bhabar jonyo AI eshe gechhe" · ⚡</div>
 </div>
 
 <div class="main">
@@ -155,14 +156,236 @@
   <div class="date-bar">
     <div class="date-label">📊 Daily Dashboard</div>
     <div class="date-tabs">
+      <button class="date-tab" onclick="showDay('d10',this)">১০ মে</button>
+      <button class="date-tab" onclick="showDay('d11',this)">১১ মে</button>
+      <button class="date-tab" onclick="showDay('d12',this)">১২ মে</button>
       <button class="date-tab" onclick="showDay('d13',this)">১৩ মে</button>
       <button class="date-tab" onclick="showDay('d14',this)">১৪ মে</button>
-      <button class="date-tab active" onclick="showDay('d15',this)">১৫ মে</button>
+      <button class="date-tab" onclick="showDay('d15',this)">১৫ মে</button>
+      <button class="date-tab active" onclick="showDay('d1617',this)">১৬-১৭ মে 🔥</button>
+    </div>
+  </div>
+
+
+  <!-- DAY 16-17 COMBINED (DEFAULT) -->
+  <div id="d1617" class="day-content">
+    <div class="stats-grid">
+      <div class="stat-card highlight">
+        <span class="stat-num">301</span>
+        <div class="stat-label">মোট বার্তা (২ দিন)</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">Muna</span>
+        <div class="stat-label">সবচেয়ে active</div>
+        <div class="stat-sub">৮২ বার্তা 😤</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">Ayan</span>
+        <div class="stat-label">চমক!</div>
+        <div class="stat-sub">১৭ বার্তা — ফিরে এলেন!</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">👶</span>
+        <div class="stat-label">তৃতীয় সংগ্রাম</div>
+        <div class="stat-sub">Race শুরু ১৭ মে</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">Bagh</span>
+        <div class="stat-label">বিরোধী দলে!</div>
+        <div class="stat-sub">BJP ছেড়ে Muna জোট 😂</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">Manik</span>
+        <div class="stat-label">AI-ফিদা</div>
+        <div class="stat-sub">"ফিদা হয়ে গেলাম" 🎉</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- LEADERBOARD -->
+      <div class="card">
+        <div class="card-title">🏆 লিডারবোর্ড (১৬+১৭ মে)</div>
+        <div class="leader-row">
+          <span class="leader-rank">🥇</span><span class="leader-emoji">✈️</span>
+          <div><div class="leader-name">Chotichata Muna</div><div class="leader-nick">রাজনৈতিক সংগ্রামী</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:100%;"></div></div>
+          <span class="leader-count">82</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">🥈</span><span class="leader-emoji">🤖</span>
+          <div><div class="leader-name">Debanjan</div><div class="leader-nick">বউ · AI চালক</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:57%;"></div></div>
+          <span class="leader-count">47</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">🥉</span><span class="leader-emoji">📚</span>
+          <div><div class="leader-name">Arindam</div><div class="leader-nick">জটায়ু</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:46%;"></div></div>
+          <span class="leader-count">38</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">4️⃣</span><span class="leader-emoji">🙏</span>
+          <div><div class="leader-name">Manik</div><div class="leader-nick">দার্শনিক টোকাই</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:44%;"></div></div>
+          <span class="leader-count">36</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">5️⃣</span><span class="leader-emoji">⚽</span>
+          <div><div class="leader-name">Sandip</div><div class="leader-nick">বাঁকা · বিচারক</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:34%;"></div></div>
+          <span class="leader-count">28</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">6️⃣</span><span class="leader-emoji">✍️</span>
+          <div><div class="leader-name">Ayan</div><div class="leader-nick">লেখক · ফিরে এলেন!</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:21%;"></div></div>
+          <span class="leader-count">17</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">7️⃣</span><span class="leader-emoji">🎯</span>
+          <div><div class="leader-name">Avijit</div><div class="leader-nick">চুল · porota ফাঁদ</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:22%;"></div></div>
+          <span class="leader-count">18</span>
+        </div>
+      </div>
+
+      <!-- HOURLY CHART -->
+      <div class="card">
+        <div class="card-title">⏰ ঘণ্টার activity (১৬ মে)</div>
+        <div class="hour-chart">
+          <div class="hour-col"><div class="hour-bar peak" style="height:22px;"></div><div class="hour-label peak">0</div></div>
+          <div class="hour-col"><div class="hour-bar peak" style="height:38px;"></div><div class="hour-label peak">1🔥</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">2</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">3</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">4</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">5</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">6</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">7</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:10px;"></div><div class="hour-label">8</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:20px;"></div><div class="hour-label">9</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:54px;"></div><div class="hour-label">10</div></div>
+          <div class="hour-col"><div class="hour-bar peak" style="height:62px;"></div><div class="hour-label peak">11🔥</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:24px;"></div><div class="hour-label">12</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:18px;"></div><div class="hour-label">13</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:10px;"></div><div class="hour-label">14</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">15</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:40px;"></div><div class="hour-label">16</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:20px;"></div><div class="hour-label">17</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:14px;"></div><div class="hour-label">18</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:16px;"></div><div class="hour-label">19</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:12px;"></div><div class="hour-label">20</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:2px;"></div><div class="hour-label">21</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">22</div></div>
+          <div class="hour-col"><div class="hour-bar" style="height:12px;"></div><div class="hour-label">23</div></div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:6px;">রাত ১টা: party after-chat · সকাল ১১টা: রাজনীতি + AI আলোচনা</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- TOP QUOTES -->
+      <div class="card">
+        <div class="card-title">💬 সেরা উক্তি (১৬-১৭ মে)</div>
+        <div class="quote-item">
+          <span class="quote-medal">🥇</span>
+          <div class="quote-text">"Ekhon bhabar jonyo AI eshe gechhe।"</div>
+          <div class="quote-attr">— জটায়ু (Arindam) · ১৬ মে রাত ১২:৪১</div>
+        </div>
+        <div class="quote-item">
+          <span class="quote-medal">🥈</span>
+          <div class="quote-text">"Muna-r sambhabona beshi due to Sighropaton।"</div>
+          <div class="quote-attr">— বউ (Debanjan) · ১৭ মে সকাল ১০:৫৬ 😂</div>
+        </div>
+        <div class="quote-item">
+          <span class="quote-medal">🥉</span>
+          <div class="quote-text">"ফিদা হয়ে গেলাম AI-এর প্রতি।" 🎉</div>
+          <div class="quote-attr">— দার্শনিক টোকাই (Manik) · ১৬ মে রাত ১:৪৯</div>
+        </div>
+        <div class="quote-item">
+          <span class="quote-medal">4️⃣</span>
+          <div class="quote-text">"O Bou tumi agrahi hole ami raji।"</div>
+          <div class="quote-attr">— Chotichata Muna · Debanjan-কে direct proposal! 😂</div>
+        </div>
+        <div class="quote-item">
+          <span class="quote-medal">5️⃣</span>
+          <div class="quote-text">"শীঘ্রই যদি পতন হবে, তবে জায়গা মত পড়বে কি ভাবে?"</div>
+          <div class="quote-attr">— Jhatu (Manoj) · তৃতীয় সন্তান দর্শন 🤔</div>
+        </div>
+      </div>
+
+      <!-- EVENTS TIMELINE -->
+      <div class="card">
+        <div class="card-title">📅 ১৬-১৭ মে-র ঘটনা</div>
+        <div class="event-item">
+          <div class="event-time">১৬ মে রাত</div>
+          <div class="event-dot" style="background:#f39c12;"></div>
+          <div class="event-text">🎉 BJP win party — Jhatu খাওয়ালেন, Arindam beer আনলেন, Muna ছোলা দিয়ে "contribution" দাবি!</div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">১৬ মে রাত ১টা</div>
+          <div class="event-dot" style="background:#9b59b6;"></div>
+          <div class="event-text">AI court দেখে Arindam: "Bishaal khoraak" · Manik: "ফিদা হয়ে গেলাম" · Debanjan AI-র ভবিষ্যৎ বোঝালেন</div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">১৬ মে সকাল</div>
+          <div class="event-dot" style="background:#c0392b;"></div>
+          <div class="event-text">😂 Bagh BJP-বিরোধী হয়ে গেলেন! Debanjan: "Muna-র সাথে জোট হয়ে গেছে!"</div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">১৭ মে সকাল</div>
+          <div class="event-dot" style="background:#e91e63;"></div>
+          <div class="event-text">🍞 Avijit-এর porota ফাঁদ! Arindam "kom tel-er porota" শুনে রাজি — গিয়ে দেখেন রুটি!</div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">১৭ মে ১০:৪৭</div>
+          <div class="event-dot" style="background:#27ae60;"></div>
+          <div class="event-text">👶 তৃতীয় সন্তান সংগ্রাম শুরু! Arindam link শেয়ার করলেন — AP ₹৩০,০০০ scheme</div>
+        </div>
+        <div class="event-item">
+          <div class="event-time">১৭ মে বিকেল</div>
+          <div class="event-dot" style="background:#f5c842;"></div>
+          <div class="event-text">✍️ Ayan-এর Class 12-র কবিতা "যন্ত্রের মানুষ" শেয়ার · AI-এর response দেখে Ayan আপ্লুত</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">🔍 অমীমাংসিত রহস্য</div>
+        <div class="mystery-item"><div class="mystery-q">Cake কার জন্মদিন?</div><div class="mystery-a">অজানা 🎂</div></div>
+        <div class="mystery-item"><div class="mystery-q">দামু মানে কী?</div><div class="mystery-a">রহস্য</div></div>
+        <div class="mystery-item"><div class="mystery-q">City Queen কবে?</div><div class="mystery-a">শীঘ্রই</div></div>
+        <div class="mystery-item"><div class="mystery-q">Manik-এর "সংখ্যা ৩" মানে?</div><div class="mystery-a">অজানা 🃏</div></div>
+        <div class="mystery-item"><div class="mystery-q">তৃতীয় সন্তান race-এ winner কে?</div><div class="mystery-a">Jony 🏆</div></div>
+        <div class="mystery-item"><div class="mystery-q">Bubai কে?</div><div class="mystery-a">রহস্য 👻</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">👶 তৃতীয় সন্তান race odds</div>
+        <div class="leader-row">
+          <span class="leader-rank">🥇</span><span class="leader-emoji">👶</span>
+          <div><div class="leader-name">Jony (Tapan)</div><div class="leader-nick">সবচেয়ে কনিষ্ঠ · most promising</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:70%;background:linear-gradient(90deg,#27ae60,#f5c842);"></div></div>
+          <span class="leader-count">৭০%</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">🥈</span><span class="leader-emoji">✈️</span>
+          <div><div class="leader-name">Chotichata Muna</div><div class="leader-nick">উৎসাহী কিন্তু... 😅</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:20%;background:linear-gradient(90deg,#8b0000,#c0392b);"></div></div>
+          <span class="leader-count">২০%</span>
+        </div>
+        <div class="leader-row">
+          <span class="leader-rank">🥉</span><span class="leader-emoji">📚</span>
+          <div><div class="leader-name">Arindam</div><div class="leader-nick">বিশ্লেষণেই ব্যস্ত</div></div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:10%;"></div></div>
+          <span class="leader-count">১০%</span>
+        </div>
+        <div style="margin-top:10px;text-align:center;"><a href="tritio_sontan.html" style="font-size:11px;color:var(--gold);text-decoration:none;">বিস্তারিত দেখুন →</a></div>
+      </div>
     </div>
   </div>
 
   <!-- DAY 15 -->
-  <div id="d15" class="day-content">
+  <div id="d15" class="day-content" style="display:none;">
 
     <!-- STATS -->
     <div class="stats-grid">
@@ -387,22 +610,87 @@
     </div>
   </div>
 
-  <!-- DAY 13 -->
-  <div id="d13" class="day-content" style="display:none;">
+  <!-- DAY 12 -->
+  <div id="d12" class="day-content" style="display:none;">
     <div class="stats-grid">
-      <div class="stat-card highlight"><span class="stat-num">76+</span><div class="stat-label">মোট বার্তা</div></div>
-      <div class="stat-card"><span class="stat-num">CBSE</span><div class="stat-label">বড় ঘটনা</div><div class="stat-sub">Results out!</div></div>
-      <div class="stat-card"><span class="stat-num">19</span><div class="stat-label">Muna-র delete</div><div class="stat-sub">৩০ সেকেন্ডে!</div></div>
-      <div class="stat-card"><span class="stat-num">96.6%</span><div class="stat-label">Neel-এর result</div><div class="stat-sub">Sandip-এর ছেলে 🎉</div></div>
+      <div class="stat-card highlight"><span class="stat-num">130</span><div class="stat-label">মোট বার্তা</div></div>
+      <div class="stat-card"><span class="stat-num">Muna</span><div class="stat-label">সবচেয়ে active</div><div class="stat-sub">৪৫ বার্তা</div></div>
+      <div class="stat-card"><span class="stat-num">AI</span><div class="stat-label">আলোচনার বিষয়</div><div class="stat-sub">"Muna-র মতো" 😂</div></div>
+      <div class="stat-card"><span class="stat-num">Rintu</span><div class="stat-label">উপস্থিত</div><div class="stat-sub">রহস্যময় appearance</div></div>
     </div>
     <div class="full-card">
-      <div class="card-title">🌸 ১৩ মে — ফুলসজ্জা কাণ্ড</div>
+      <div class="card-title">📅 ১২ মে-র ঘটনা ও উক্তি</div>
       <div class="event-item" style="padding:10px 0;">
-        <div class="event-time">বিকেল ৫:১২</div>
-        <div class="event-dot" style="background:#c0392b;width:10px;height:10px;"></div>
-        <div class="event-text"><strong style="color:var(--gold);">ঐতিহাসিক মুহূর্ত!</strong> Chotichata Muna ১৮টি ছবি ভুলে গ্রুপে পাঠিয়ে ৩০ সেকেন্ডে delete করলেন। Sandip তৎক্ষণাৎ ধরলেন। Jhatu বললেন "ছিঃ!" বিরাটি ঠেকের ইতিহাসে এই মুহূর্ত অমর।</div>
+        <div class="event-time">সকাল</div>
+        <div class="event-dot" style="background:#9b59b6;"></div>
+        <div class="event-text">AI নিয়ে গভীর আলোচনা। Debanjan AI-র কার্যপ্রণালী বোঝালেন। Arindam মুগ্ধ হলেন।</div>
       </div>
-      <div class="quote-item"><span class="quote-medal">🏆</span><div class="quote-text">"BKCD! তুই Bulbuli-কে পাঠাতে গিয়ে এখানে পাঠিয়েছিস!"</div><div class="quote-attr">— বাঁকা (Sandip) · সর্বকালের সেরা line</div></div>
+      <div class="event-item" style="padding:10px 0;">
+        <div class="event-time">বিকেল</div>
+        <div class="event-dot" style="background:#e67e22;"></div>
+        <div class="event-text">BJP Bengal জয়ের পর Tajpur Port নিয়ে আলোচনা। Sandip link শেয়ার করলেন।</div>
+      </div>
+      <div class="quote-item"><span class="quote-medal">🥇</span><div class="quote-text">"AI anek-ta Muna-r moto. Sesh kotha-ta oke bolte-i hobe।"</div><div class="quote-attr">— জটায়ু (Arindam) · সর্বোচ্চ সম্মান 😄</div></div>
+      <div class="quote-item"><span class="quote-medal">🥈</span><div class="quote-text">"Bhaaba jai naa mairi. Bharaate gunda lagaano-r moto e-i AI।"</div><div class="quote-attr">— জটায়ু (Arindam) · AI-র প্রশংসা, নিজস্ব ভঙ্গিতে</div></div>
+      <div class="quote-item"><span class="quote-medal">🥉</span><div class="quote-text">"আমি আসলে কিছুই করি না।"</div><div class="quote-attr">— বউ (Debanjan) · বিনয়ের অবতার 😄</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 11 -->
+  <div id="d11" class="day-content" style="display:none;">
+    <div class="stats-grid">
+      <div class="stat-card highlight"><span class="stat-num">231</span><div class="stat-label">মোট বার্তা</div></div>
+      <div class="stat-card"><span class="stat-num">Muna</span><div class="stat-label">সবচেয়ে active</div><div class="stat-sub">৬৮ বার্তা 🔥</div></div>
+      <div class="stat-card"><span class="stat-num">Arindam</span><div class="stat-label">দ্বিতীয়</div><div class="stat-sub">৩৭ বার্তা</div></div>
+      <div class="stat-card"><span class="stat-num">রাজনীতি</span><div class="stat-label">মূল বিষয়</div><div class="stat-sub">বামপন্থা মহাবিতর্ক</div></div>
+      <div class="stat-card"><span class="stat-num">Bubai</span><div class="stat-label">appearance!</div><div class="stat-sub">১ বার্তা — বিরল!</div></div>
+    </div>
+    <div class="full-card">
+      <div class="card-title">📅 ১১ মে — রাজনীতির মহাযুদ্ধ</div>
+      <div class="event-item" style="padding:10px 0;">
+        <div class="event-time">সকাল-দুপুর</div>
+        <div class="event-dot" style="background:#c0392b;"></div>
+        <div class="event-text">🔥 বামপন্থা মহাবিতর্ক! Arindam vs Muna — CPM, TMC, BJP, জ্যোতি বসু, দীপ্সিতা নিয়ে ঘণ্টার পর ঘণ্টা।</div>
+      </div>
+      <div class="event-item" style="padding:10px 0;">
+        <div class="event-time">বিকেল ৫টা</div>
+        <div class="event-dot" style="background:#f39c12;"></div>
+        <div class="event-text">Arindam Birati-তে ফিরলেন এক দিনের জন্য। Jhatu রাতে ঠেক ডাকলেন।</div>
+      </div>
+      <div class="quote-item"><span class="quote-medal">🥇</span><div class="quote-text">"শালা রইছিস একি জায়গাতে আর শুধু গল্প বানাচ্ছিস।"</div><div class="quote-attr">— দার্শনিক টোকাই (Manik) · Muna-কে</div></div>
+      <div class="quote-item"><span class="quote-medal">🥈</span><div class="quote-text">"Byabshaa noi bole-i to khaoachchhish।"</div><div class="quote-attr">— জটায়ু (Arindam) · রাজনীতি বিতর্কে</div></div>
+      <div class="quote-item"><span class="quote-medal">🥉</span><div class="quote-text">"Daru to jhatu khawabe. Ami nea ashte pari।"</div><div class="quote-attr">— Chotichata Muna · অগ্রাধিকার স্পষ্ট 😄</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 10 -->
+  <div id="d10" class="day-content" style="display:none;">
+    <div class="stats-grid">
+      <div class="stat-card highlight"><span class="stat-num">84</span><div class="stat-label">মোট বার্তা</div></div>
+      <div class="stat-card"><span class="stat-num">Muna</span><div class="stat-label">সবচেয়ে active</div><div class="stat-sub">৩৩ বার্তা</div></div>
+      <div class="stat-card"><span class="stat-num">Sandip</span><div class="stat-label">দ্বিতীয়</div><div class="stat-sub">১৯ বার্তা</div></div>
+      <div class="stat-card"><span class="stat-num">₹২৫০০</span><div class="stat-label">JW দর</div><div class="stat-sub">কেনা হয়নি 😅</div></div>
+    </div>
+    <div class="full-card">
+      <div class="card-title">📅 ১০ মে — ঠেকের সূচনা</div>
+      <div class="event-item" style="padding:10px 0;">
+        <div class="event-time">বিকেল</div>
+        <div class="event-dot" style="background:#2980b9;"></div>
+        <div class="event-text">Muna দিল্লি কাজ সেরে গুজরাটে — "Khod PM er sathe Gujarat!" 😄 বিরাটি ঠেকের সদস্য PM-এর সাথে!</div>
+      </div>
+      <div class="event-item" style="padding:10px 0;">
+        <div class="event-time">রাত ৯-১১টা</div>
+        <div class="event-dot" style="background:#f5c842;"></div>
+        <div class="event-text">🥃 Johnnie Walker saga শুরু — ₹২৫০০-তে কেনা যাবে কিনা আলোচনা। Red label নাকি অন্য label? বিতর্ক চলল।</div>
+      </div>
+      <div class="event-item" style="padding:10px 0;">
+        <div class="event-time">রাত ৮:৩৮</div>
+        <div class="event-dot" style="background:#27ae60;"></div>
+        <div class="event-text">Shantu UAE থেকে link পাঠালেন! (পরে জানা গেল — উনি আসলে বিরাটিতেই আছেন 😄)</div>
+      </div>
+      <div class="quote-item"><span class="quote-medal">🥇</span><div class="quote-text">"Khod PM er sathe Gujarat।"</div><div class="quote-attr">— Chotichata Muna · নিজের গুরুত্ব প্রমাণ 😄</div></div>
+      <div class="quote-item"><span class="quote-medal">🥈</span><div class="quote-text">"Red label hole loss, others thik ache।"</div><div class="quote-attr">— বাঁকা (Sandip) · মদ বিশেষজ্ঞতা</div></div>
+      <div class="quote-item"><span class="quote-medal">🥉</span><div class="quote-text">"কিছু জনতা তোকে হিংসা করে পাত্তা দিস না।"</div><div class="quote-attr">— Bagh (Biplab) · Muna-কে সমর্থন 😉</div></div>
     </div>
   </div>
 
@@ -419,6 +707,8 @@ function showDay(id, btn) {
   document.getElementById(id).style.display = 'block';
   btn.classList.add('active');
 }
+// Default: show d1617
+document.getElementById('d1617').style.display = 'block';
 </script>
 
 </body>
