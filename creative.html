@@ -40,7 +40,22 @@
   .content-sub { font-size:0.8rem; color:rgba(255,255,255,0.4); margin-bottom:1rem; font-style:italic; }
   .content-body { font-size:13px; color:rgba(255,255,255,0.75); line-height:2; }
 
-  /* POEM / LYRICS STYLE */
+  /* ANTHEM PLAYER */
+  .anthem-player { background:rgba(0,0,0,0.4); border:1px solid rgba(245,200,66,0.3); border-radius:16px; padding:14px 20px; margin-bottom:1.5rem; }
+  .anthem-info { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .anthem-icon { font-size:1.8rem; }
+  .anthem-icon.playing { animation:spin 3s linear infinite; }
+  @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+  .anthem-title { font-size:14px; font-weight:800; color:var(--gold); }
+  .anthem-sub { font-size:10px; color:rgba(255,255,255,0.4); margin-top:2px; }
+  .anthem-controls { display:flex; align-items:center; gap:12px; }
+  .anthem-btn { background:var(--deep-red); border:none; color:var(--gold); width:36px; height:36px; border-radius:50%; font-size:14px; cursor:pointer; flex-shrink:0; transition:all 0.2s; }
+  .anthem-btn:hover { background:#a00000; transform:scale(1.1); }
+  .anthem-bar-wrap { flex:1; height:6px; background:rgba(255,255,255,0.1); border-radius:3px; cursor:pointer; overflow:hidden; }
+  .anthem-bar { height:100%; background:linear-gradient(90deg,var(--deep-red),var(--gold)); border-radius:3px; width:0%; transition:width 0.5s linear; }
+  .anthem-time { font-size:10px; color:rgba(255,255,255,0.4); min-width:32px; text-align:right; font-family:monospace; }
+
+
   .poem-line { font-size:13px; color:rgba(255,255,255,0.85); line-height:2.2; margin:0; }
   .poem-stanza { margin-bottom:1.5rem; }
   .chorus { background:rgba(139,0,0,0.2); border:1px solid rgba(139,0,0,0.4); border-radius:8px; padding:1rem 1.2rem; margin:1rem 0; }
@@ -166,6 +181,25 @@
       <span class="content-icon">🎵</span>
       <div class="content-title">আমরা বিরাটি ঠেকের দল</div>
       <div class="content-sub">একটি অ্যান্থেম · বাংলা লোকগীতির সুরে · City Queen Sessions 2026</div>
+
+      <!-- AUDIO PLAYER -->
+      <div class="anthem-player">
+        <div class="anthem-info">
+          <div class="anthem-icon" id="cAnthemIcon">🎵</div>
+          <div>
+            <div class="anthem-title">বিরাটি ঠেকের গান</div>
+            <div class="anthem-sub">ঠেকের অফিসিয়াল অ্যান্থেম · Play করুন 🎧</div>
+          </div>
+        </div>
+        <div class="anthem-controls">
+          <button class="anthem-btn" id="cPlayBtn" onclick="toggleCreativePlay()">▶</button>
+          <div class="anthem-bar-wrap" onclick="seekCreative(event,this)">
+            <div class="anthem-bar" id="cAnthemBar"></div>
+          </div>
+          <span class="anthem-time" id="cAnthemTime">0:00</span>
+        </div>
+        <audio id="cAnthemAudio" src="https://debu-birati.github.io/birati-thek/Birati%20Theker%20Gaan.mp3" preload="metadata"></audio>
+      </div>
 
       <div class="poem-stanza">
         <p class="poem-line"><strong style="color:var(--gold);">প্রথম স্তবক — Chotichata Muna-র কণ্ঠে:</strong></p>
@@ -405,6 +439,47 @@ function showTab(id, btn) {
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
+}
+
+// Creative page audio player
+const cAudio = document.getElementById('cAnthemAudio');
+const cPlayBtn = document.getElementById('cPlayBtn');
+const cBar = document.getElementById('cAnthemBar');
+const cTime = document.getElementById('cAnthemTime');
+const cIcon = document.getElementById('cAnthemIcon');
+
+function toggleCreativePlay() {
+  if (cAudio.paused) {
+    cAudio.play();
+    cPlayBtn.textContent = '⏸';
+    cIcon.classList.add('playing');
+  } else {
+    cAudio.pause();
+    cPlayBtn.textContent = '▶';
+    cIcon.classList.remove('playing');
+  }
+}
+
+cAudio.addEventListener('timeupdate', () => {
+  if (cAudio.duration) {
+    cBar.style.width = (cAudio.currentTime / cAudio.duration * 100) + '%';
+    const m = Math.floor(cAudio.currentTime / 60);
+    const s = Math.floor(cAudio.currentTime % 60).toString().padStart(2,'0');
+    cTime.textContent = m + ':' + s;
+  }
+});
+
+cAudio.addEventListener('ended', () => {
+  cPlayBtn.textContent = '▶';
+  cIcon.classList.remove('playing');
+  cBar.style.width = '0%';
+  cTime.textContent = '0:00';
+});
+
+function seekCreative(e, el) {
+  const rect = el.getBoundingClientRect();
+  const ratio = (e.clientX - rect.left) / rect.width;
+  if (cAudio.duration) cAudio.currentTime = ratio * cAudio.duration;
 }
 </script>
 </body>
