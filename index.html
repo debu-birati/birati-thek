@@ -70,6 +70,22 @@
   .footer-logo { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--gold); margin-bottom:0.5rem; }
   .footer-sub { font-size:0.75rem; color:rgba(255,255,255,0.3); line-height:1.8; }
 
+  /* ANTHEM PLAYER */
+  .anthem-player { background:rgba(0,0,0,0.4); border:1px solid rgba(245,200,66,0.3); border-radius:16px; padding:14px 20px; width:100%; max-width:500px; margin:1.5rem auto 2rem; position:relative; z-index:1; backdrop-filter:blur(10px); }
+  .anthem-info { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .anthem-icon { font-size:1.8rem; animation:pulse 2s ease-in-out infinite; }
+  .anthem-icon.playing { animation:spin 3s linear infinite; }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+  @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+  .anthem-title { font-size:14px; font-weight:800; color:var(--gold); }
+  .anthem-sub { font-size:10px; color:rgba(255,255,255,0.4); margin-top:2px; }
+  .anthem-controls { display:flex; align-items:center; gap:12px; }
+  .anthem-btn { background:var(--deep-red); border:none; color:var(--gold); width:36px; height:36px; border-radius:50%; font-size:14px; cursor:pointer; flex-shrink:0; transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
+  .anthem-btn:hover { background:#a00000; transform:scale(1.1); }
+  .anthem-bar-wrap { flex:1; height:6px; background:rgba(255,255,255,0.1); border-radius:3px; cursor:pointer; overflow:hidden; }
+  .anthem-bar { height:100%; background:linear-gradient(90deg,var(--deep-red),var(--gold)); border-radius:3px; width:0%; transition:width 0.5s linear; }
+  .anthem-time { font-size:10px; color:rgba(255,255,255,0.4); min-width:32px; text-align:right; font-family:monospace; }
+
   @media(max-width:600px) { .hero-stats{gap:1.5rem;} .nav-cards{grid-template-columns:repeat(2,1fr);} }
 </style>
 </head>
@@ -85,6 +101,7 @@
     <a href="dashboard.html">Dashboard</a>
     <a href="court.html">আদালত</a>
     <a href="mahabharat.html">মহাভারত</a>
+    <a href="tritio_sontan.html">তৃতীয় সংগ্রাম</a>
   </div>
 </nav>
 
@@ -97,12 +114,32 @@
   <h1 class="hero-title">বিরাটি ঠেক</h1>
   <p class="hero-subtitle">"যা নেই ভারতে, তা নেই বিরাটি ঠেকেও"</p>
   <div class="hero-stats">
-    <div class="stat"><span class="stat-num">১১+</span><span class="stat-label">সদস্য</span></div>
-    <div class="stat"><span class="stat-num">৭২৪+</span><span class="stat-label">বার্তা</span></div>
-    <div class="stat"><span class="stat-num">১৯</span><span class="stat-label">Muna-র Delete</span></div>
+    <div class="stat"><span class="stat-num">১৩+</span><span class="stat-label">সদস্য</span></div>
+    <div class="stat"><span class="stat-num">১২০৪+</span><span class="stat-label">বার্তা</span></div>
+    <div class="stat"><span class="stat-num">২০</span><span class="stat-label">Muna-র Delete</span></div>
     <div class="stat"><span class="stat-num">০</span><span class="stat-label">বাঁকা-র Delete</span></div>
     <div class="stat"><span class="stat-num">১০১</span><span class="stat-label">Manik-এর AI গার</span></div>
   </div>
+  <!-- AUDIO PLAYER -->
+  <div class="anthem-player" id="anthemPlayer">
+    <div class="anthem-info">
+      <div class="anthem-icon" id="anthemIcon">🎵</div>
+      <div>
+        <div class="anthem-title">বিরাটি ঠেকের গান</div>
+        <div class="anthem-sub">ঠেকের অফিসিয়াল অ্যান্থেম</div>
+      </div>
+    </div>
+    <div class="anthem-controls">
+      <button class="anthem-btn" id="playBtn" onclick="togglePlay()">▶</button>
+      <div class="anthem-bar-wrap">
+        <div class="anthem-bar" id="anthemBar"></div>
+      </div>
+      <span class="anthem-time" id="anthemTime">0:00</span>
+    </div>
+    <audio id="anthemAudio" src="Birati%20Theker%20Gaan.mp3" preload="none"></audio>
+  </div>
+
+
   <div class="nav-cards">
     <a href="members.html" class="nav-card"><span class="nav-card-emoji">👥</span><div class="nav-card-title">সদস্য</div><div class="nav-card-desc">সবার পরিচয় ও nickname</div></a>
     <a href="creative.html" class="nav-card"><span class="nav-card-emoji">🎭</span><div class="nav-card-title">সৃষ্টি</div><div class="nav-card-desc">নাটক, গান, টোকাই গাইড</div></a>
@@ -110,6 +147,7 @@
     <a href="dashboard.html" class="nav-card"><span class="nav-card-emoji">📊</span><div class="nav-card-title">Dashboard</div><div class="nav-card-desc">Daily stats ও leaderboard</div></a>
     <a href="court.html" class="nav-card"><span class="nav-card-emoji">⚖️</span><div class="nav-card-title">আদালত</div><div class="nav-card-desc">বিচারক Sandip-এর এজলাস</div></a>
     <a href="mahabharat.html" class="nav-card"><span class="nav-card-emoji">⚔️</span><div class="nav-card-title">মহাভারত</div><div class="nav-card-desc">বিরাটি ঠেকের মহাকাব্য</div></a>
+    <a href="tritio_sontan.html" class="nav-card"><span class="nav-card-emoji">👶</span><div class="nav-card-title">তৃতীয় সংগ্রাম</div><div class="nav-card-desc">₹৩০,০০০-র মহাযুদ্ধ</div></a>
   </div>
 </div>
 
@@ -127,6 +165,7 @@
     <a href="members.html" class="member-chip"><span>🎯</span><span class="member-chip-name">Avijit</span><span class="member-chip-nick">চুল · জামাই</span></a>
     <a href="members.html" class="member-chip"><span>✍️</span><span class="member-chip-name">Ayan</span><span class="member-chip-nick">লেখক</span></a>
     <a href="members.html" class="member-chip"><span>🐕</span><span class="member-chip-name">Shantu</span><span class="member-chip-nick">কুত্তু</span></a>
+    <a href="members.html" class="member-chip"><span>👶</span><span class="member-chip-name">Jony</span><span class="member-chip-nick">Tapan · তৃতীয় সংগ্রামে ৭০%</span></a>
     <a href="members.html" class="member-chip"><span>🤖</span><span class="member-chip-name">AI</span><span class="member-chip-nick">Chotichata Muna</span></a>
   </div>
   <div style="text-align:center;"><a href="members.html" class="see-all">সম্পূর্ণ পরিচয় দেখুন →</a></div>
@@ -167,5 +206,46 @@
   <p class="footer-sub">"যা নেই ভারতে, তা নেই বিরাটি ঠেকেও"<br>© ২০২৬ · Sandip-এর order-এ · Debanjan-এর AI কর্তৃক নির্মিত · Bagh commission ছাড়া copy নিষেধ 😄</p>
 </footer>
 
+<script>
+const audio = document.getElementById('anthemAudio');
+const playBtn = document.getElementById('playBtn');
+const bar = document.getElementById('anthemBar');
+const timeEl = document.getElementById('anthemTime');
+const icon = document.getElementById('anthemIcon');
+
+function togglePlay() {
+  if (audio.paused) {
+    audio.play();
+    playBtn.textContent = '⏸';
+    icon.classList.add('playing');
+  } else {
+    audio.pause();
+    playBtn.textContent = '▶';
+    icon.classList.remove('playing');
+  }
+}
+
+audio.addEventListener('timeupdate', () => {
+  if (audio.duration) {
+    bar.style.width = (audio.currentTime / audio.duration * 100) + '%';
+    const m = Math.floor(audio.currentTime / 60);
+    const s = Math.floor(audio.currentTime % 60).toString().padStart(2,'0');
+    timeEl.textContent = m + ':' + s;
+  }
+});
+
+audio.addEventListener('ended', () => {
+  playBtn.textContent = '▶';
+  icon.classList.remove('playing');
+  bar.style.width = '0%';
+  timeEl.textContent = '0:00';
+});
+
+document.querySelector('.anthem-bar-wrap').addEventListener('click', function(e) {
+  const rect = this.getBoundingClientRect();
+  const ratio = (e.clientX - rect.left) / rect.width;
+  if (audio.duration) audio.currentTime = ratio * audio.duration;
+});
+</script>
 </body>
 </html>
