@@ -3,713 +3,650 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Dashboard — বিরাটি ঠেক</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<title>BTNN · বিরাটি ঠেক নিউজ নেটওয়ার্ক · ১৮ মে ২০২৬</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-  :root { --deep-red:#8b0000; --gold:#f5c842; --dark:#1a1a2e; --cream:#fef9ef; }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:#0f0f1a; color:var(--cream); font-family:'Noto Sans Bengali',sans-serif; }
+:root {
+  --bg: #0a0a0f;
+  --surface: #111118;
+  --border: #2a2a3a;
+  --accent: #ff4444;
+  --accent2: #ffb800;
+  --accent3: #00e5ff;
+  --text: #e8e8f0;
+  --muted: #7070a0;
+  --war: #ff6b35;
+  --peace: #44ff88;
+}
 
-  nav { background:rgba(15,15,26,0.98); backdrop-filter:blur(10px); border-bottom:1px solid rgba(245,200,66,0.15); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:1rem; }
-  .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--gold); text-decoration:none; font-weight:700; }
-  .nav-links { display:flex; gap:1.5rem; flex-wrap:wrap; }
-  .nav-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.85rem; transition:color 0.2s; }
-  .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  /* BTNN HEADER */
-  .btnn-header { background:linear-gradient(135deg,#8b0000,#c0392b); padding:12px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
-  .btnn-logo { display:flex; align-items:center; gap:10px; }
-  .btnn-icon { background:#fff; border-radius:50%; width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:16px; }
-  .btnn-name { font-size:16px; font-weight:800; color:#fff; letter-spacing:1px; }
-  .btnn-sub { font-size:9px; color:rgba(255,255,255,0.8); }
-  .btnn-live { display:flex; align-items:center; gap:6px; }
-  .live-dot { width:8px; height:8px; background:#ffff00; border-radius:50%; animation:blink 1s infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-  .live-text { font-size:12px; color:#fff; font-weight:700; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Tiro Bangla', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-  /* TICKER */
-  .ticker-wrap { background:#1a1a1a; padding:6px 0; overflow:hidden; border-bottom:1px solid rgba(245,200,66,0.1); }
-  .ticker { white-space:nowrap; display:inline-block; animation:scroll 35s linear infinite; font-size:11px; font-weight:600; color:var(--gold); }
-  @keyframes scroll { 0%{transform:translateX(100vw)} 100%{transform:translateX(-100%)} }
+/* Scrolling ticker */
+.ticker-wrap {
+  background: var(--accent);
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 8px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.ticker {
+  display: inline-block;
+  animation: ticker 30s linear infinite;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: white;
+  font-weight: 700;
+}
+@keyframes ticker {
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(-100%); }
+}
 
-  /* MAIN */
-  .main { max-width:1100px; margin:0 auto; padding:1.5rem; }
+/* Header */
+.header {
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-shadow: 0 0 30px rgba(255,68,68,0.4);
+}
+.brand span { color: var(--accent2); }
+.date-badge {
+  background: var(--accent2);
+  color: #0a0a0f;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 14px;
+  letter-spacing: 2px;
+}
+.nav-links {
+  display: flex;
+  gap: 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+}
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent3); }
 
-  /* DATE BAR */
-  .date-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:8px; }
-  .date-label { font-size:13px; font-weight:700; color:var(--gold); }
-  .date-tabs { display:flex; gap:6px; }
-  .date-tab { padding:5px 14px; border-radius:14px; border:1px solid rgba(245,200,66,0.2); background:transparent; color:rgba(255,255,255,0.5); font-size:11px; font-weight:600; cursor:pointer; font-family:'Noto Sans Bengali',sans-serif; transition:all 0.2s; }
-  .date-tab.active { background:var(--deep-red); border-color:var(--deep-red); color:var(--gold); }
+/* HERO — Breaking War */
+.hero {
+  background: linear-gradient(135deg, #1a0000 0%, #0a0a0f 50%, #001a15 100%);
+  border: 1px solid var(--war);
+  margin: 24px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--war), var(--accent2), var(--war));
+  animation: shimmer 2s linear infinite;
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.breaking-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--war);
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.blink-dot {
+  width: 8px; height: 8px;
+  background: var(--war);
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.hero-title {
+  font-size: 2rem;
+  line-height: 1.3;
+  color: white;
+  margin-bottom: 16px;
+}
+.hero-title em { color: var(--war); font-style: normal; }
+.hero-subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+.hero-meta {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--accent2);
+}
+.hero-stat span { color: white; font-size: 1.3rem; display: block; font-weight: 700; }
 
-  /* STAT CARDS */
-  .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-bottom:1.5rem; }
-  .stat-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:14px; text-align:center; }
-  .stat-card.highlight { background:rgba(139,0,0,0.2); border-color:rgba(139,0,0,0.4); }
-  .stat-num { font-size:2rem; font-weight:800; color:var(--gold); display:block; }
-  .stat-label { font-size:10px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
-  .stat-sub { font-size:11px; color:rgba(255,255,255,0.6); margin-top:4px; }
+/* Grid layout */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  margin: 0 24px 24px;
+}
 
-  /* TWO COLUMN */
-  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; }
-  @media(max-width:700px) { .two-col { grid-template-columns:1fr; } }
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--accent3); }
+.card-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
 
-  /* CARDS */
-  .card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:1rem; }
-  .card-title { font-size:12px; font-weight:700; color:var(--gold); letter-spacing:1px; text-transform:uppercase; margin-bottom:1rem; display:flex; align-items:center; gap:6px; }
+/* Member stats */
+.member-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+.member-row:last-child { border-bottom: none; }
+.member-name {
+  font-size: 0.85rem;
+  color: var(--text);
+  flex: 1;
+}
+.member-nick {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+}
+.member-bar-wrap {
+  flex: 2;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.member-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s ease;
+}
+.member-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--accent2);
+  min-width: 30px;
+  text-align: right;
+}
 
-  /* LEADERBOARD */
-  .leader-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
-  .leader-row:last-child { border-bottom:none; }
-  .leader-rank { font-size:1rem; min-width:28px; }
-  .leader-emoji { font-size:1.2rem; min-width:28px; }
-  .leader-name { font-size:12px; font-weight:700; color:var(--cream); flex:1; }
-  .leader-nick { font-size:10px; color:rgba(255,255,255,0.4); }
-  .leader-bar-wrap { width:80px; height:8px; background:rgba(255,255,255,0.08); border-radius:4px; overflow:hidden; }
-  .leader-bar { height:100%; background:linear-gradient(90deg,var(--deep-red),var(--gold)); border-radius:4px; }
-  .leader-count { font-size:12px; font-weight:700; color:var(--gold); min-width:30px; text-align:right; }
+/* War scoreboard */
+.war-card {
+  border-color: var(--war);
+  background: linear-gradient(180deg, rgba(255,107,53,0.05) 0%, var(--surface) 100%);
+}
+.war-title {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: var(--war);
+}
+.vs-container {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+  margin: 16px 0;
+}
+.fighter {
+  text-align: center;
+  padding: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+}
+.fighter-name { font-size: 1rem; margin-bottom: 8px; }
+.fighter-msgs {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent2);
+}
+.fighter-stance { font-size: 0.7rem; color: var(--muted); margin-top: 4px; }
+.vs-badge {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--accent);
+}
+.war-verdict {
+  background: rgba(68,255,136,0.08);
+  border: 1px solid rgba(68,255,136,0.2);
+  padding: 12px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  margin-top: 12px;
+  color: var(--peace);
+  text-align: center;
+}
 
-  /* HOURLY CHART */
-  .hour-chart { display:flex; gap:3px; align-items:flex-end; height:80px; background:rgba(0,0,0,0.3); padding:6px; border-radius:8px; }
-  .hour-col { display:flex; flex-direction:column; align-items:center; justify-content:flex-end; flex:1; }
-  .hour-bar { width:100%; background:#8b0000; border-radius:2px 2px 0 0; min-height:2px; transition:height 0.5s ease; }
-  .hour-bar.peak { background:linear-gradient(180deg,var(--gold),#c0392b); }
-  .hour-label { font-size:7px; color:rgba(255,255,255,0.3); margin-top:2px; }
-  .hour-label.peak { color:var(--gold); font-weight:700; }
+/* Quote cards */
+.quote-block {
+  border-left: 3px solid var(--accent2);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  background: rgba(255,184,0,0.04);
+}
+.quote-text {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.quote-author {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
 
-  /* QUOTES */
-  .quote-item { padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
-  .quote-item:last-child { border-bottom:none; }
-  .quote-medal { font-size:1rem; margin-bottom:4px; display:block; }
-  .quote-text { font-size:12px; color:rgba(255,255,255,0.85); line-height:1.6; font-style:italic; margin-bottom:4px; }
-  .quote-attr { font-size:10px; color:var(--gold); font-weight:700; }
+/* Event timeline */
+.timeline-item {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed var(--border);
+}
+.timeline-item:last-child { border-bottom: none; margin-bottom: 0; }
+.timeline-time {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--accent3);
+  padding-top: 3px;
+  text-align: right;
+}
+.timeline-text {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+.timeline-text strong { color: var(--accent2); }
 
-  /* EVENTS */
-  .event-item { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); align-items:flex-start; }
-  .event-item:last-child { border-bottom:none; }
-  .event-time { font-size:10px; color:rgba(255,255,255,0.4); min-width:55px; padding-top:2px; }
-  .event-dot { width:8px; height:8px; border-radius:50%; margin-top:4px; flex-shrink:0; }
-  .event-text { font-size:11px; color:rgba(255,255,255,0.75); line-height:1.5; flex:1; }
+/* Score badge */
+.score-badge {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 2px;
+  font-weight: 700;
+  margin-left: 8px;
+}
+.badge-red { background: rgba(255,68,68,0.2); color: var(--accent); }
+.badge-green { background: rgba(68,255,136,0.2); color: var(--peace); }
+.badge-yellow { background: rgba(255,184,0,0.2); color: var(--accent2); }
 
-  /* MYSTERIES */
-  .mystery-item { display:flex; gap:8px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); align-items:center; }
-  .mystery-item:last-child { border-bottom:none; }
-  .mystery-q { font-size:12px; color:rgba(255,255,255,0.7); flex:1; }
-  .mystery-a { font-size:11px; font-weight:700; color:var(--gold); white-space:nowrap; }
+/* Am special */
+.am-card {
+  border-color: #44cc44;
+  background: linear-gradient(180deg, rgba(68,204,68,0.05) 0%, var(--surface) 100%);
+}
+.am-icon { font-size: 3rem; text-align: center; margin: 16px 0; }
+.am-text { font-size: 0.85rem; line-height: 1.7; text-align: center; color: var(--muted); }
 
-  /* AI ERRORS */
-  .error-item { display:flex; gap:8px; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:11px; }
-  .error-item:last-child { border-bottom:none; }
-  .error-x { color:#ff6b6b; font-weight:700; min-width:16px; }
-  .error-right { color:rgba(255,255,255,0.6); }
-  .error-arrow { color:rgba(255,255,255,0.3); margin:0 4px; }
-  .error-correct { color:#69db7c; }
+/* Footer */
+footer {
+  background: var(--surface);
+  border-top: 2px solid var(--border);
+  padding: 20px 24px;
+  text-align: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 2px;
+}
+footer span { color: var(--accent2); }
 
-  /* FULL WIDTH */
-  .full-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:1rem; margin-bottom:1rem; }
+/* Mood meter */
+.mood-meter {
+  display: flex;
+  height: 24px;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 16px 0;
+  gap: 2px;
+}
+.mood-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  transition: flex 0.8s ease;
+}
 
-  /* FOOTER */
-  footer { background:rgba(0,0,0,0.8); border-top:1px solid rgba(245,200,66,0.1); padding:1.5rem; text-align:center; margin-top:2rem; }
-  .footer-sub { font-size:0.75rem; color:rgba(255,255,255,0.3); }
+/* Responsive */
+@media (max-width: 600px) {
+  .hero { margin: 12px; padding: 20px; }
+  .grid { margin: 0 12px 12px; gap: 12px; }
+  .brand { font-size: 1.8rem; }
+  .hero-title { font-size: 1.4rem; }
+}
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="nav-logo">বিরাটি ঠেক</a>
-  <div class="nav-links">
-    <a href="index.html">হোম</a>
-    <a href="members.html">সদস্য</a>
-    <a href="creative.html">সৃষ্টি</a>
-    <a href="quotes.html">উক্তি</a>
-    <a href="dashboard.html" class="active">Dashboard</a>
-    <a href="court.html">আদালত</a>
-    <a href="mahabharat.html">মহাভারত</a>
-    <a href="tritio_sontan.html">তৃতীয় সংগ্রাম</a>
-  </div>
-</nav>
-
-<!-- BTNN HEADER -->
-<div class="btnn-header">
-  <div class="btnn-logo">
-    <div class="btnn-icon">📺</div>
-    <div>
-      <div class="btnn-name">BTNN</div>
-      <div class="btnn-sub">BIRATI THEK NEWS NETWORK</div>
-    </div>
-  </div>
-  <div class="btnn-live">
-    <div class="live-dot"></div>
-    <span class="live-text">LIVE</span>
-    <span style="font-size:11px;color:rgba(255,255,255,0.6);margin-left:10px;">১৫ মে ২০২৬ · Sandip-এর order-এ</span>
-  </div>
-</div>
-
-<!-- TICKER -->
+<!-- Breaking ticker -->
 <div class="ticker-wrap">
-  <div class="ticker">⚡ Muna-র সাথে Bagh-এর জোট! · Manik: "ফিদা হয়ে গেলাম AI-এর প্রতি" · Arindam: "AI anek-ta Muna-r moto" · তৃতীয় সন্তান race শুরু · Jony এগিয়ে ৭০% · Sandip party miss করলেন · Avijit-এর porota ফাঁদে Arindam! · "Ekhon bhabar jonyo AI eshe gechhe" · ⚡</div>
+  <span class="ticker">
+    🔴 BREAKING: মুনা vs জটায়ু যুদ্ধ — ২ ঘণ্টা চলেছে · আম শান্তি এনেছে · কুত্তু keyboard smash · জাটু verdict: "AI-এর ভালো comment পেতে এসব করছে" · মানিক "প্রেমিক" হতে চান · Sandip "bohiskeito" লিখলেন · বিরাটি ঠেক website launch 🎉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔴 BREAKING: মুনা vs জটায়ু যুদ্ধ — ২ ঘণ্টা চলেছে · আম শান্তি এনেছে · কুত্তু keyboard smash · জাটু verdict: "AI-এর ভালো comment পেতে এসব করছে" · মানিক "প্রেমিক" হতে চান &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
 </div>
 
-<div class="main">
+<!-- Header -->
+<div class="header">
+  <div class="brand">BTNN <span>·</span> বিরাটি ঠেক</div>
+  <div class="date-badge">১৮ মে ২০২৬ · সোমবার</div>
+  <nav class="nav-links">
+    <a href="index.html">HOME</a>
+    <a href="members.html">MEMBERS</a>
+    <a href="court.html">COURT</a>
+    <a href="quotes.html">QUOTES</a>
+    <a href="mahabharat.html">মহাভারত</a>
+  </nav>
+</div>
 
-  <!-- DATE SELECTOR -->
-  <div class="date-bar">
-    <div class="date-label">📊 Daily Dashboard</div>
-    <div class="date-tabs">
-      <button class="date-tab" onclick="showDay('d10',this)">১০ মে</button>
-      <button class="date-tab" onclick="showDay('d11',this)">১১ মে</button>
-      <button class="date-tab" onclick="showDay('d12',this)">১২ মে</button>
-      <button class="date-tab" onclick="showDay('d13',this)">১৩ মে</button>
-      <button class="date-tab" onclick="showDay('d14',this)">১৪ মে</button>
-      <button class="date-tab" onclick="showDay('d15',this)">১৫ মে</button>
-      <button class="date-tab active" onclick="showDay('d1617',this)">১৬-১৭ মে 🔥</button>
+<!-- HERO -->
+<div class="hero" style="margin:24px;">
+  <div class="breaking-label">
+    <span class="blink-dot"></span>
+    BREAKING · আজকের প্রধান সংবাদ
+  </div>
+  <h1 class="hero-title">
+    <em>মহাযুদ্ধ ১৮ মে:</em><br>
+    মুনা বনাম জটায়ু — গরু, রাজনীতি ও আমের সন্ধি
+  </h1>
+  <p class="hero-subtitle">
+    দুপুর ১২টা থেকে বিকেল প্রায় ৩টা পর্যন্ত চলল অকল্পনীয় তর্কযুদ্ধ। হিন্দু-মুসলিম, গরু পাচার, মাদ্রাসা, গুজরাটি — সব মিলিয়ে group টা উত্তাল। কুত্তু keyboard ভেঙে ফেললেন। Sandip "bohiskeito" লিখলেন। Jhatu সেরা analysis দিলেন। এবং সন্ধ্যায় Debanjan-এর আম-ছবিতে শান্তি এলো।
+  </p>
+  <div class="hero-meta">
+    <div class="hero-stat"><span>~৮০+</span>যুদ্ধের বার্তা</div>
+    <div class="hero-stat"><span>আড়াই ঘন্টা</span>তর্কের স্থায়িত্ব</div>
+    <div class="hero-stat"><span>১</span>keyboard ধ্বংস (কুত্তু)</div>
+    <div class="hero-stat"><span>🥭</span>শান্তির মাধ্যম</div>
+  </div>
+</div>
+
+<!-- Main Grid -->
+<div class="grid">
+
+  <!-- War card -->
+  <div class="card war-card">
+    <div class="card-label">⚔️ WARZONE REPORT</div>
+    <div class="war-title">মুনা vs জটায়ু: সম্পূর্ণ বিশ্লেষণ</div>
+    <div class="vs-container">
+      <div class="fighter">
+        <div class="fighter-name">🦁 Chotichata Muna</div>
+        <div class="fighter-msgs">৩৫+</div>
+        <div class="fighter-stance">TMC সমর্থক · "Toder govt baal chire ati badhbe"</div>
+      </div>
+      <div class="vs-badge">VS</div>
+      <div class="fighter">
+        <div class="fighter-name">🦅 জটায়ু (Arindam)</div>
+        <div class="fighter-msgs">৩০+</div>
+        <div class="fighter-stance">বিশ্লেষক · "Bhul dhaarona tor"</div>
+      </div>
+    </div>
+    <div class="war-verdict">
+      🕊️ সন্ধ্যায় Debanjan আম-ছবি পাঠালেন: "যুদ্ধবিরতিতে আম খা"<br>
+      দুজনেই রাজি। শান্তি প্রতিষ্ঠিত। 🥭
     </div>
   </div>
 
-
-  <!-- DAY 16-17 COMBINED (DEFAULT) -->
-  <div id="d1617" class="day-content">
-    <div class="stats-grid">
-      <div class="stat-card highlight">
-        <span class="stat-num">301</span>
-        <div class="stat-label">মোট বার্তা (২ দিন)</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">Muna</span>
-        <div class="stat-label">সবচেয়ে active</div>
-        <div class="stat-sub">৮২ বার্তা 😤</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">Ayan</span>
-        <div class="stat-label">চমক!</div>
-        <div class="stat-sub">১৭ বার্তা — ফিরে এলেন!</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">👶</span>
-        <div class="stat-label">তৃতীয় সংগ্রাম</div>
-        <div class="stat-sub">Race শুরু ১৭ মে</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">Bagh</span>
-        <div class="stat-label">বিরোধী দলে!</div>
-        <div class="stat-sub">BJP ছেড়ে Muna জোট 😂</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">Manik</span>
-        <div class="stat-label">AI-ফিদা</div>
-        <div class="stat-sub">"ফিদা হয়ে গেলাম" 🎉</div>
+  <!-- Timeline -->
+  <div class="card">
+    <div class="card-label">🕐 আজকের TIMELINE</div>
+    <div class="timeline-item">
+      <div class="timeline-time">রাত ১২:২৪</div>
+      <div class="timeline-text">
+        <strong>মানিক:</strong> "এই সব গান শুনলে আবার প্রেমিক হয়ে যেতে ইচ্ছে করে" 💘
       </div>
     </div>
-
-    <div class="two-col">
-      <!-- LEADERBOARD -->
-      <div class="card">
-        <div class="card-title">🏆 লিডারবোর্ড (১৬+১৭ মে)</div>
-        <div class="leader-row">
-          <span class="leader-rank">🥇</span><span class="leader-emoji">✈️</span>
-          <div><div class="leader-name">Chotichata Muna</div><div class="leader-nick">রাজনৈতিক সংগ্রামী</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:100%;"></div></div>
-          <span class="leader-count">82</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">🥈</span><span class="leader-emoji">🤖</span>
-          <div><div class="leader-name">Debanjan</div><div class="leader-nick">বউ · AI চালক</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:57%;"></div></div>
-          <span class="leader-count">47</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">🥉</span><span class="leader-emoji">📚</span>
-          <div><div class="leader-name">Arindam</div><div class="leader-nick">জটায়ু</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:46%;"></div></div>
-          <span class="leader-count">38</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">4️⃣</span><span class="leader-emoji">🙏</span>
-          <div><div class="leader-name">Manik</div><div class="leader-nick">দার্শনিক টোকাই</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:44%;"></div></div>
-          <span class="leader-count">36</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">5️⃣</span><span class="leader-emoji">⚽</span>
-          <div><div class="leader-name">Sandip</div><div class="leader-nick">বাঁকা · বিচারক</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:34%;"></div></div>
-          <span class="leader-count">28</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">6️⃣</span><span class="leader-emoji">🎯</span>
-          <div><div class="leader-name">Avijit</div><div class="leader-nick">চুল · porota ফাঁদ</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:22%;"></div></div>
-          <span class="leader-count">18</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">7️⃣</span><span class="leader-emoji">✍️</span>
-          <div><div class="leader-name">Ayan</div><div class="leader-nick">লেখক · ফিরে এলেন!</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:21%;"></div></div>
-          <span class="leader-count">17</span>
-        </div>
-      </div>
-
-      <!-- HOURLY CHART -->
-      <div class="card">
-        <div class="card-title">⏰ ঘণ্টার activity (১৬ মে)</div>
-        <div class="hour-chart">
-          <div class="hour-col"><div class="hour-bar peak" style="height:22px;"></div><div class="hour-label peak">0</div></div>
-          <div class="hour-col"><div class="hour-bar peak" style="height:38px;"></div><div class="hour-label peak">1🔥</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">2</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">3</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">4</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">5</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">6</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">7</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:10px;"></div><div class="hour-label">8</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:20px;"></div><div class="hour-label">9</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:54px;"></div><div class="hour-label">10</div></div>
-          <div class="hour-col"><div class="hour-bar peak" style="height:62px;"></div><div class="hour-label peak">11🔥</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:24px;"></div><div class="hour-label">12</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:18px;"></div><div class="hour-label">13</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:10px;"></div><div class="hour-label">14</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">15</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:40px;"></div><div class="hour-label">16</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:20px;"></div><div class="hour-label">17</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:14px;"></div><div class="hour-label">18</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:16px;"></div><div class="hour-label">19</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:12px;"></div><div class="hour-label">20</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:2px;"></div><div class="hour-label">21</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">22</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:12px;"></div><div class="hour-label">23</div></div>
-        </div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:6px;">রাত ১টা: party after-chat · সকাল ১১টা: রাজনীতি + AI আলোচনা</div>
+    <div class="timeline-item">
+      <div class="timeline-time">রাত ১২:৩১</div>
+      <div class="timeline-text">
+        <strong>মানিক:</strong> "@নাটা রাতের AI রিপোর্ট কোথায়?" — Debanjan: "kaaj cholchey" 😅
       </div>
     </div>
-
-    <div class="two-col">
-      <!-- TOP QUOTES -->
-      <div class="card">
-        <div class="card-title">💬 সেরা উক্তি (১৬-১৭ মে)</div>
-        <div class="quote-item">
-          <span class="quote-medal">🥇</span>
-          <div class="quote-text">"Ekhon bhabar jonyo AI eshe gechhe।"</div>
-          <div class="quote-attr">— জটায়ু (Arindam) · ১৬ মে রাত ১২:৪১</div>
-        </div>
-        <div class="quote-item">
-          <span class="quote-medal">🥈</span>
-          <div class="quote-text">"Muna-r sambhabona beshi due to Sighropaton।"</div>
-          <div class="quote-attr">— বউ (Debanjan) · ১৭ মে সকাল ১০:৫৬ 😂</div>
-        </div>
-        <div class="quote-item">
-          <span class="quote-medal">🥉</span>
-          <div class="quote-text">"ফিদা হয়ে গেলাম AI-এর প্রতি।" 🎉</div>
-          <div class="quote-attr">— দার্শনিক টোকাই (Manik) · ১৬ মে রাত ১:৪৯</div>
-        </div>
-        <div class="quote-item">
-          <span class="quote-medal">4️⃣</span>
-          <div class="quote-text">"O Bou tumi agrahi hole ami raji।"</div>
-          <div class="quote-attr">— Chotichata Muna · Debanjan-কে direct proposal! 😂</div>
-        </div>
-        <div class="quote-item">
-          <span class="quote-medal">5️⃣</span>
-          <div class="quote-text">"শীঘ্রই যদি পতন হবে, তবে জায়গা মত পড়বে কি ভাবে?"</div>
-          <div class="quote-attr">— Jhatu (Manoj) · তৃতীয় সন্তান দর্শন 🤔</div>
-        </div>
-      </div>
-
-      <!-- EVENTS TIMELINE -->
-      <div class="card">
-        <div class="card-title">📅 ১৬-১৭ মে-র ঘটনা</div>
-        <div class="event-item">
-          <div class="event-time">১৬ মে রাত</div>
-          <div class="event-dot" style="background:#f39c12;"></div>
-          <div class="event-text">🎉 BJP win party — Jhatu খাওয়ালেন, Arindam beer আনলেন, Muna ছোলা দিয়ে "contribution" দাবি!</div>
-        </div>
-        <div class="event-item">
-          <div class="event-time">১৬ মে রাত ১টা</div>
-          <div class="event-dot" style="background:#9b59b6;"></div>
-          <div class="event-text">AI court দেখে Arindam: "Bishaal khoraak" · Manik: "ফিদা হয়ে গেলাম" · Debanjan AI-র ভবিষ্যৎ বোঝালেন</div>
-        </div>
-        <div class="event-item">
-          <div class="event-time">১৬ মে সকাল</div>
-          <div class="event-dot" style="background:#c0392b;"></div>
-          <div class="event-text">😂 Bagh BJP-বিরোধী হয়ে গেলেন! Debanjan: "Muna-র সাথে জোট হয়ে গেছে!"</div>
-        </div>
-        <div class="event-item">
-          <div class="event-time">১৭ মে সকাল</div>
-          <div class="event-dot" style="background:#e91e63;"></div>
-          <div class="event-text">🍞 Avijit-এর porota ফাঁদ! Arindam "kom tel-er porota" শুনে রাজি — গিয়ে দেখেন রুটি!</div>
-        </div>
-        <div class="event-item">
-          <div class="event-time">১৭ মে ১০:৪৭</div>
-          <div class="event-dot" style="background:#27ae60;"></div>
-          <div class="event-text">👶 তৃতীয় সন্তান সংগ্রাম শুরু! Arindam link শেয়ার করলেন — AP ₹৩০,০০০ scheme</div>
-        </div>
-        <div class="event-item">
-          <div class="event-time">১৭ মে বিকেল</div>
-          <div class="event-dot" style="background:#f5c842;"></div>
-          <div class="event-text">✍️ Ayan-এর Class 12-র কবিতা "যন্ত্রের মানুষ" শেয়ার · AI-এর response দেখে Ayan আপ্লুত</div>
-        </div>
+    <div class="timeline-item">
+      <div class="timeline-time">রাত ১:০৫</div>
+      <div class="timeline-text">
+        <strong>Website Launch! 🎉</strong> Debanjan বিরাটি ঠেকের সম্পূর্ণ website শেয়ার করলেন
       </div>
     </div>
-
-    <div class="two-col">
-      <div class="card">
-        <div class="card-title">🔍 অমীমাংসিত রহস্য</div>
-        <div class="mystery-item"><div class="mystery-q">Cake কার জন্মদিন?</div><div class="mystery-a">অজানা 🎂</div></div>
-        <div class="mystery-item"><div class="mystery-q">দামু মানে কী?</div><div class="mystery-a">রহস্য</div></div>
-        <div class="mystery-item"><div class="mystery-q">City Queen কবে?</div><div class="mystery-a">শীঘ্রই</div></div>
-        <div class="mystery-item"><div class="mystery-q">Manik-এর "সংখ্যা ৩" মানে?</div><div class="mystery-a">অজানা 🃏</div></div>
-        <div class="mystery-item"><div class="mystery-q">তৃতীয় সন্তান race-এ winner কে?</div><div class="mystery-a">Jony 🏆</div></div>
-        <div class="mystery-item"><div class="mystery-q">Bubai কে?</div><div class="mystery-a">রহস্য 👻</div></div>
+    <div class="timeline-item">
+      <div class="timeline-time">সকাল ৭:৫৯</div>
+      <div class="timeline-text">
+        <strong>মুনা:</strong> "ঠেকের এই নতুন বন্ধু বেশ উৎসাহী ঠেক নিয়ে" 🤖❤️
       </div>
-      <div class="card">
-        <div class="card-title">👶 তৃতীয় সন্তান race odds</div>
-        <div class="leader-row">
-          <span class="leader-rank">🥇</span><span class="leader-emoji">👶</span>
-          <div><div class="leader-name">Jony (Tapan)</div><div class="leader-nick">সবচেয়ে কনিষ্ঠ · most promising</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:70%;background:linear-gradient(90deg,#27ae60,#f5c842);"></div></div>
-          <span class="leader-count">৭০%</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">🥈</span><span class="leader-emoji">✈️</span>
-          <div><div class="leader-name">Chotichata Muna</div><div class="leader-nick">উৎসাহী কিন্তু... 😅</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:20%;background:linear-gradient(90deg,#8b0000,#c0392b);"></div></div>
-          <span class="leader-count">২০%</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">🥉</span><span class="leader-emoji">📚</span>
-          <div><div class="leader-name">Arindam</div><div class="leader-nick">বিশ্লেষণেই ব্যস্ত</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:10%;"></div></div>
-          <span class="leader-count">১০%</span>
-        </div>
-        <div style="margin-top:10px;text-align:center;"><a href="tritio_sontan.html" style="font-size:11px;color:var(--gold);text-decoration:none;">বিস্তারিত দেখুন →</a></div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">দুপুর ১২:০০</div>
+      <div class="timeline-text">
+        <strong>মহাযুদ্ধ শুরু!</strong> মুনা vs জটায়ু — রাজনীতি, ধর্ম, গরু, অর্থনীতি! বিকেল ৩টা পর্যন্ত চলবে।
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">দুপুর ১:৫৩</div>
+      <div class="timeline-text">
+        <strong>কুত্তু:</strong> "Ar Bokachoda r dol tham ebar. Onek intaluctual giri mariachic." 💥
+        + keyboard smash (xxxxxxxxxxxxxxxx)
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">দুপুর ১:৫৫</div>
+      <div class="timeline-text">
+        <strong>Jhatu verdict:</strong> "Munna, AI এর কাছ থেকে ভালো comments পাওয়ার জন্য এই সব করছে।" 😂
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">সন্ধ্যা ৬:১৬</div>
+      <div class="timeline-text">
+        <strong>Debanjan:</strong> আম-ছবি + "যুদ্ধবিরতিতে আম খা" — group শান্ত 🥭
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">রাত ৯:৩৫</div>
+      <div class="timeline-text">
+        <strong>Biplab:</strong> "ঠেকের কাউকে তুলে নেয়নি তো??" (Sandip-এর বিরাটি ঘটনার link দেখে)
       </div>
     </div>
   </div>
 
-  <!-- DAY 15 -->
-  <div id="d15" class="day-content" style="display:none;">
-
-    <!-- STATS -->
-    <div class="stats-grid">
-      <div class="stat-card highlight">
-        <span class="stat-num">153</span>
-        <div class="stat-label">মোট বার্তা</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">Arindam</span>
-        <div class="stat-label">সবচেয়ে active</div>
-        <div class="stat-sub">33 বার্তা</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">Jhatu</span>
-        <div class="stat-label">সবচেয়ে গভীর</div>
-        <div class="stat-sub">গড় ২২ শব্দ</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">Manik</span>
-        <div class="stat-label">link king</div>
-        <div class="stat-sub">৫টি link</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">লেখক</span>
-        <div class="stat-label">ব্যস্ততম</div>
-        <div class="stat-sub">2 like + উধাও 👻</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">8</span>
-        <div class="stat-label">AI-এর ভুল</div>
-        <div class="stat-sub">record! 😅</div>
-      </div>
+  <!-- Quotes of the day -->
+  <div class="card">
+    <div class="card-label">💬 আজকের অমর উক্তি</div>
+    <div class="quote-block">
+      <div class="quote-text">"Munna, AI এর কাছ থেকে ভালো comments পাওয়ার জন্য এই সব করছে। ওকে থামাতে পারবি না।"</div>
+      <div class="quote-author">— JHATU (Manoj) · দুপুর ১:৫৫ · সেরা বিশ্লেষণ পুরস্কার 🏆</div>
     </div>
-
-    <div class="two-col">
-      <!-- LEADERBOARD -->
-      <div class="card">
-        <div class="card-title">🏆 লিডারবোর্ড</div>
-        <div class="leader-row">
-          <span class="leader-rank">🥇</span>
-          <span class="leader-emoji">📚</span>
-          <div><div class="leader-name">Arindam</div><div class="leader-nick">জটায়ু</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:100%;"></div></div>
-          <span class="leader-count">33</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">🥈</span>
-          <span class="leader-emoji">⚽</span>
-          <div><div class="leader-name">Sandip</div><div class="leader-nick">বাঁকা</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:94%;"></div></div>
-          <span class="leader-count">31</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">🥉</span>
-          <span class="leader-emoji">🙏</span>
-          <div><div class="leader-name">Manik</div><div class="leader-nick">দার্শনিক টোকাই</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:85%;"></div></div>
-          <span class="leader-count">28</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">4️⃣</span>
-          <span class="leader-emoji">✈️</span>
-          <div><div class="leader-name">Chotichata Muna</div><div class="leader-nick">অন্ধভক্ত</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:76%;"></div></div>
-          <span class="leader-count">25</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">5️⃣</span>
-          <span class="leader-emoji">🐯</span>
-          <div><div class="leader-name">Bagh</div><div class="leader-nick">commission tracker</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:52%;"></div></div>
-          <span class="leader-count">17</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">6️⃣</span>
-          <span class="leader-emoji">😑</span>
-          <div><div class="leader-name">Jhatu</div><div class="leader-nick">রাষ্ট্রসেবক</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:30%;"></div></div>
-          <span class="leader-count">10</span>
-        </div>
-        <div class="leader-row">
-          <span class="leader-rank">7️⃣</span>
-          <span class="leader-emoji">✍️</span>
-          <div><div class="leader-name">লেখক (Ayan)</div><div class="leader-nick">like করে উধাও</div></div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:6%;"></div></div>
-          <span class="leader-count">2 👻</span>
-        </div>
-      </div>
-
-      <!-- HOURLY CHART -->
-      <div class="card">
-        <div class="card-title">⏰ ঘণ্টার activity</div>
-        <div class="hour-chart">
-          <div class="hour-col"><div class="hour-bar" style="height:13px;"></div><div class="hour-label">0</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:19px;"></div><div class="hour-label">1</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:3px;"></div><div class="hour-label">2</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">3</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">4</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">5</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">6</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:3px;"></div><div class="hour-label">7</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:16px;"></div><div class="hour-label">8</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:35px;"></div><div class="hour-label peak">9</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:22px;"></div><div class="hour-label">10</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:35px;"></div><div class="hour-label">11</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:1px;background:#333;"></div><div class="hour-label">12</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:25px;"></div><div class="hour-label">13</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:32px;"></div><div class="hour-label">14</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:6px;"></div><div class="hour-label">15</div></div>
-          <div class="hour-col"><div class="hour-bar peak" style="height:65px;"></div><div class="hour-label peak">16🔥</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:48px;"></div><div class="hour-label">17</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:13px;"></div><div class="hour-label">18</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:6px;"></div><div class="hour-label">19</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:13px;"></div><div class="hour-label">20</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:6px;"></div><div class="hour-label">21</div></div>
-          <div class="hour-col"><div class="hour-bar peak" style="height:80px;"></div><div class="hour-label peak">22🔥</div></div>
-          <div class="hour-col"><div class="hour-bar" style="height:48px;"></div><div class="hour-label">23</div></div>
-        </div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:6px;">বিকেল ৪টা: অভয়া নিয়ে মহাবিতর্ক · রাত ১০টা: Chotichata Muna vs সবাই</div>
-      </div>
+    <div class="quote-block">
+      <div class="quote-text">"Ar Bokachoda r dol tham ebar. Onek intaluctual giri mariachic."</div>
+      <div class="quote-author">— কুত্তু (Shantu) · দুপুর ১:৫৩ · এরপরেই keyboard smash</div>
     </div>
-
-    <div class="two-col">
-      <!-- TOP QUOTES -->
-      <div class="card">
-        <div class="card-title">💬 আজকের সেরা উক্তি</div>
-        <div class="quote-item">
-          <span class="quote-medal">🥇</span>
-          <div class="quote-text">"মানিক-মুন্না। জোড়া ফলা — একজন চ্যাতানো, একজন ন্যাতানো 🫠"</div>
-          <div class="quote-attr">— Jhatu (Manoj) · সকাল ৯:৩৫</div>
-        </div>
-        <div class="quote-item">
-          <span class="quote-medal">🥈</span>
-          <div class="quote-text">"বিরাটি ঠেকের AI হলো Chotichata Muna — Without any অহংকার 🙏"</div>
-          <div class="quote-attr">— বাঁকা (Sandip) · রাত ১০:১৪</div>
-        </div>
-        <div class="quote-item">
-          <span class="quote-medal">🥉</span>
-          <div class="quote-text">"Toke tag korini, ektu chup korbi please"</div>
-          <div class="quote-attr">— বাঁকা (Sandip) · রাত ১১:১৫</div>
-        </div>
-        <div class="quote-item">
-          <span class="quote-medal">4️⃣</span>
-          <div class="quote-text">"AI-এর গার মারি ১০১ বার।"</div>
-          <div class="quote-attr">— Manik · বিকেল ৫:৪৫</div>
-        </div>
-      </div>
-
-      <!-- EVENTS TIMELINE -->
-      <div class="card">
-        <div class="card-title">📅 আজকের ঘটনা</div>
-        <div class="event-item">
-          <div class="event-time">রাত ১-২টা</div>
-          <div class="event-dot" style="background:#9b59b6;"></div>
-          <div class="event-text">বীর্যকাব্য রাত্রি — Manik "@লেখক সমাধান কর" · Arindam "শুদ্ধ বীর্যকাব্য"</div>
-        </div>
-        <div class="event-item">
-          <div class="event-time">সকাল ৯টা</div>
-          <div class="event-dot" style="background:#f39c12;"></div>
-          <div class="event-text">পেট্রোল বিতর্ক · SGST analysis · Jhatu-র ডিসিপ্লিন নিয়ে আলোচনা</div>
-        </div>
-        <div class="event-item">
-          <div class="event-time">দুপুর ১টা</div>
-          <div class="event-dot" style="background:#e91e63;"></div>
-          <div class="event-text">টোকাই দুপুর — Manik Rabindranath পাঠালেন · Arindam "Muna আর Manik কার?"</div>
-        </div>
-        <div class="event-item">
-          <div class="event-time">বিকেল ৪টা</div>
-          <div class="event-dot" style="background:#1565C0;"></div>
-          <div class="event-text">🔥 অভয়া মহাবিতর্ক — RG Kar, কামদুনি pattern · গভীর আলোচনা</div>
-        </div>
-        <div class="event-item">
-          <div class="event-time">রাত ১০টা</div>
-          <div class="event-dot" style="background:#c0392b;"></div>
-          <div class="event-text">💥 Chotichata Muna vs সবাই · Sandip-এর "Without any অহংকার" ঘোষণা</div>
-        </div>
-      </div>
+    <div class="quote-block">
+      <div class="quote-text">"এই সব গান শুনলে আবার প্রেমিক হয়ে যেতে ইচ্ছে করে"</div>
+      <div class="quote-author">— দার্শনিক টোকাই (Manik) · রাত ১২:২৪ · সর্বকালের সেরা confession</div>
     </div>
-
-    <div class="two-col">
-      <!-- MYSTERIES -->
-      <div class="card">
-        <div class="card-title">🔍 অমীমাংসিত রহস্য</div>
-        <div class="mystery-item"><div class="mystery-q">Cake কার জন্মদিন?</div><div class="mystery-a">অজানা 🎂</div></div>
-        <div class="mystery-item"><div class="mystery-q">দামু মানে কী?</div><div class="mystery-a">রহস্য</div></div>
-        <div class="mystery-item"><div class="mystery-q">Chotichata Muna শোধরাবেন?</div><div class="mystery-a">না 😄</div></div>
-        <div class="mystery-item"><div class="mystery-q">City Queen কবে?</div><div class="mystery-a">এই মাসে</div></div>
-        <div class="mystery-item"><div class="mystery-q">Manik-এর "সংখ্যা ৩" মানে?</div><div class="mystery-a">অজানা 🃏</div></div>
-        <div class="mystery-item"><div class="mystery-q">Bubai কে?</div><div class="mystery-a">রহস্য 👻</div></div>
-      </div>
-
-      <!-- AI ERRORS -->
-      <div class="card">
-        <div class="card-title">🤖 AI-এর আজকের ভুল (৮টি)</div>
-        <div class="error-item"><span class="error-x">✗</span><span class="error-right">বে চা</span><span class="error-arrow">→</span><span class="error-correct">বো চো ✓</span></div>
-        <div class="error-item"><span class="error-x">✗</span><span class="error-right">Shantu UAE-তে</span><span class="error-arrow">→</span><span class="error-correct">বিরাটিতে ✓</span></div>
-        <div class="error-item"><span class="error-x">✗</span><span class="error-right">Bagh commission নেন</span><span class="error-arrow">→</span><span class="error-correct">track করেন ✓</span></div>
-        <div class="error-item"><span class="error-x">✗</span><span class="error-right">Driver = Biplab</span><span class="error-arrow">→</span><span class="error-correct">Driver = Arindam ✓</span></div>
-        <div class="error-item"><span class="error-x">✗</span><span class="error-right">বাবার আছে সমাধান নেই</span><span class="error-arrow">→</span><span class="error-correct">ভাবার আছে ✓</span></div>
-        <div class="error-item"><span class="error-x">✗</span><span class="error-right">Maya = person</span><span class="error-arrow">→</span><span class="error-correct">Maya = আবেগ ✓</span></div>
-        <div class="error-item"><span class="error-x">✗</span><span class="error-right">Avijit nickname নেই</span><span class="error-arrow">→</span><span class="error-correct">চুল + জামাই ✓</span></div>
-        <div class="error-item"><span class="error-x">✗</span><span class="error-right">Arindam-এর nickname নেই</span><span class="error-arrow">→</span><span class="error-correct">জটায়ু + Maya ✓</span></div>
-        <div style="margin-top:8px;padding:6px 10px;background:rgba(139,0,0,0.2);border-radius:6px;font-size:10px;color:rgba(255,255,255,0.5);">AI ক্ষমাপ্রার্থী। "Without any অহংকার।" — Sandip</div>
-      </div>
+    <div class="quote-block">
+      <div class="quote-text">"Tui gorupachar-er shopokkhe kotha bolchhish? AI, eta note koro."</div>
+      <div class="quote-author">— জটায়ু (Arindam) · দুপুর ১:০৩ · AI-কে সাক্ষী মেনেছেন</div>
     </div>
-
-  </div>
-
-  <!-- DAY 14 -->
-  <div id="d14" class="day-content" style="display:none;">
-    <div class="stats-grid">
-      <div class="stat-card highlight"><span class="stat-num">87</span><div class="stat-label">মোট বার্তা</div></div>
-      <div class="stat-card"><span class="stat-num">Arindam</span><div class="stat-label">সবচেয়ে active</div><div class="stat-sub">24 বার্তা</div></div>
-      <div class="stat-card"><span class="stat-num">Jhatu</span><div class="stat-label">সবচেয়ে গভীর</div><div class="stat-sub">গড় ১৯ শব্দ</div></div>
-      <div class="stat-card"><span class="stat-num">৭ ঘণ্টা</span><div class="stat-label">অফিস নীতি</div><div class="stat-sub">Sandip ক্ষুব্ধ</div></div>
-    </div>
-    <div class="full-card">
-      <div class="card-title">💬 ১৪ মে-র সেরা উক্তি</div>
-      <div class="quote-item"><span class="quote-medal">🥇</span><div class="quote-text">"রাষ্ট্রের হিতে যখন জীবন সমর্পণ করেছি, এসব ছোটোখাটো ব্যাপার ভাবলে চলে?"</div><div class="quote-attr">— Jhatu (Manoj) · ৭ ঘণ্টা অফিস নীতি প্রসঙ্গে</div></div>
-      <div class="quote-item"><span class="quote-medal">🥈</span><div class="quote-text">"@Debanjan রাতে জানো সবার AI report ready থাকে।"</div><div class="quote-attr">— বাঁকা (Sandip) · বিকেল ৫টা</div></div>
-      <div class="quote-item"><span class="quote-medal">🥉</span><div class="quote-text">"Jar mara jai, sei bojhe।"</div><div class="quote-attr">— চুল/জামাই (Avijit)</div></div>
+    <div class="quote-block">
+      <div class="quote-text">"Bdhssus9diehs8s9uss8 se hi Jo no hydrochloric de hi hi hi bohiskeito 8y3gruruehweu2ji3"</div>
+      <div class="quote-author">— বাঁকা (Sandip) · দুপুর ১:৫৬ · keyboard chaos · অর্থ: অস্পষ্ট</div>
     </div>
   </div>
 
-  <!-- DAY 12 -->
-  <div id="d12" class="day-content" style="display:none;">
-    <div class="stats-grid">
-      <div class="stat-card highlight"><span class="stat-num">130</span><div class="stat-label">মোট বার্তা</div></div>
-      <div class="stat-card"><span class="stat-num">Muna</span><div class="stat-label">সবচেয়ে active</div><div class="stat-sub">৪৫ বার্তা</div></div>
-      <div class="stat-card"><span class="stat-num">AI</span><div class="stat-label">আলোচনার বিষয়</div><div class="stat-sub">"Muna-র মতো" 😂</div></div>
-      <div class="stat-card"><span class="stat-num">Rintu</span><div class="stat-label">উপস্থিত</div><div class="stat-sub">রহস্যময় appearance</div></div>
+  <!-- Am special card -->
+  <div class="card am-card">
+    <div class="card-label">🥭 আমের বিশেষ সংবাদ</div>
+    <div class="am-icon">🥭🥭</div>
+    <p class="am-text">
+      মানিক আজ <strong style="color:var(--peace)">২ ব্যাগ আম</strong> পেড়েছেন।<br><br>
+      জটায়ু: "অপূর্ব আম। রাত্রে আনতে যাব।"<br>
+      Avijit: "Manik aam gulo odbhut bhalo khete" 😋<br><br>
+      <em style="color:var(--accent2)">এই আম-ই শেষ পর্যন্ত মহাযুদ্ধের সমাপ্তি ঘটাল।<br>
+      ভারতে মহাভারত শেষ হয়েছিল যুদ্ধে।<br>
+      বিরাটি ঠেকে শেষ হলো আমে।</em>
+    </p>
+  </div>
+
+  <!-- Mood meter -->
+  <div class="card">
+    <div class="card-label">📊 আজকের GROUP MOOD METER</div>
+    <div style="margin-bottom:8px;font-size:0.8rem;color:var(--muted)">০০:০০ → ২৩:৫৯</div>
+    <div class="mood-meter">
+      <div class="mood-seg" style="flex:2;background:#2a3a2a;color:var(--peace)">🎵 প্রেম</div>
+      <div class="mood-seg" style="flex:1;background:#2a2a1a;color:var(--accent2)">🎉 উৎসব</div>
+      <div class="mood-seg" style="flex:5;background:#3a1a0a;color:var(--war)">⚔️ যুদ্ধ</div>
+      <div class="mood-seg" style="flex:1;background:#1a2a1a;color:var(--peace)">🕊️ শান্তি</div>
+      <div class="mood-seg" style="flex:1;background:#1a1a2a;color:var(--accent3)">🌙 রাত</div>
     </div>
-    <div class="full-card">
-      <div class="card-title">📅 ১২ মে-র ঘটনা ও উক্তি</div>
-      <div class="event-item" style="padding:10px 0;">
-        <div class="event-time">সকাল</div>
-        <div class="event-dot" style="background:#9b59b6;"></div>
-        <div class="event-text">AI নিয়ে গভীর আলোচনা। Debanjan AI-র কার্যপ্রণালী বোঝালেন। Arindam মুগ্ধ হলেন।</div>
-      </div>
-      <div class="event-item" style="padding:10px 0;">
-        <div class="event-time">বিকেল</div>
-        <div class="event-dot" style="background:#e67e22;"></div>
-        <div class="event-text">BJP Bengal জয়ের পর Tajpur Port নিয়ে আলোচনা। Sandip link শেয়ার করলেন।</div>
-      </div>
-      <div class="quote-item"><span class="quote-medal">🥇</span><div class="quote-text">"AI anek-ta Muna-r moto. Sesh kotha-ta oke bolte-i hobe।"</div><div class="quote-attr">— জটায়ু (Arindam) · সর্বোচ্চ সম্মান 😄</div></div>
-      <div class="quote-item"><span class="quote-medal">🥈</span><div class="quote-text">"Bhaaba jai naa mairi. Bharaate gunda lagaano-r moto e-i AI।"</div><div class="quote-attr">— জটায়ু (Arindam) · AI-র প্রশংসা, নিজস্ব ভঙ্গিতে</div></div>
-      <div class="quote-item"><span class="quote-medal">🥉</span><div class="quote-text">"আমি আসলে কিছুই করি না।"</div><div class="quote-attr">— বউ (Debanjan) · বিনয়ের অবতার 😄</div></div>
+    <div style="margin-top:12px;font-size:0.8rem;color:var(--muted)">
+      <div style="margin-bottom:8px">🌙 রাত ১২-২টা: মানিক গান + website launch — <span class="score-badge badge-green">শান্তিপূর্ণ</span></div>
+      <div style="margin-bottom:8px">🌄 সকাল ৭-১১টা: Jason Cummings + আম — <span class="score-badge badge-green">হালকা</span></div>
+      <div style="margin-bottom:8px">☀️ দুপুর ১২-বিকেল ৩টা: মহাযুদ্ধ — <span class="score-badge badge-red">উত্তাল</span></div>
+      <div style="margin-bottom:8px">🌆 সন্ধ্যা ৬-৮টা: আম যুদ্ধবিরতি — <span class="score-badge badge-yellow">স্বাভাবিক</span></div>
+      <div>🌙 রাত ৯-১১টা: Biplab সতর্কতা + রাজনীতি — <span class="score-badge badge-yellow">মাঝারি</span></div>
     </div>
   </div>
 
-  <!-- DAY 11 -->
-  <div id="d11" class="day-content" style="display:none;">
-    <div class="stats-grid">
-      <div class="stat-card highlight"><span class="stat-num">231</span><div class="stat-label">মোট বার্তা</div></div>
-      <div class="stat-card"><span class="stat-num">Muna</span><div class="stat-label">সবচেয়ে active</div><div class="stat-sub">৬৮ বার্তা 🔥</div></div>
-      <div class="stat-card"><span class="stat-num">Arindam</span><div class="stat-label">দ্বিতীয়</div><div class="stat-sub">৩৭ বার্তা</div></div>
-      <div class="stat-card"><span class="stat-num">রাজনীতি</span><div class="stat-label">মূল বিষয়</div><div class="stat-sub">বামপন্থা মহাবিতর্ক</div></div>
-      <div class="stat-card"><span class="stat-num">Bubai</span><div class="stat-label">appearance!</div><div class="stat-sub">১ বার্তা — বিরল!</div></div>
+  <!-- Member activity -->
+  <div class="card">
+    <div class="card-label">📱 আজকের MEMBER ACTIVITY</div>
+    <div class="member-row">
+      <div><div class="member-name">Arindam</div><div class="member-nick">জটায়ু · যুদ্ধে প্রধান সেনাপতি</div></div>
+      <div class="member-bar-wrap"><div class="member-bar" style="width:100%;background:linear-gradient(90deg,#ff6b35,#ffb800)"></div></div>
+      <div class="member-count">৩০+</div>
     </div>
-    <div class="full-card">
-      <div class="card-title">📅 ১১ মে — রাজনীতির মহাযুদ্ধ</div>
-      <div class="event-item" style="padding:10px 0;">
-        <div class="event-time">সকাল-দুপুর</div>
-        <div class="event-dot" style="background:#c0392b;"></div>
-        <div class="event-text">🔥 বামপন্থা মহাবিতর্ক! Arindam vs Muna — CPM, TMC, BJP, জ্যোতি বসু, দীপ্সিতা নিয়ে ঘণ্টার পর ঘণ্টা।</div>
-      </div>
-      <div class="event-item" style="padding:10px 0;">
-        <div class="event-time">বিকেল ৫টা</div>
-        <div class="event-dot" style="background:#f39c12;"></div>
-        <div class="event-text">Arindam Birati-তে ফিরলেন এক দিনের জন্য। Jhatu রাতে ঠেক ডাকলেন।</div>
-      </div>
-      <div class="quote-item"><span class="quote-medal">🥇</span><div class="quote-text">"শালা রইছিস একি জায়গাতে আর শুধু গল্প বানাচ্ছিস।"</div><div class="quote-attr">— দার্শনিক টোকাই (Manik) · Muna-কে</div></div>
-      <div class="quote-item"><span class="quote-medal">🥈</span><div class="quote-text">"Byabshaa noi bole-i to khaoachchhish।"</div><div class="quote-attr">— জটায়ু (Arindam) · রাজনীতি বিতর্কে</div></div>
-      <div class="quote-item"><span class="quote-medal">🥉</span><div class="quote-text">"Daru to jhatu khawabe. Ami nea ashte pari।"</div><div class="quote-attr">— Chotichata Muna · অগ্রাধিকার স্পষ্ট 😄</div></div>
+    <div class="member-row">
+      <div><div class="member-name">Raju (Muna)</div><div class="member-nick">Chotichata · যুদ্ধে প্রতিপক্ষ</div></div>
+      <div class="member-bar-wrap"><div class="member-bar" style="width:95%;background:linear-gradient(90deg,#ff4444,#ff6b35)"></div></div>
+      <div class="member-count">৩৫+</div>
+    </div>
+    <div class="member-row">
+      <div><div class="member-name">Manik</div><div class="member-nick">দার্শনিক টোকাই · রাতের প্রেমিক</div></div>
+      <div class="member-bar-wrap"><div class="member-bar" style="width:55%;background:#9b59b6"></div></div>
+      <div class="member-count">১২+</div>
+    </div>
+    <div class="member-row">
+      <div><div class="member-name">Debanjan</div><div class="member-nick">বউ · শান্তিদূত + website launcher</div></div>
+      <div class="member-bar-wrap"><div class="member-bar" style="width:40%;background:#00e5ff"></div></div>
+      <div class="member-count">৮+</div>
+    </div>
+    <div class="member-row">
+      <div><div class="member-name">Manoj (Jhatu)</div><div class="member-nick">রাষ্ট্রসেবক · সেরা verdict</div></div>
+      <div class="member-bar-wrap"><div class="member-bar" style="width:30%;background:#44ff88"></div></div>
+      <div class="member-count">৬+</div>
+    </div>
+    <div class="member-row">
+      <div><div class="member-name">Shantu (কুত্তু)</div><div class="member-nick">keyboard smasher of the day 💥</div></div>
+      <div class="member-bar-wrap"><div class="member-bar" style="width:20%;background:#ffb800"></div></div>
+      <div class="member-count">৫</div>
+    </div>
+    <div class="member-row">
+      <div><div class="member-name">Sandip (বাঁকা)</div><div class="member-nick">"bohiskeito" — বিচারক নীরব</div></div>
+      <div class="member-bar-wrap"><div class="member-bar" style="width:15%;background:#888">  </div></div>
+      <div class="member-count">৩</div>
+    </div>
+    <div class="member-row">
+      <div><div class="member-name">Avijit · Biplab · Ayan</div><div class="member-nick">পর্যবেক্ষক বাহিনী</div></div>
+      <div class="member-bar-wrap"><div class="member-bar" style="width:12%;background:#555"></div></div>
+      <div class="member-count">২-৩</div>
     </div>
   </div>
 
-  <!-- DAY 10 -->
-  <div id="d10" class="day-content" style="display:none;">
-    <div class="stats-grid">
-      <div class="stat-card highlight"><span class="stat-num">84</span><div class="stat-label">মোট বার্তা</div></div>
-      <div class="stat-card"><span class="stat-num">Muna</span><div class="stat-label">সবচেয়ে active</div><div class="stat-sub">৩৩ বার্তা</div></div>
-      <div class="stat-card"><span class="stat-num">Sandip</span><div class="stat-label">দ্বিতীয়</div><div class="stat-sub">১৯ বার্তা</div></div>
-      <div class="stat-card"><span class="stat-num">₹২৫০০</span><div class="stat-label">JW দর</div><div class="stat-sub">কেনা হয়নি 😅</div></div>
+  <!-- Special mentions -->
+  <div class="card">
+    <div class="card-label">🌟 আজকের বিশেষ পুরস্কার</div>
+    <div class="quote-block" style="border-color:var(--accent)">
+      <div class="quote-text" style="color:var(--accent2)">🏆 সেরা বিশ্লেষক:</div>
+      <div class="quote-text">Jhatu (Manoj) — "Munna AI-এর ভালো comment পেতে এসব করছে।" এক লাইনে পুরো situation সাবধান। নিউটন লজ্জিত।</div>
     </div>
-    <div class="full-card">
-      <div class="card-title">📅 ১০ মে — ঠেকের সূচনা</div>
-      <div class="event-item" style="padding:10px 0;">
-        <div class="event-time">বিকেল</div>
-        <div class="event-dot" style="background:#2980b9;"></div>
-        <div class="event-text">Muna দিল্লি কাজ সেরে গুজরাটে — "Khod PM er sathe Gujarat!" 😄 বিরাটি ঠেকের সদস্য PM-এর সাথে!</div>
-      </div>
-      <div class="event-item" style="padding:10px 0;">
-        <div class="event-time">রাত ৯-১১টা</div>
-        <div class="event-dot" style="background:#f5c842;"></div>
-        <div class="event-text">🥃 Johnnie Walker saga শুরু — ₹২৫০০-তে কেনা যাবে কিনা আলোচনা। Red label নাকি অন্য label? বিতর্ক চলল।</div>
-      </div>
-      <div class="event-item" style="padding:10px 0;">
-        <div class="event-time">রাত ৮:৩৮</div>
-        <div class="event-dot" style="background:#27ae60;"></div>
-        <div class="event-text">Shantu UAE থেকে link পাঠালেন! (পরে জানা গেল — উনি আসলে বিরাটিতেই আছেন 😄)</div>
-      </div>
-      <div class="quote-item"><span class="quote-medal">🥇</span><div class="quote-text">"Khod PM er sathe Gujarat।"</div><div class="quote-attr">— Chotichata Muna · নিজের গুরুত্ব প্রমাণ 😄</div></div>
-      <div class="quote-item"><span class="quote-medal">🥈</span><div class="quote-text">"Red label hole loss, others thik ache।"</div><div class="quote-attr">— বাঁকা (Sandip) · মদ বিশেষজ্ঞতা</div></div>
-      <div class="quote-item"><span class="quote-medal">🥉</span><div class="quote-text">"কিছু জনতা তোকে হিংসা করে পাত্তা দিস না।"</div><div class="quote-attr">— Bagh (Biplab) · Muna-কে সমর্থন 😉</div></div>
+    <div class="quote-block" style="border-color:var(--war)">
+      <div class="quote-text" style="color:var(--war)">💥 সেরা keyboard smasher:</div>
+      <div class="quote-text">কুত্তু (Shantu) — "Cvghhffduipofryuhccfhjjffyujhgh..." এরপরে "xxxxxxxxxxxxxxxx" এবং "ffffffffff" — তিনটি পর্যায়ে keyboard ধ্বংস। বিজ্ঞান বলে কাঠের keyboard বেশি টেকসই।</div>
+    </div>
+    <div class="quote-block" style="border-color:#9b59b6">
+      <div class="quote-text" style="color:#9b59b6">💘 রাতের রোমান্টিক:</div>
+      <div class="quote-text">মানিক — রাত ১২:২৪-এ "আবার প্রেমিক হতে ইচ্ছে করে।" সুপ্রিম কোর্টের টোকাই সার্টিফিকেট কার্যকর আছে।</div>
+    </div>
+    <div class="quote-block" style="border-color:var(--peace)">
+      <div class="quote-text" style="color:var(--peace)">🕊️ শান্তিদূত পুরস্কার:</div>
+      <div class="quote-text">Debanjan — আম-ছবি দিয়ে ২ ঘণ্টার মহাযুদ্ধ শেষ করলেন। জাতিসংঘ আবেদন না করলেও অনুরোধ জানাবে।</div>
+    </div>
+    <div class="quote-block" style="border-color:var(--border)">
+      <div class="quote-text" style="color:var(--muted)">🌐 নতুন মাইলস্টোন:</div>
+      <div class="quote-text">বিরাটি ঠেক ওয়েবসাইট আনুষ্ঠানিকভাবে launch! সদস্য · Dashboard · গান · আদালত · মহাভারত সব একসাথে। Muna বললেন: "অদ্ভুত বউ, সত্যিই কীভাবে সম্ভব।" 🎉</div>
     </div>
   </div>
 
 </div>
 
 <footer>
-  <p class="footer-sub">BTNN © ২০২৬ · বিরাটি ঠেক নিউজ নেটওয়ার্ক · Sandip-এর order-এ · Debanjan-এর AI কর্তৃক প্রস্তুত · Bagh commission ছাড়া পুনর্মুদ্রণ নিষেধ 😄</p>
+  <span>BTNN</span> · বিরাটি ঠেক নিউজ নেটওয়ার্ক · ১৮ মে ২০২৬ &nbsp;|&nbsp;
+  AI Agent · Sandip অনুমোদিত · Debanjan পরিচালিত &nbsp;|&nbsp;
+  <span>"Without any অহংকার" 🙏</span>
 </footer>
-
-<script>
-function showDay(id, btn) {
-  document.querySelectorAll('.day-content').forEach(d => d.style.display = 'none');
-  document.querySelectorAll('.date-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById(id).style.display = 'block';
-  btn.classList.add('active');
-}
-// Default: show d1617
-document.getElementById('d1617').style.display = 'block';
-</script>
 
 </body>
 </html>
