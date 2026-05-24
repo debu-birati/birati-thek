@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>বিরাটি ঠেক · ১৮ মে ২০২৬</title>
+<title>বিরাটি ঠেক · ২৪ মে ২০২৬</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <style>
   :root { --deep-red:#8b0000; --gold:#f5c842; --dark:#1a1a2e; --cream:#fef9ef; }
@@ -17,18 +17,18 @@
   .nav-links a:hover, .nav-links a.active { color:var(--gold); }
 
   .ticker-wrap { background:var(--deep-red); padding:8px 0; overflow:hidden; }
-  .ticker { white-space:nowrap; display:inline-block; animation:ticker 40s linear infinite; font-size:12px; font-weight:600; color:var(--gold); padding-right:100px; }
+  .ticker { white-space:nowrap; display:inline-block; animation:ticker 50s linear infinite; font-size:12px; font-weight:600; color:var(--gold); padding-right:100px; }
   @keyframes ticker { 0%{transform:translateX(100vw)} 100%{transform:translateX(-100%)} }
 
-  .hero { min-height:90vh; background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:4rem 2rem; position:relative; overflow:hidden; }
+  .hero { min-height:85vh; background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:4rem 2rem; position:relative; overflow:hidden; }
   .hero::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:repeating-linear-gradient(45deg,rgba(245,200,66,0.02) 0,rgba(245,200,66,0.02) 1px,transparent 1px,transparent 30px); animation:shimmer 20s linear infinite; }
   @keyframes shimmer { 0%{transform:translateX(0)} 100%{transform:translateX(30px)} }
 
   .hero-badge { background:rgba(139,0,0,0.3); border:1px solid rgba(245,200,66,0.3); color:var(--gold); padding:6px 20px; border-radius:20px; font-size:11px; letter-spacing:3px; margin-bottom:2rem; position:relative; }
   .hero-title { font-family:'Playfair Display',serif; font-size:clamp(4rem,12vw,8rem); font-weight:900; color:var(--gold); line-height:1; margin-bottom:1rem; position:relative; text-shadow:0 0 80px rgba(245,200,66,0.3); }
-  .hero-subtitle { font-size:clamp(1rem,2.5vw,1.3rem); color:rgba(255,255,255,0.6); margin-bottom:3rem; font-style:italic; position:relative; }
+  .hero-subtitle { font-size:clamp(1rem,2.5vw,1.3rem); color:rgba(255,255,255,0.6); margin-bottom:2.5rem; font-style:italic; position:relative; }
 
-  .hero-stats { display:flex; gap:3rem; margin-bottom:4rem; flex-wrap:wrap; justify-content:center; position:relative; }
+  .hero-stats { display:flex; gap:3rem; margin-bottom:3rem; flex-wrap:wrap; justify-content:center; position:relative; }
   .stat { text-align:center; }
   .stat-num { font-size:2.5rem; font-weight:800; color:var(--gold); display:block; }
   .stat-label { font-size:0.7rem; color:rgba(255,255,255,0.4); letter-spacing:2px; text-transform:uppercase; }
@@ -40,15 +40,28 @@
   .nav-card-title { font-size:0.9rem; font-weight:700; color:var(--gold); margin-bottom:0.3rem; }
   .nav-card-desc { font-size:0.7rem; color:rgba(255,255,255,0.5); }
 
+  /* GROUP PHOTO SECTION */
+  .group-photo-section { padding:4rem 2rem; background:rgba(0,0,0,0.3); }
+  .group-photo-wrap { max-width:1000px; margin:0 auto; text-align:center; }
+  .group-photo-label { font-size:11px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; display:block; margin-bottom:1rem; }
+  .group-photo-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,4vw,2.8rem); color:var(--cream); margin-bottom:2rem; }
+  .group-photo-img { width:100%; max-width:960px; border-radius:20px; border:2px solid rgba(245,200,66,0.3); box-shadow:0 30px 80px rgba(0,0,0,0.6); transition:all 0.4s ease; }
+  .group-photo-img:hover { border-color:var(--gold); box-shadow:0 30px 80px rgba(245,200,66,0.2); transform:scale(1.01); }
+  .group-photo-caption { margin-top:1rem; font-size:12px; color:rgba(255,255,255,0.4); font-style:italic; }
+
   .section { padding:4rem 2rem; max-width:1000px; margin:0 auto; }
   .section-label { font-size:11px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; display:block; margin-bottom:1rem; }
   .section-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,4vw,3rem); color:var(--cream); margin-bottom:2rem; }
 
-  .members-row { display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:center; margin-bottom:2rem; }
-  .member-chip { background:rgba(255,255,255,0.04); border:1px solid rgba(245,200,66,0.15); border-radius:50px; padding:8px 16px; display:flex; align-items:center; gap:8px; text-decoration:none; color:var(--cream); font-size:12px; transition:all 0.2s; }
-  .member-chip:hover { background:rgba(139,0,0,0.3); border-color:var(--gold); }
-  .member-chip-name { font-weight:700; color:var(--gold); }
-  .member-chip-nick { font-size:10px; color:rgba(255,255,255,0.4); }
+  /* MEMBER CARDS WITH PHOTOS */
+  .members-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:1rem; margin-bottom:2rem; }
+  .member-card { background:rgba(255,255,255,0.04); border:1px solid rgba(245,200,66,0.12); border-radius:16px; padding:1rem; text-align:center; text-decoration:none; color:var(--cream); transition:all 0.3s ease; overflow:hidden; }
+  .member-card:hover { background:rgba(139,0,0,0.25); border-color:var(--gold); transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,0,0,0.4); }
+  .member-photo { width:80px; height:80px; border-radius:50%; object-fit:cover; border:2px solid rgba(245,200,66,0.3); margin:0 auto 0.7rem; display:block; transition:border-color 0.3s; }
+  .member-card:hover .member-photo { border-color:var(--gold); }
+  .member-card-name { font-size:0.85rem; font-weight:800; color:var(--gold); margin-bottom:0.2rem; }
+  .member-card-nick { font-size:0.7rem; color:rgba(255,255,255,0.45); }
+  .member-card-emoji { font-size:1.8rem; display:block; margin-bottom:0.6rem; }
 
   .see-all { display:inline-block; background:var(--deep-red); color:var(--gold); padding:10px 28px; border-radius:25px; text-decoration:none; font-weight:700; font-size:13px; transition:all 0.2s; border:1px solid rgba(245,200,66,0.3); }
   .see-all:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(139,0,0,0.4); }
@@ -86,7 +99,7 @@
   .anthem-bar { height:100%; background:linear-gradient(90deg,var(--deep-red),var(--gold)); border-radius:3px; width:0%; transition:width 0.5s linear; }
   .anthem-time { font-size:10px; color:rgba(255,255,255,0.4); min-width:32px; text-align:right; font-family:monospace; }
 
-  @media(max-width:600px) { .hero-stats{gap:1.5rem;} .nav-cards{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:600px) { .hero-stats{gap:1.5rem;} .nav-cards{grid-template-columns:repeat(2,1fr);} .members-grid{grid-template-columns:repeat(3,1fr);} }
 </style>
 </head>
 <body>
@@ -106,19 +119,19 @@
 </nav>
 
 <div class="ticker-wrap">
-  <div class="ticker">🔴 BREAKING ১৮ মে: মুনা vs জটায়ু মহাযুদ্ধ — আড়াই ঘণ্টা! · Jhatu verdict: "AI-এর ভালো comment পেতে এই সব করছে" 🏆 · কুত্তু keyboard smash করলেন — "xxxxxxxxxxx" · Sandip: "bohiskeito" 😅 · মানিক: "আবার প্রেমিক হতে ইচ্ছে করে" 💘 · মানিক ২ ব্যাগ আম পাড়লেন 🥭 · Debanjan আম-ছবিতে যুদ্ধ থামালেন 🕊️ · বিরাটি ঠেক website আনুষ্ঠানিক launch 🎉 · Ayan-এর কবিতায় AI-রচিত গান · মুনা: "অদ্ভুত বউ, কীভাবে সম্ভব!" · "সব মায়া 🙏" · ফুলসজ্জার ছবি কাণ্ড — তদন্ত চিরবন্ধ · Avijit: "তাও ঠিক" ·</div>
+  <div class="ticker">🔴 WEEKLY UPDATE ২৪ মে: Group Photo কাণ্ড — সবার AI portrait নিয়ে ৪৮ ঘণ্টার মহা-ক্যাচাল! · Biplab: "সব থেকে জঘন্য বানিয়েছে আমার টা" 😤 · Muna এই সপ্তাহে ৩০৭ বার্তা — রেকর্ড! · KKR IPL Final-এ! · Arindam: "AI এবার মশকরা শুরু করেছে" 🤣 · Sandip: "Satyajit Ray-এর বই থেকে উঠে এসেছে" 😂 · Manik প্রসাদ দিলেন Bubai-র দোকানে · Debanjan-এর GPU laptop দরকার — ২ সেকেন্ডের video-তে ৩০ মিনিট! · "সব মায়া 🙏" · Phulta election: CPM 2nd, TMC 4th! · AI গাঁজা খেয়ে কাজ করছে — Debanjan 😄 ·</div>
 </div>
 
 <div class="hero">
   <div class="hero-badge">বিরাটি ঠেক · Est. Unknown · Running Forever</div>
   <h1 class="hero-title">বিরাটি ঠেক</h1>
-  <p class="hero-subtitle">"যা নেই ভারতে, তা নেই বিরাটি ঠেকেও"</p>
+  <p class="hero-subtitle">\"যা নেই ভারতে, তা নেই বিরাটি ঠেকেও\"</p>
   <div class="hero-stats">
     <div class="stat"><span class="stat-num">১৩+</span><span class="stat-label">সদস্য</span></div>
-    <div class="stat"><span class="stat-num">১৫০০+</span><span class="stat-label">বার্তা</span></div>
+    <div class="stat"><span class="stat-num">২১৩২+</span><span class="stat-label">মোট বার্তা</span></div>
+    <div class="stat"><span class="stat-num">৬৬৬</span><span class="stat-label">Muna-র বার্তা 😈</span></div>
     <div class="stat"><span class="stat-num">২০</span><span class="stat-label">Muna-র Delete</span></div>
     <div class="stat"><span class="stat-num">০</span><span class="stat-label">বাঁকা-র Delete</span></div>
-    <div class="stat"><span class="stat-num">আড়াই ঘন্টা</span><span class="stat-label">আজকের মহাযুদ্ধ</span></div>
   </div>
   <!-- AUDIO PLAYER -->
   <div class="anthem-player" id="anthemPlayer">
@@ -139,65 +152,133 @@
     <audio id="anthemAudio" src="https://debu-birati.github.io/birati-thek/Birati%20Theker%20Gaan.mp3" preload="metadata"></audio>
   </div>
 
-
   <div class="nav-cards">
-    <a href="members.html" class="nav-card"><span class="nav-card-emoji">👥</span><div class="nav-card-title">সদস্য</div><div class="nav-card-desc">সবার পরিচয় ও nickname</div></a>
+    <a href="members.html" class="nav-card"><span class="nav-card-emoji">👥</span><div class="nav-card-title">সদস্য</div><div class="nav-card-desc">সবার পরিচয় ও portrait</div></a>
     <a href="creative.html" class="nav-card"><span class="nav-card-emoji">🎭</span><div class="nav-card-title">সৃষ্টি</div><div class="nav-card-desc">নাটক, গান, টোকাই গাইড</div></a>
     <a href="quotes.html" class="nav-card"><span class="nav-card-emoji">💬</span><div class="nav-card-title">উক্তি</div><div class="nav-card-desc">অমর উক্তি সংকলন</div></a>
-    <a href="dashboard.html" class="nav-card"><span class="nav-card-emoji">📊</span><div class="nav-card-title">Dashboard</div><div class="nav-card-desc">Daily stats ও leaderboard</div></a>
+    <a href="dashboard.html" class="nav-card"><span class="nav-card-emoji">📊</span><div class="nav-card-title">Dashboard</div><div class="nav-card-desc">Weekly stats ও leaderboard</div></a>
     <a href="court.html" class="nav-card"><span class="nav-card-emoji">⚖️</span><div class="nav-card-title">আদালত</div><div class="nav-card-desc">বিচারক Sandip-এর এজলাস</div></a>
     <a href="mahabharat.html" class="nav-card"><span class="nav-card-emoji">⚔️</span><div class="nav-card-title">মহাভারত</div><div class="nav-card-desc">বিরাটি ঠেকের মহাকাব্য</div></a>
     <a href="tritio_sontan.html" class="nav-card"><span class="nav-card-emoji">👶</span><div class="nav-card-title">তৃতীয় সংগ্রাম</div><div class="nav-card-desc">₹৩০,০০০-র মহাযুদ্ধ</div></a>
   </div>
 </div>
 
-<!-- MEMBER PREVIEW -->
+<!-- GROUP PHOTO SECTION -->
+<div class="group-photo-section">
+  <div class="group-photo-wrap">
+    <span class="group-photo-label">পারিবারিক ছবি</span>
+    <h2 class="group-photo-title">বিরাটি ঠেকের মহারথীরা — একসাথে</h2>
+    <img src="Birati-Thek-Group_Photo.jpeg" alt="বিরাটি ঠেক Group Photo" class="group-photo-img">
+    <p class="group-photo-caption">নদীর পাড়ে, সূর্যাস্তের আলোয় — বিরাটি ঠেকের সব মহারথী। Glenlivet হাতে কে? সেটা চিরবিতর্কিত! 🍾</p>
+  </div>
+</div>
+
+<!-- MEMBER PREVIEW WITH PHOTOS -->
 <div class="section">
   <span class="section-label">পরিচিতি</span>
   <h2 class="section-title" style="text-align:center;">মহারথীরা</h2>
-  <div class="members-row">
-    <a href="members.html" class="member-chip"><span>✈️</span><span class="member-chip-name">Raju</span><span class="member-chip-nick">Chotichata Muna</span></a>
-    <a href="members.html" class="member-chip"><span>⚽</span><span class="member-chip-name">Sandip</span><span class="member-chip-nick">বাঁকা</span></a>
-    <a href="members.html" class="member-chip"><span>📚</span><span class="member-chip-name">Arindam</span><span class="member-chip-nick">জটায়ু</span></a>
-    <a href="members.html" class="member-chip"><span>🙏</span><span class="member-chip-name">Manik</span><span class="member-chip-nick">দার্শনিক টোকাই</span></a>
-    <a href="members.html" class="member-chip"><span>😑</span><span class="member-chip-name">Manoj</span><span class="member-chip-nick">Jhatu</span></a>
-    <a href="members.html" class="member-chip"><span>🐯</span><span class="member-chip-name">Biplab</span><span class="member-chip-nick">Bagh</span></a>
-    <a href="members.html" class="member-chip"><span>🎯</span><span class="member-chip-name">Avijit</span><span class="member-chip-nick">চুল · জামাই</span></a>
-    <a href="members.html" class="member-chip"><span>✍️</span><span class="member-chip-name">Ayan</span><span class="member-chip-nick">লেখক</span></a>
-    <a href="members.html" class="member-chip"><span>🐕</span><span class="member-chip-name">Shantu</span><span class="member-chip-nick">কুত্তু</span></a>
-    <a href="members.html" class="member-chip"><span>👶</span><span class="member-chip-name">Jony</span><span class="member-chip-nick">Tapan · তৃতীয় সংগ্রামে ৭০%</span></a>
-    <a href="members.html" class="member-chip"><span>🤖</span><span class="member-chip-name">AI</span><span class="member-chip-nick">Sandip অনুমোদিত</span></a>
+  <div class="members-grid">
+    <a href="members.html" class="member-card">
+      <img src="Muna.jpeg" alt="Muna" class="member-photo">
+      <div class="member-card-name">Raju</div>
+      <div class="member-card-nick">Chotichata Muna</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <img src="Baka.jpeg" alt="Sandip" class="member-photo">
+      <div class="member-card-name">Sandip</div>
+      <div class="member-card-nick">বাঁকা</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <img src="Arindam.jpeg" alt="Arindam" class="member-photo">
+      <div class="member-card-name">Arindam</div>
+      <div class="member-card-nick">জটায়ু</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <img src="Tokai-Manik.jpeg" alt="Manik" class="member-photo">
+      <div class="member-card-name">Manik</div>
+      <div class="member-card-nick">দার্শনিক টোকাই</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <img src="Jhatu.jpeg" alt="Manoj" class="member-photo">
+      <div class="member-card-name">Manoj</div>
+      <div class="member-card-nick">Jhatu</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <img src="bagh.jpeg" alt="Biplab" class="member-photo">
+      <div class="member-card-name">Biplab</div>
+      <div class="member-card-nick">Bagh / Tiger</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <img src="Chul.jpeg" alt="Avijit" class="member-photo">
+      <div class="member-card-name">Avijit</div>
+      <div class="member-card-nick">চুল · জামাই</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <img src="Lekhok.jpeg" alt="Ayan" class="member-photo">
+      <div class="member-card-name">Ayan</div>
+      <div class="member-card-nick">লেখক</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <img src="Kuttu.jpeg" alt="Shantu" class="member-photo">
+      <div class="member-card-name">Shantu</div>
+      <div class="member-card-nick">কুত্তু</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <img src="Jony.jpeg" alt="Tapan" class="member-photo">
+      <div class="member-card-name">Tapan</div>
+      <div class="member-card-nick">Jony · ৭০% 🏆</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <img src="Damu.jpeg" alt="Rintu" class="member-photo">
+      <div class="member-card-name">Rintu</div>
+      <div class="member-card-nick">দামু</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <img src="Bou.jpeg" alt="Debanjan" class="member-photo">
+      <div class="member-card-name">Debanjan</div>
+      <div class="member-card-nick">বউ · AI চালক</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <img src="Bubai.jpeg" alt="Bubai" class="member-photo">
+      <div class="member-card-name">Bubai</div>
+      <div class="member-card-nick">রহস্যময় 🕵️</div>
+    </a>
+    <a href="members.html" class="member-card">
+      <span class="member-card-emoji">🤖</span>
+      <div class="member-card-name">AI Agent</div>
+      <div class="member-card-nick">Sandip অনুমোদিত</div>
+    </a>
   </div>
   <div style="text-align:center;"><a href="members.html" class="see-all">সম্পূর্ণ পরিচয় দেখুন →</a></div>
 </div>
 
-<!-- TODAY SNAPSHOT -->
+<!-- WEEKLY SNAPSHOT -->
 <div style="padding:0 2rem 4rem;">
   <div class="today-box">
-    <div class="today-title">📊 আজকের snapshot — ১৮ মে ২০২৬</div>
-    <div class="today-item"><span class="today-key">সবচেয়ে active</span><span class="today-val">Muna — ৩৫+ বার্তা (যুদ্ধমোডে)</span></div>
-    <div class="today-item"><span class="today-key">মহাযুদ্ধ</span><span class="today-val">মুনা vs জটায়ু — দুপুর ১২টা থেকে বিকেল ৩টা ⚔️</span></div>
-    <div class="today-item"><span class="today-key">আজকের সেরা উক্তি</span><span class="today-val">"AI-এর ভালো comment পেতে এই সব করছে" — Jhatu 🏆</span></div>
-    <div class="today-item"><span class="today-key">শান্তির মাধ্যম</span><span class="today-val">মানিকের ২ ব্যাগ আম + Debanjan-এর ছবি 🥭</span></div>
-    <div class="today-item"><span class="today-key">মাইলস্টোন</span><span class="today-val">বিরাটি ঠেক website আনুষ্ঠানিক launch 🎉</span></div>
-    <div class="today-item"><span class="today-key">নতুন শিল্পকর্ম</span><span class="today-val">Ayan-এর কবিতায় AI-রচিত গান 🎵</span></div>
-    <div class="today-item"><span class="today-key">keyboard ক্ষয়</span><span class="today-val">কুত্তু — ১টি (আনুমানিক) 💥</span></div>
-    <div class="today-item"><span class="today-key">AI-এর ভুল</span><span class="today-val">১টি — "রাত ২টা" বলেছিলাম, আসলে "বিকেল ৩টা" 😅🙏</span></div>
+    <div class="today-title">📊 সাপ্তাহিক snapshot — ১৮–২৪ মে ২০২৬</div>
+    <div class="today-item"><span class="today-key">সবচেয়ে active</span><span class="today-val">Muna — ৩০৭ বার্তা! 😈 (মোট ৬৬৬ — শয়তানের সংখ্যা!)</span></div>
+    <div class="today-item"><span class="today-key">এই সপ্তাহের কাণ্ড</span><span class="today-val">AI portrait কাণ্ড — Biplab ক্ষেপেছেন, Arindam মশকরা করেছেন 😂</span></div>
+    <div class="today-item"><span class="today-key">আজকের সেরা উক্তি</span><span class="today-val">"AI গাঁজা খেয়ে কাজ করছে" — Debanjan 🌿</span></div>
+    <div class="today-item"><span class="today-key">ক্রীড়া সংবাদ</span><span class="today-val">KKR IPL Final-এ! — Avijit আনন্দিত 🏏</span></div>
+    <div class="today-item"><span class="today-key">রাজনীতি</span><span class="today-val">Phulta: CPM 2nd, TMC 4th — Muna বললেন "Gare!" 😄</span></div>
+    <div class="today-item"><span class="today-key">ধর্মীয় সংবাদ</span><span class="today-val">Manik প্রসাদ দিলেন, Muna নিলেন না — "Baba lagbe na" 🙏</span></div>
+    <div class="today-item"><span class="today-key">প্রযুক্তি</span><span class="today-val">Debanjan-এর GPU laptop দরকার — ২ sec video-তে ৩০ min লাগছে! 💻</span></div>
+    <div class="today-item"><span class="today-key">Sandip verdict</span><span class="today-val">"Sandip ke Satyajit Ray-এর বই থেকে উঠে এসেছে মনে হচ্ছে" — Arindam 😂</span></div>
   </div>
 </div>
 
 <!-- QUOTES -->
-<div class="section" style="background:rgba(139,0,0,0.08);max-width:100%;padding:4rem 2rem;">
-  <div style="max-width:1000px;margin:0 auto;">
+<div style="padding:0 2rem 4rem; background:rgba(139,0,0,0.08);">
+  <div style="max-width:1000px;margin:0 auto;padding-top:4rem;">
     <span class="section-label">ইতিহাস</span>
     <h2 class="section-title">অমর উক্তি</h2>
     <div class="quotes-row">
-      <div class="q-card"><div class="q-text">"Munna, AI এর কাছ থেকে ভালো comments পাওয়ার জন্য এই সব করছে। ওকে থামাতে পারবি না।"</div><div class="q-attr">— Jhatu (Manoj) · ১৮ মে · সেরা বিশ্লেষণ 🏆</div></div>
+      <div class="q-card"><div class="q-text">"সব থেকে জঘন্য বানিয়েছে আমার টা আর কুত্তুর টা। একদম বকবাস।"</div><div class="q-attr">— Biplab (Bagh) · ২৪ মে · AI portrait reaction 😤</div></div>
+      <div class="q-card"><div class="q-text">"Sandip ke mone hochchhe Satyajit Ray-er boi theke uthe eshechhe"</div><div class="q-attr">— Arindam (জটায়ু) · ২৪ মে · portrait review 🎭</div></div>
+      <div class="q-card"><div class="q-text">"AI গাঁজা খেয়ে কাজ করছে, eto change dekhe halusinate korte suru korechey"</div><div class="q-attr">— Debanjan (বউ) · ২৪ মে · হালকা স্বীকারোক্তি 🌿</div></div>
       <div class="q-card"><div class="q-text">"BKCD! তুই Bulbuli-কে পাঠাতে গিয়ে এখানে পাঠিয়েছিস!"</div><div class="q-attr">— বাঁকা (Sandip) · সর্বকালের সেরা 🏆</div></div>
-      <div class="q-card"><div class="q-text">"এই সব গান শুনলে আবার প্রেমিক হয়ে যেতে ইচ্ছে করে"</div><div class="q-attr">— দার্শনিক টোকাই (Manik) · রাত ১২:২৪ · রোমান্টিক সংকট 💘</div></div>
-      <div class="q-card"><div class="q-text">"Ar Bokachoda r dol tham ebar. Onek intaluctual giri mariachic."</div><div class="q-attr">— কুত্তু (Shantu) · এরপরেই keyboard ধ্বংস 💥</div></div>
       <div class="q-card"><div class="q-text">"সব মায়া। 🙏"</div><div class="q-attr">— দার্শনিক টোকাই (Manik) · সর্বক্ষণ · অপরিবর্তনীয় সত্য</div></div>
-      <div class="q-card"><div class="q-text">"ছিঃ!"</div><div class="q-attr">— Jhatu (Manoj) · একটি শব্দে সম্পূর্ণ বিচার</div></div>
+      <div class="q-card"><div class="q-text">"Bkc je maal khayna tar hathe deache bottle ta. Chudir bhai ota onno karor hathe dhora."</div><div class="q-attr">— Muna (Raju) · ২৪ মে · group photo বিশ্লেষণ 🍾</div></div>
     </div>
     <div style="text-align:center;margin-top:2rem;"><a href="quotes.html" class="see-all">সম্পূর্ণ সংকলন দেখুন →</a></div>
   </div>
@@ -205,7 +286,7 @@
 
 <footer>
   <div class="footer-logo">বিরাটি ঠেক</div>
-  <p class="footer-sub">"যা নেই ভারতে, তা নেই বিরাটি ঠেকেও"<br>© ২০২৬ · Sandip-এর order-এ · Debanjan-এর AI কর্তৃক নির্মিত · Bagh commission ছাড়া copy নিষেধ 😄</p>
+  <p class="footer-sub">\"যা নেই ভারতে, তা নেই বিরাটি ঠেকেও\"<br>© ২০২৬ · Sandip-এর order-এ · Debanjan-এর AI কর্তৃক নির্মিত · Bagh commission ছাড়া copy নিষেধ 😄<br>Last updated: ২৪ মে ২০২৬ · মোট বার্তা: ২১৩২ · Muna-র share: ৩১.২%</p>
 </footer>
 
 <script>
