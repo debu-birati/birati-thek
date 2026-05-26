@@ -176,7 +176,7 @@
 const GEMINI_API_KEY = "AIzaSyBiwkW3jPK8EYBHToTuE6lqBG_4xGOA2To";
 // ═══════════════════════════════════════════════════════════════
 
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${GEMINI_API_KEY}`;
 
 const MEMBERS = [
   {name:"Raju",     nick:"Chotichata Muna",  emoji:"🐔", color:"#dc2626"},
@@ -289,6 +289,7 @@ function loadMem(){ try{memories=JSON.parse(localStorage.getItem(MEM_KEY))||[];}
 function saveMem(){ localStorage.setItem(MEM_KEY,JSON.stringify(memories.slice(-40))); }
 
 async function extractMemory(userMsg,aiReply,member){
+  await new Promise(r=>setTimeout(r,20000));
   try{
     const r=await fetch(GEMINI_URL,{method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
@@ -298,6 +299,7 @@ async function extractMemory(userMsg,aiReply,member){
       })
     });
     const d=await r.json();
+    if(d.error)return;
     const raw=d.candidates?.[0]?.content?.parts?.[0]?.text||"[]";
     const items=JSON.parse(raw.replace(/```json|```/g,"").trim());
     if(!Array.isArray(items)||items.length===0)return;
@@ -397,19 +399,26 @@ async function sendMessage(){
     }
     sys+=`\n\nএখন কথা বলছেন: ${selectedMember.name}(nickname:${selectedMember.nick})। nickname ধরে ডাকো।`;
 
-    const res=await fetch(GEMINI_URL,{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        system_instruction:{parts:[{text:sys}]},
-        contents:messages,
-        generationConfig:{maxOutputTokens:300}
-      })
-    });
-    const data=await res.json();
+    // Retry up to 3 times on 429
+    let res, data, attempt=0;
+    while(attempt<3){
+      res=await fetch(GEMINI_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          system_instruction:{parts:[{text:sys}]},
+          contents:messages,
+          generationConfig:{maxOutputTokens:300}
+        })
+      });
+      data=await res.json();
+      if(!data.error||data.error.code!==429)break;
+      attempt++;
+      if(attempt<3) await new Promise(r=>setTimeout(r,8000*attempt));
+    }
     removeTyping();
 
     if(data.error){
       const msg=data.error.code===429
-        ?"⚠️ একটু বেশি busy! একটু পরে চেষ্টা করো। 🙏"
+        ?"⚠️ এখন একটু busy! ১০ সেকেন্ড পরে আবার try করো। 🙏"
         :"কিছু একটা গোলমাল! একটু পরে চেষ্টা করো। 😅";
       appendMsg("ai",msg,null); return;
     }
