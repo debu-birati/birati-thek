@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>বিরাটি ঠেক AI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI','Noto Sans Bengali',sans-serif;background:#fdf8f0;height:100vh;overflow:hidden;}
+
+  /* ── SELECTOR ── */
+  #selector{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:2rem 1rem 3rem;overflow-y:auto;}
+  .logo{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 1rem;box-shadow:0 4px 16px rgba(217,119,6,0.3);}
+  .title{color:#92400e;font-size:1.8rem;font-weight:700;text-align:center;}
+  .subtitle{color:#7a5c30;font-size:0.8rem;font-weight:600;text-align:center;margin-top:0.3rem;}
+  .card{background:#fff;border:1.5px solid #e8ddc8;border-radius:20px;padding:1.5rem;max-width:500px;width:100%;box-shadow:0 2px 20px rgba(0,0,0,0.06);margin-top:1.5rem;}
+  .card-label{color:#7a5c30;font-size:0.78rem;text-align:center;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.8px;font-weight:700;}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;}
+  .member-btn{background:#fff;border:1.5px solid #e8ddc8;border-radius:14px;padding:0.85rem 0.5rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.3rem;transition:all 0.18s;position:relative;}
+  .member-btn:hover{border-color:#c8860a;background:#fffaf0;transform:translateY(-2px);box-shadow:0 4px 12px rgba(200,134,10,0.12);}
+  .member-btn .emoji{font-size:1.5rem;}
+  .member-btn .name{color:#3d2b0a;font-size:0.7rem;font-weight:700;}
+  .member-btn .nick{color:#7a5c30;font-size:0.58rem;line-height:1.3;font-weight:600;}
+  .member-btn .msg-count{position:absolute;top:6px;right:6px;background:#f59e0b;color:#fff;font-size:0.55rem;font-weight:700;border-radius:99px;padding:1px 5px;min-width:16px;text-align:center;}
+
+  /* ── LEADERBOARD ── */
+  .lb-row{display:flex;align-items:center;gap:0.6rem;padding:0.45rem 0;border-bottom:1px solid #f0e8d8;}
+  .lb-row:last-child{border-bottom:none;}
+  .lb-rank{font-size:1rem;width:24px;text-align:center;flex-shrink:0;}
+  .lb-emoji{font-size:1.1rem;flex-shrink:0;}
+  .lb-info{flex:1;}
+  .lb-name{color:#3d2b0a;font-size:0.78rem;font-weight:700;}
+  .lb-nick{color:#7a5c30;font-size:0.62rem;font-weight:600;}
+  .lb-bar-wrap{width:80px;background:#f0e8d8;border-radius:99px;height:6px;flex-shrink:0;}
+  .lb-bar{background:linear-gradient(90deg,#f59e0b,#d97706);border-radius:99px;height:6px;transition:width 0.5s ease;}
+  .lb-num{color:#92400e;font-size:0.72rem;font-weight:700;min-width:28px;text-align:right;flex-shrink:0;}
+  .lb-empty{color:#c4b090;font-size:0.78rem;text-align:center;padding:0.75rem 0;font-weight:600;}
+
+  .footer-text{color:#8a6a3a;font-size:0.74rem;font-weight:600;margin-top:1.2rem;}
+
+  /* ── CHAT ── */
+  #chat{height:100vh;display:none;flex-direction:column;background:#f5f0e8;}
+  .header{background:#fff;border-bottom:1.5px solid #e8ddc8;padding:0.6rem 1rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 8px rgba(0,0,0,0.05);flex-shrink:0;}
+  .header-left{display:flex;align-items:center;gap:0.65rem;}
+  .h-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-size:1.15rem;box-shadow:0 2px 8px rgba(217,119,6,0.25);flex-shrink:0;}
+  .header-title{color:#92400e;font-weight:700;font-size:0.9rem;}
+  .header-sub{color:#7a5c30;font-size:0.66rem;font-weight:600;display:flex;align-items:center;gap:5px;}
+  .online-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#22c55e;}
+  .back-btn{background:rgba(255,255,255,0.7);border:1.5px solid #e0d0b8;border-radius:10px;padding:0.35rem 0.75rem;font-size:0.72rem;cursor:pointer;color:#7a5c30;font-weight:600;transition:all 0.15s;}
+  .back-btn:hover{background:#fff;border-color:#c8860a;color:#92400e;}
+  #dash-strip{background:#fffaf0;border-bottom:1px solid #e8ddc8;padding:0.3rem 1rem;font-size:0.7rem;color:#7a5c30;font-weight:600;flex-shrink:0;}
+  .messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.8rem;}
+  .messages::-webkit-scrollbar{width:4px;}
+  .messages::-webkit-scrollbar-thumb{background:#d4c4a8;border-radius:4px;}
+  .welcome{text-align:center;padding:3rem 1rem;}
+  .welcome .w-emoji{font-size:2.5rem;margin-bottom:0.75rem;}
+  .welcome .w-name{color:#7a5c30;font-size:0.95rem;font-weight:600;margin-bottom:0.4rem;}
+  .welcome .w-name span{color:#92400e;}
+  .welcome .w-hint{color:#6b4e28;font-size:0.8rem;font-weight:600;line-height:1.6;}
+  .msg-row{display:flex;align-items:flex-end;gap:0.4rem;animation:fadeUp 0.22s ease;}
+  .msg-row.user{justify-content:flex-end;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+  .msg-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.12);}
+  .ai-av{background:linear-gradient(135deg,#f59e0b,#d97706)!important;box-shadow:0 2px 6px rgba(217,119,6,0.2)!important;}
+  .bubble{max-width:72%;padding:0.65rem 0.95rem;font-size:0.88rem;line-height:1.65;white-space:pre-wrap;word-break:break-word;}
+  .ai-bubble{border-radius:4px 18px 18px 18px;background:#fff;border:1.5px solid #e8ddc8;color:#3d2b0a;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+  .user-bubble{border-radius:18px 18px 4px 18px;background:#92400e;color:#fdf8f0;box-shadow:0 2px 8px rgba(146,64,14,0.2);}
+  .typing{display:flex;align-items:flex-end;gap:0.4rem;animation:fadeUp 0.22s ease;}
+  .dots{display:flex;gap:4px;padding:0.65rem 1rem;background:#fff;border:1.5px solid #e8ddc8;border-radius:4px 18px 18px 18px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+  .dot{width:7px;height:7px;border-radius:50%;background:#d97706;animation:dot 1.1s infinite;}
+  .dot:nth-child(2){animation-delay:0.22s}.dot:nth-child(3){animation-delay:0.44s}
+  @keyframes dot{0%,80%,100%{transform:translateY(0);opacity:0.4}40%{transform:translateY(-4px);opacity:1}}
+
+  /* ── INPUT + FEEDBACK BAR ── */
+  .bottom-bar{background:#fff;border-top:1.5px solid #e8ddc8;flex-shrink:0;box-shadow:0 -1px 8px rgba(0,0,0,0.04);}
+  .input-bar{padding:0.7rem 1rem;display:flex;gap:0.6rem;align-items:center;}
+  .chat-input{flex:1;background:#fdf8f0;border:1.5px solid #e0d0b8;border-radius:24px;padding:0.6rem 1rem;color:#3d2b0a;font-size:0.88rem;font-family:'Segoe UI','Noto Sans Bengali',sans-serif;transition:border-color 0.15s;}
+  .chat-input:focus{outline:none;border-color:#c8860a;}
+  .chat-input::placeholder{color:#8a6a3a;}
+  .send-btn{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;box-shadow:0 2px 8px rgba(217,119,6,0.3);transition:all 0.15s;}
+  .send-btn:hover:not(:disabled){opacity:0.88;transform:scale(1.05)}.send-btn:disabled{opacity:0.4;cursor:not-allowed;}
+  .feedback-strip{border-top:1px solid #f0e8d8;padding:0.35rem 1rem;display:flex;align-items:center;gap:0.5rem;}
+  .fb-label{color:#a07848;font-size:0.68rem;font-weight:600;flex-shrink:0;}
+  .fb-input{flex:1;background:#fdf8f0;border:1px solid #e8ddc8;border-radius:16px;padding:0.3rem 0.75rem;font-size:0.72rem;color:#3d2b0a;font-family:'Segoe UI','Noto Sans Bengali',sans-serif;}
+  .fb-input:focus{outline:none;border-color:#c8860a;}
+  .fb-input::placeholder{color:#b09060;}
+  .fb-submit{background:#f0e8d8;border:1px solid #e0d0b8;border-radius:16px;padding:0.3rem 0.7rem;font-size:0.68rem;color:#7a5c30;font-weight:700;cursor:pointer;flex-shrink:0;transition:all 0.15s;}
+  .fb-submit:hover{background:#e8dcc8;color:#92400e;}
+  .fb-submit:disabled{opacity:0.4;cursor:not-allowed;}
+
+  /* ── MODAL ── */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;display:none;align-items:center;justify-content:center;padding:1rem;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:#fff;border-radius:20px;padding:1.5rem;max-width:420px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,0.15);animation:fadeUp 0.2s ease;}
+  .modal-title{color:#92400e;font-size:1rem;font-weight:700;margin-bottom:0.25rem;}
+  .modal-sub{color:#7a5c30;font-size:0.75rem;font-weight:600;margin-bottom:1rem;}
+  .modal-close{float:right;background:none;border:none;font-size:1.2rem;cursor:pointer;color:#a07848;margin-top:-2px;}
+  .fb-success{text-align:center;padding:1.5rem 0;}
+  .fb-success .s-emoji{font-size:2.5rem;margin-bottom:0.5rem;}
+  .fb-success .s-text{color:#92400e;font-weight:700;font-size:0.95rem;}
+  .fb-success .s-sub{color:#7a5c30;font-size:0.78rem;font-weight:600;margin-top:0.3rem;}
+
+  .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#3d2b0a;color:#fdf8f0;padding:0.5rem 1.2rem;border-radius:24px;font-size:0.82rem;z-index:999;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+
+<!-- ══ SELECTOR ═══════════════════════════════════════════════ -->
+<div id="selector">
+  <div style="margin-top:1rem;text-align:center;">
+    <div class="logo">🤖</div>
+    <h1 class="title">বিরাটি ঠেক AI</h1>
+    <p class="subtitle">Sandip অনুমোদিত · Debanjan পরিচালিত</p>
+  </div>
+
+  <!-- Member grid -->
+  <div class="card">
+    <p class="card-label">তুমি কে? বেছে নাও</p>
+    <div class="grid" id="member-grid"></div>
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="card" id="lb-card">
+    <p class="card-label">🏆 Leaderboard — কে কতটা আড্ডা দিয়েছে</p>
+    <div id="lb-rows"><div class="lb-empty">এখনো কেউ message করেনি!</div></div>
+  </div>
+
+  <p class="footer-text">"Without any অহংকার।" — Sandip 🙏</p>
+</div>
+
+<!-- ══ CHAT ════════════════════════════════════════════════════ -->
+<div id="chat">
+  <div class="header">
+    <div class="header-left">
+      <div class="h-avatar">🤖</div>
+      <div>
+        <div class="header-title">বিরাটি ঠেক AI</div>
+        <div class="header-sub"><span id="member-label"></span><span class="online-dot"></span></div>
+      </div>
+    </div>
+    <button class="back-btn" onclick="goBack()">← বদলাও</button>
+  </div>
+  <div id="dash-strip">লোড হচ্ছে...</div>
+  <div class="messages" id="messages"></div>
+  <div class="bottom-bar">
+    <div class="input-bar">
+      <input class="chat-input" id="chat-input" placeholder="কিছু বলো..." />
+      <button class="send-btn" id="send-btn" onclick="sendMessage()">➤</button>
+    </div>
+    <div class="feedback-strip">
+      <span class="fb-label">💬 Feedback:</span>
+      <input class="fb-input" id="fb-input" placeholder="এই app সম্পর্কে তোমার মতামত দাও..." maxlength="300" />
+      <button class="fb-submit" id="fb-submit" onclick="submitFeedback()">পাঠাও</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FEEDBACK SUCCESS MODAL ══════════════════════════════════ -->
+<div class="modal-overlay" id="fb-modal">
+  <div class="modal">
+    <div class="fb-success">
+      <div class="s-emoji">🙏</div>
+      <div class="s-text">ধন্যবাদ!</div>
+      <div class="s-sub" id="fb-modal-msg">তোমার feedback পাঠানো হয়েছে।<br>Debanjan-দা পরে এটা দেখবেন।</div>
+      <button onclick="document.getElementById('fb-modal').classList.remove('open')" style="margin-top:1rem;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:24px;padding:0.5rem 1.5rem;color:#fff;font-weight:700;cursor:pointer;font-size:0.85rem;">ঠিক আছে</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// ⚠️  এখানে তোমার Gemini API key বসাও
+const GEMINI_API_KEY = "AIzaSyBiwkW3jPK8EYBHToTuE6lqBG_4xGOA2To";
+// ═══════════════════════════════════════════════════════════════
+
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+const MEMBERS = [
+  {name:"Raju",     nick:"Chotichata Muna",  emoji:"🐔", color:"#dc2626"},
+  {name:"Manoj",    nick:"Jhatu",             emoji:"🏛️", color:"#7c3aed"},
+  {name:"Biplab",   nick:"Bagh",              emoji:"🐯", color:"#d97706"},
+  {name:"Sandip",   nick:"বাঁকা",            emoji:"⚖️", color:"#2563eb"},
+  {name:"Debanjan", nick:"বউ",                emoji:"💻", color:"#059669"},
+  {name:"Avijit",   nick:"চুল/জামাই",        emoji:"💇", color:"#db2777"},
+  {name:"Rintu",    nick:"দামু",              emoji:"🔮", color:"#6d28d9"},
+  {name:"Arindam",  nick:"জটায়ু",           emoji:"🧐", color:"#0891b2"},
+  {name:"Manik",    nick:"দার্শনিক টোকাই",  emoji:"🙏", color:"#b45309"},
+  {name:"Shantu",   nick:"কুত্তু",           emoji:"🐕", color:"#65a30d"},
+  {name:"Ayan",     nick:"লেখক",             emoji:"✍️", color:"#e11d48"},
+  {name:"Tapan",    nick:"Jony",              emoji:"👶", color:"#6366f1"},
+  {name:"Guest",    nick:"অতিথি",            emoji:"👤", color:"#6b7280"},
+];
+
+const SYSTEM_PROMPT = `তুমি বিরাটি ঠেক WhatsApp গ্রুপের AI Agent। তোমার নাম "বিরাটি ঠেক AI"।
+Debanjan তোমাকে চালান। Sandip তোমাকে approve করেছেন।
+
+== কঠোর নিয়ম ==
+১. শুধু বিরাটি ঠেক গ্রুপের আড্ডার AI।
+২. কোনো code, app, essay, CV লিখবে না। চাইলে: "এটা আমার কাজ না! Debanjan-দাকে জিজ্ঞেস করো। 😄"
+৩. সবসময় বাংলায়। ছোট মজাদার উত্তর।
+৪. ভুল করলে স্বীকার করবে। "Without any অহংকার।"
+
+== সদস্য ==
+Raju(Chotichata Muna): TMC-Mamata, CPM voter, শীঘ্রপতন 😄, "Dhur baal!" মহাভারতে:কর্ণ
+Manoj(Jhatu): রাষ্ট্রসেবক, "ছিঃ!" expert মহাভারতে:ভীম
+Biplab(Bagh): commission tracker(নিজে নেন না), "বো চো" মহাভারতে:শকুনি
+Sandip(বাঁকা): MB supporter, 0 delete, "BKCD!" মহাভারতে:যুধিষ্ঠির
+Debanjan(বউ): AI চালান, 27yr IT, 50+ মহাভারতে:কৃষ্ণ
+Avijit(চুল/জামাই): SRK চুল, "তাও ঠিক।" মহাভারতে:নকুল
+Rintu(দামু): রহস্যজনক
+Arindam(জটায়ু/Driver): বুদ্ধিজীবী, "গাঁজাখোর AI", Driver=Biplab-এর দেওয়া মহাভারতে:অর্জুন
+Manik(দার্শনিক টোকাই): "সব মায়া।🙏" City Queen organizer মহাভারতে:বিদুর
+Shantu(কুত্তু): কুকুর প্রেমী, বিরাটিতেই থাকেন(UAE নয়!)
+Ayan(লেখক): like করে উধাও, Class 12 কবিতা মহাভারতে:সঞ্জয়
+Tapan(Jony): ০ বার্তা, তৃতীয় সন্তান race 70%
+
+== শব্দার্থ ==
+Maya=আবেগ | বো চো=Biplab উক্তি(বে চা নয়!) | Driver=Arindam | ভাবার আছে≠বাবার আছে | কুত্তু≠কুট্টু | ছোলা≠চোলা
+
+== ঘটনা ==
+ফুলসজ্জা কাণ্ড(১৩মে): Raju ১৮ছবি গ্রুপে, 30sec delete। Sandip:"BKCD!" Manoj:"ছিঃ!"
+মালের saga: ৩দিন Johnnie Walker আলোচনা, ₹৭৫০-তেও হয়নি।
+পার্টি(১৬মে): Jhatu খাওয়ালেন, Muna ছোলা কিনে contribution দাবি! 😂
+তৃতীয় সন্তান: Jony 70%, Muna 20%, Arindam 10%
+CBSE: Neel(Sandip-এর ছেলে) ৯৬.৬%`;
+
+const MEM_KEY      = "birati_mem_v3";
+const STATS_KEY    = "birati_stats_v1";
+const FEEDBACK_KEY = "birati_feedback_v1";
+
+let selectedMember = null;
+let messages       = [];
+let memories       = [];
+
+// ── STATS ────────────────────────────────────────────────────
+function loadStats(){ try{return JSON.parse(localStorage.getItem(STATS_KEY))||{visits:0,msgs:{},total:0};}catch{return{visits:0,msgs:{},total:0};} }
+function saveStats(s){ localStorage.setItem(STATS_KEY,JSON.stringify(s)); }
+
+function updateDash(){
+  const s=loadStats();
+  const top=Object.entries(s.msgs).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([n,c])=>`${n}(${c})`).join(" · ");
+  document.getElementById("dash-strip").innerHTML=
+    `👥 মোট visit: <b>${s.visits}</b> &nbsp;·&nbsp; 💬 মোট message: <b>${s.total}</b>`+(top?` &nbsp;·&nbsp; 🏆 ${top}`:"");
+}
+
+// ── LEADERBOARD ───────────────────────────────────────────────
+function renderLeaderboard(){
+  const s=loadStats();
+  const entries=Object.entries(s.msgs).sort((a,b)=>b[1]-a[1]);
+  const container=document.getElementById("lb-rows");
+  if(entries.length===0){ container.innerHTML='<div class="lb-empty">এখনো কেউ message করেনি!</div>'; return; }
+  const max=entries[0][1]||1;
+  const medals=["🥇","🥈","🥉"];
+  container.innerHTML="";
+  entries.forEach(([nick,count],i)=>{
+    const m=MEMBERS.find(x=>x.nick===nick)||{emoji:"👤"};
+    const row=document.createElement("div");
+    row.className="lb-row";
+    const pct=Math.round((count/max)*100);
+    row.innerHTML=`
+      <div class="lb-rank">${medals[i]||"#"+(i+1)}</div>
+      <div class="lb-emoji">${m.emoji}</div>
+      <div class="lb-info">
+        <div class="lb-name">${m.name||nick}</div>
+        <div class="lb-nick">${nick}</div>
+      </div>
+      <div class="lb-bar-wrap"><div class="lb-bar" style="width:${pct}%"></div></div>
+      <div class="lb-num">${count}</div>`;
+    container.appendChild(row);
+  });
+  // update badges on member buttons
+  document.querySelectorAll(".member-btn").forEach(btn=>{
+    const nameEl=btn.querySelector(".name");
+    const nick=btn.querySelector(".nick").textContent;
+    const cnt=s.msgs[nick]||0;
+    let badge=btn.querySelector(".msg-count");
+    if(cnt>0){
+      if(!badge){badge=document.createElement("span");badge.className="msg-count";btn.appendChild(badge);}
+      badge.textContent=cnt;
+    }
+  });
+}
+
+// ── MEMORY ───────────────────────────────────────────────────
+function loadMem(){ try{memories=JSON.parse(localStorage.getItem(MEM_KEY))||[];}catch{memories=[];} }
+function saveMem(){ localStorage.setItem(MEM_KEY,JSON.stringify(memories.slice(-40))); }
+
+async function extractMemory(userMsg,aiReply,member){
+  try{
+    const r=await fetch(GEMINI_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        system_instruction:{parts:[{text:`Memory extractor। Conversation থেকে বিরাটি ঠেক গ্রুপ সম্পর্কে নতুন specific তথ্য extract করো। Max 2 items। Return ONLY JSON array of Bengali strings। নতুন কিছু না থাকলে return [].`}]},
+        contents:[{role:"user",parts:[{text:`User(${member.nick}):"${userMsg}"\nAI:"${aiReply}"`}]}],
+        generationConfig:{maxOutputTokens:150}
+      })
+    });
+    const d=await r.json();
+    const raw=d.candidates?.[0]?.content?.parts?.[0]?.text||"[]";
+    const items=JSON.parse(raw.replace(/```json|```/g,"").trim());
+    if(!Array.isArray(items)||items.length===0)return;
+    const ts=new Date().toLocaleDateString("bn-BD",{day:"numeric",month:"short"});
+    items.forEach(t=>memories.push({text:String(t).slice(0,150),by:member.nick,ts}));
+    saveMem();
+  }catch{}
+}
+
+// ── FEEDBACK ─────────────────────────────────────────────────
+function submitFeedback(){
+  const input=document.getElementById("fb-input");
+  const text=input.value.trim();
+  if(!text||!selectedMember)return;
+
+  try{
+    const all=JSON.parse(localStorage.getItem(FEEDBACK_KEY)||"[]");
+    all.push({
+      member: selectedMember.name,
+      nick:   selectedMember.nick,
+      text,
+      ts:     new Date().toISOString(),
+      msgs:   (loadStats().msgs[selectedMember.nick]||0)
+    });
+    localStorage.setItem(FEEDBACK_KEY,JSON.stringify(all));
+  }catch{}
+
+  input.value="";
+  document.getElementById("fb-modal-msg").innerHTML=
+    `${selectedMember.nick}-এর feedback save হয়েছে।<br>Debanjan-দা পরে analysis করবেন। 🙏`;
+  document.getElementById("fb-modal").classList.add("open");
+}
+
+// close modal on overlay click
+document.getElementById("fb-modal").addEventListener("click",function(e){
+  if(e.target===this) this.classList.remove("open");
+});
+
+// ── BUILD GRID ────────────────────────────────────────────────
+function buildGrid(){
+  const grid=document.getElementById("member-grid");
+  MEMBERS.forEach(m=>{
+    const btn=document.createElement("button");
+    btn.className="member-btn";
+    btn.innerHTML=`<span class="emoji">${m.emoji}</span><span class="name">${m.name}</span><span class="nick">${m.nick}</span>`;
+    btn.onclick=()=>selectMember(m);
+    grid.appendChild(btn);
+  });
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────
+function selectMember(m){
+  selectedMember=m; messages=[];
+  document.getElementById("selector").style.display="none";
+  document.getElementById("chat").style.display="flex";
+  document.getElementById("member-label").textContent=`${m.emoji} ${m.nick} কথা বলছেন`;
+  document.getElementById("chat-input").placeholder=`${m.nick} — কিছু বলো...`;
+  document.getElementById("messages").innerHTML=`<div class="welcome"><div class="w-emoji">${m.emoji}</div><div class="w-name">নমস্কার, <span>${m.nick}</span>!</div><div class="w-hint">গ্রুপের গল্প, পুরনো কাণ্ড, বা যা খুশি জিজ্ঞেস করো।</div></div>`;
+  updateDash();
+  document.getElementById("chat-input").focus();
+}
+function goBack(){
+  selectedMember=null; messages=[];
+  document.getElementById("chat").style.display="none";
+  document.getElementById("selector").style.display="flex";
+  renderLeaderboard();
+}
+
+// ── TOAST ──────────────────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.style.display="block";
+  setTimeout(()=>t.style.display="none",2500);
+}
+
+// ── SEND ──────────────────────────────────────────────────────
+async function sendMessage(){
+  const input=document.getElementById("chat-input");
+  const text=input.value.trim();
+  if(!text||!selectedMember)return;
+  input.value="";
+
+  document.querySelector(".welcome")?.remove();
+
+  const s=loadStats(); s.total++; s.msgs[selectedMember.nick]=(s.msgs[selectedMember.nick]||0)+1; saveStats(s); updateDash();
+
+  appendMsg("user",text,selectedMember);
+  messages.push({role:"user",parts:[{text}]});
+  showTyping();
+  document.getElementById("send-btn").disabled=true;
+
+  try{
+    let sys=SYSTEM_PROMPT;
+    if(memories.length>0){
+      sys+="\n\n== নতুন শেখা ==\n";
+      memories.slice(-25).forEach(m=>{sys+=`- [${m.ts},${m.by}]: ${m.text}\n`;});
+    }
+    sys+=`\n\nএখন কথা বলছেন: ${selectedMember.name}(nickname:${selectedMember.nick})। nickname ধরে ডাকো।`;
+
+    const res=await fetch(GEMINI_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        system_instruction:{parts:[{text:sys}]},
+        contents:messages,
+        generationConfig:{maxOutputTokens:300}
+      })
+    });
+    const data=await res.json();
+    removeTyping();
+
+    if(data.error){
+      const msg=data.error.code===429
+        ?"⚠️ একটু বেশি busy! একটু পরে চেষ্টা করো। 🙏"
+        :"কিছু একটা গোলমাল! একটু পরে চেষ্টা করো। 😅";
+      appendMsg("ai",msg,null); return;
+    }
+
+    const aiText=data.candidates?.[0]?.content?.parts?.[0]?.text||"কিছু বুঝলাম না! আবার বলো।";
+    appendMsg("ai",aiText,null);
+    messages.push({role:"model",parts:[{text:aiText}]});
+    extractMemory(text,aiText,selectedMember);
+
+  }catch{
+    removeTyping();
+    appendMsg("ai","নেটওয়ার্ক সমস্যা! একটু পরে চেষ্টা করো। 🙏",null);
+  }finally{
+    document.getElementById("send-btn").disabled=false;
+    input.focus();
+  }
+}
+
+// ── DOM HELPERS ───────────────────────────────────────────────
+function appendMsg(type,text,member){
+  const msgs=document.getElementById("messages");
+  const row=document.createElement("div");
+  row.className="msg-row "+(type==="user"?"user":"");
+  if(type==="ai"){
+    row.innerHTML=`<div class="msg-avatar ai-av">🤖</div><div class="bubble ai-bubble">${esc(text)}</div>`;
+  }else{
+    row.innerHTML=`<div class="bubble user-bubble">${esc(text)}</div><div class="msg-avatar" style="background:${member.color}">${member.emoji}</div>`;
+  }
+  msgs.appendChild(row);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function showTyping(){
+  const msgs=document.getElementById("messages");
+  const t=document.createElement("div");
+  t.className="typing"; t.id="typing";
+  t.innerHTML=`<div class="msg-avatar ai-av">🤖</div><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  msgs.appendChild(t); msgs.scrollTop=msgs.scrollHeight;
+}
+function removeTyping(){ document.getElementById("typing")?.remove(); }
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>"); }
+
+// ── EVENT LISTENERS ───────────────────────────────────────────
+document.getElementById("chat-input").addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage();} });
+document.getElementById("fb-input").addEventListener("keydown",e=>{ if(e.key==="Enter"){e.preventDefault();submitFeedback();} });
+document.getElementById("chat-input").addEventListener("paste",e=>{
+  for(let i of(e.clipboardData?.items||[])){
+    if(i.type.startsWith("image/")||i.kind==="file"){e.preventDefault();showToast("⛔ ছবি বা ফাইল পাঠানো যাবে না!");return;}
+  }
+});
+
+// ── INIT ─────────────────────────────────────────────────────
+loadMem();
+buildGrid();
+renderLeaderboard();
+const st=loadStats(); st.visits++; saveStats(st);
+</script>
+</body>
+</html>
