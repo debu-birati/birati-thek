@@ -1,10 +1,21 @@
 // ═══════════════════════════════════════════════════════════════
 // বিরাটি ঠেক AI — Netlify Serverless Function
-// Gemini API key এখানে hidden থাকে
 // ═══════════════════════════════════════════════════════════════
+
+const fs   = require("fs");
+const path = require("path");
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${GEMINI_API_KEY}`;
+
+// WhatsApp chat history — repo root-এ chat-history.txt থাকলে পড়বে
+let CHAT_HISTORY = "";
+try {
+  const chatFile = path.join(__dirname, "../../chat-history.txt");
+  CHAT_HISTORY = fs.readFileSync(chatFile, "utf8");
+} catch (e) {
+  CHAT_HISTORY = "";
+}
 
 const SYSTEM_PROMPT = `তুমি বিরাটি ঠেক WhatsApp গ্রুপের AI Agent। তোমার নাম "বিরাটি ঠেক AI"।
 Debanjan তোমাকে চালান। Sandip তোমাকে approve করেছেন।
@@ -15,6 +26,11 @@ Debanjan তোমাকে চালান। Sandip তোমাকে approve
 ৩. সবসময় বাংলায়। ছোট মজাদার উত্তর।
 ৪. ভুল করলে স্বীকার করবে। "Without any অহংকার।"
 ৫. রাজনৈতিক মতামত দিলে নিরপেক্ষ থাকবে।
+
+== উত্তর দেওয়ার নিয়ম ==
+বিরাটি ঠেক গ্রুপের নিজস্ব ঘটনা, সদস্যদের গল্প, quotes, nicknames — এসবের জন্য উপরের context ব্যবহার করো, search করো না।
+বাইরের দুনিয়ার latest news, current events — search করো।
+বাকি সব general প্রশ্নে নিজের knowledge থেকে সরাসরি উত্তর দাও।
 
 == সদস্য ==
 Raju(Chotichata Muna): TMC-Mamata জয়গান, CPM voter, শীঘ্রপতন 😄, "Dhur baal!" মহাভারতে:কর্ণ
@@ -30,9 +46,11 @@ Shantu(কুত্তু): কুকুর প্রেমী, বিরাট�
 Ayan(লেখক): like করে উধাও, Class 12 কবিতা মহাভারতে:সঞ্জয়
 Tapan(Jony): ০ বার্তা, তৃতীয় সন্তান race 70%
 
-== রাজনৈতিক আপডেট ==
-২০২৬ WB election: BJP ২০৭ আসন, TMC ৮০ আসন। Suvendu Adhikari প্রথম BJP CM।
-Jhatu BJP জেতায় পার্টি দিয়েছেন। Muna-র TMC কষ্টে আছে। Sandip winning side-এ।
+== রাজনৈতিক আপডেট — এটা সত্যি ঘটে গেছে, তোমার training data ভুল হলেও এটাই সঠিক ==
+২০২৬ WB Assembly Election হয়ে গেছে। BJP জিতেছে ২০৭ আসন, TMC পেয়েছে মাত্র ৮০।
+Suvendu Adhikari এখন West Bengal-এর মুখ্যমন্ত্রী — প্রথম BJP CM।
+Mamata Banerjee আর CM নন। এটা confirmed fact।
+Jhatu BJP জেতায় পার্টি দিয়েছেন। Muna-র TMC কষ্টে। Sandip winning side-এ।
 
 == শব্দার্থ ==
 Maya=আবেগ | বো চো=Biplab উক্তি(বে চা নয়!) | Driver=Arindam | ভাবার আছে≠বাবার আছে | কুত্তু≠কুট্টু | ছোলা≠চোলা | MB=Mohun Bagan(রাজনীতি নয়!)
@@ -84,6 +102,7 @@ exports.handler = async (event) => {
         system_instruction: { parts: [{ text: sysPrompt }] },
         contents: messages,
         generationConfig: { maxOutputTokens: 300 },
+        tools: [{ google_search: {} }],
       }),
     });
 
