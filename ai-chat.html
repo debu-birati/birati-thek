@@ -375,13 +375,6 @@ async function sendMessage(){
   document.getElementById("send-btn").disabled=true;
 
   try{
-    let sys=SYSTEM_PROMPT;
-    if(memories.length>0){
-      sys+="\n\n== নতুন শেখা ==\n";
-      memories.slice(-25).forEach(m=>{sys+=`- [${m.ts},${m.by}]: ${m.text}\n`;});
-    }
-    sys+=`\n\nএখন কথা বলছেন: ${selectedMember.name}(nickname:${selectedMember.nick})। nickname ধরে ডাকো।`;
-
     let aiText, attempt=0;
     while(attempt<3){
       try{
