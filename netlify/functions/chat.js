@@ -102,7 +102,7 @@ exports.handler = async (event) => {
         system_instruction: { parts: [{ text: sysPrompt }] },
         contents: messages,
         generationConfig: { maxOutputTokens: 300 },
-        tools: [{ google_search: {} }],
+
       }),
     });
 
