@@ -21,21 +21,24 @@ async function redisGet(key) {
     headers: { Authorization: `Bearer ${REDIS_TOKEN}` }
   });
   const data = await res.json();
-  // data.result is a JSON string or null
   if (!data.result) return null;
-  try { return JSON.parse(data.result); }
-  catch { return null; }
+  try {
+    // result is a JSON string stored by redisSet
+    return JSON.parse(data.result);
+  } catch { return null; }
 }
 
-// Upstash REST SET: POST /set/{key}  body = value as string
+// Upstash REST SET: POST /set/{key} with value in body as plain string
 async function redisSet(key, value) {
-  const res = await fetch(`${REDIS_URL}/set/${key}`, {
+  const valueStr = JSON.stringify(value);
+  // Upstash REST API: body হলো array format ["SET", key, value]
+  const res = await fetch(`${REDIS_URL}`, {
     method:  "POST",
     headers: {
       Authorization: `Bearer ${REDIS_TOKEN}`,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(JSON.stringify(value)) // double stringify: outer for body, inner stored as string
+    body: JSON.stringify(["SET", key, valueStr])
   });
   const data = await res.json();
   return data.result === "OK";
@@ -67,8 +70,7 @@ module.exports = async function handler(req, res) {
       if (!REDIS_URL || !REDIS_TOKEN) {
         return res.status(200).json({ ok: true });
       }
-      const { visits, total, msgs } = req.body;
-      await redisSet(STATS_KEY, { visits, total, msgs });
+      await redisSet(STATS_KEY, req.body);
       return res.status(200).json({ ok: true });
     } catch (e) {
       console.error("Stats POST error:", e.message);
