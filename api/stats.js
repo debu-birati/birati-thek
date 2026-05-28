@@ -43,6 +43,7 @@ async function redisSet(key, value) {
 
 module.exports = async function handler(req, res) {
   Object.entries(CORS).forEach(([k, v]) => res.setHeader(k, v));
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
 
   if (req.method === "OPTIONS") return res.status(200).end();
 
