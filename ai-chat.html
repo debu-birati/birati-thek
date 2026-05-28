@@ -329,17 +329,19 @@ function saveMem(){ localStorage.setItem(MEM_KEY,JSON.stringify(memories.slice(-
 async function extractMemory(userMsg,aiReply,member){
   await new Promise(r=>setTimeout(r,20000));
   try{
-    const res=await fetch(API_URL,{
+    const prompt = "Memory extractor। এই conversation থেকে বিরাটি ঠেক গ্রুপ সম্পর্কে নতুন specific তথ্য থাকলে extract করো। Max 2 items। Return ONLY JSON array of Bengali strings। নতুন কিছু না থাকলে return []. User(" + member.nick + "):" + userMsg + " AI:" + aiReply;
+    const res=await fetch(GEMINI_URL,{
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
-        messages:[{role:"user",parts:[{text:`Memory extractor। এই conversation থেকে বিরাটি ঠেক গ্রুপ সম্পর্কে নতুন specific তথ্য থাকলে extract করো। Max 2 items। Return ONLY JSON array of Bengali strings। নতুন কিছু না থাকলে return []. User(${member.nick}):"${userMsg}" AI:"${aiReply}"`}]}],
-        memberName:"Memory",
-        memberNick:"Extractor"
+        system_instruction:{parts:[{text:"You are a memory extractor. Return only a JSON array."}]},
+        contents:[{role:"user",parts:[{text:prompt}]}],
+        generationConfig:{maxOutputTokens:150}
       })
     });
     const d=await res.json();
-    const raw=d.text||"[]";
+    if(d.error)return;
+    const raw=d.candidates?.[0]?.content?.parts?.[0]?.text||"[]";
     const items=JSON.parse(raw.replace(/```json|```/g,"").trim());
     if(!Array.isArray(items)||items.length===0)return;
     const ts=new Date().toLocaleDateString("bn-BD",{day:"numeric",month:"short"});
