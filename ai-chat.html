@@ -201,13 +201,27 @@ const VERCEL_URL = "/api/chat";  // Vercel serverless function
 
 // ══ Search Routing (chat history analysis থেকে) ══════════════
 const NO_SEARCH = [
-  "muna","chotichata","jhatu","bagh","baanka","sandip","bou",
-  "debanjan","chul","jamai","avijit","damu","rintu","jatayu",
-  "driver","arindam","tokai","manik","kuttu","shantu","lekhok",
-  "ayan","jony","tapan","bubai","fulshojja","johnnie","jhony",
-  "city queen","thek","adda","commission","bo cho","bkcd",
-  "dhur baal","chhih","sob maya","tao thik","tarot","sriram",
-  "kobita","mahabharat","birati","bulbuli","maya","maal"
+  // সদস্যদের নাম ও ডাকনাম
+  "muna","chotichata","raju","jhatu","manoj","bagh","tiger","biplab",
+  "baanka","sandip","bou","debanjan","chul","jamai","avijit",
+  "damu","rintu","jatayu","jotayu","driver","arindam","maya",
+  "tokai","manik","kuttu","shantu","lekhok","ayan","jony",
+  "tapan","bubai","neel","bulbuli",
+  // ঠেকের জায়গা ও ঘটনা
+  "birati","thek","adda","city queen","fulshojja","fulsojja",
+  // মাল saga
+  "maal","johnnie","jhony","walker","black label","whisky","drink",
+  // signature phrases
+  "bo cho","bkcd","dhur baal","chhih","sob maya","tao thik",
+  "kichhu bolar nei","mayabi","modhur","commission","tokai guide",
+  "rashtra","rashtrer","jiboon samorpon",
+  // ঐতিহাসিক ঘটনা
+  "mahabharat","kobita","jantrer manush","anthorpradesh","tirtho shontan",
+  "cake","tarot","sriram","shriram","eastbengal","east bengal","mohun bagan",
+  // website
+  "btnn","dashboard","court","creative","quotes","members",
+  // misc thek
+  "hajaranore","dokan","battery","choola","chola","party","beer"
 ];
 const SEARCH_TRIGGERS = [
   "election","vote","bjp","tmc","mamata","suvendu","modi",
@@ -220,9 +234,10 @@ const SEARCH_TRIGGERS = [
 
 function needsWebSearch(query) {
   const q = query.toLowerCase();
+  // Thek-internal → search করো না
   if (NO_SEARCH.some(k => q.includes(k))) return false;
-  if (SEARCH_TRIGGERS.some(k => q.includes(k))) return true;
-  return false;
+  // বাকি সব → search করো (hormoz, ipl, weather, যেকোনো বাইরের বিষয়)
+  return true;
 }
 
 // ══ System Prompt ════════════════════════════════════════════
