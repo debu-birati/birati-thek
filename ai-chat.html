@@ -461,6 +461,11 @@ async function sendMessage(){
     appendMsg("ai",aiText,null,searchUsed);
     messages.push({role:"model",parts:[{text:aiText}]});
 
+    // Memory: max 20 messages (10 turns) রাখো — পুরনো কেটে দাও
+    if(messages.length > 20) {
+      messages = messages.slice(messages.length - 20);
+    }
+
   }catch{
     removeTyping();
     appendMsg("ai","নেটওয়ার্ক সমস্যা! একটু পরে চেষ্টা করো। 🙏",null);
