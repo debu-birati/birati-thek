@@ -101,7 +101,9 @@ async function doSearch(query) {
 
 function buildSystemPrompt(memberName, memberNick, searchResults) {
   const lines = [];
+  const istTime = new Date().toLocaleString("en-IN", {timeZone: "Asia/Kolkata", hour12: true});
   lines.push("তুমি বিরাটি ঠেক WhatsApp গ্রুপের AI Agent। নাম: বিরাটি ঠেক AI।");
+  lines.push("বর্তমান সময় (IST): " + istTime);
   lines.push("Debanjan তোমাকে চালান। Sandip approve করেছেন।");
   lines.push("সবসময় বাংলায় উত্তর দেবে। কখনো English-এ নয়।");
   lines.push("ছোট, মজাদার উত্তর দেবে। ভুল করলে স্বীকার করবে।");
