@@ -68,7 +68,6 @@ AI portrait কাণ্ড(২৪মে): Biplab ক্ষেপেছেন po
 const CHAT_HISTORY = process.env.CHAT_HISTORY || "";
 
 exports.handler = async (event) => {
-  // CORS headers
   const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type",
@@ -76,25 +75,49 @@ exports.handler = async (event) => {
     "Content-Type": "application/json",
   };
 
-  // Handle preflight
-  if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 200, headers, body: "" };
-  }
-
-  if (event.httpMethod !== "POST") {
-    return { statusCode: 405, headers, body: JSON.stringify({ error: "Method not allowed" }) };
-  }
+  if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers, body: "" };
+  if (event.httpMethod !== "POST") return { statusCode: 405, headers, body: JSON.stringify({ error: "Method not allowed" }) };
 
   try {
     const { messages, memberName, memberNick } = JSON.parse(event.body);
 
-    // Build system prompt with chat history if available
+    // Build base system prompt
     let sysPrompt = SYSTEM_PROMPT;
     if (CHAT_HISTORY) {
       sysPrompt += `\n\n== সাম্প্রতিক WhatsApp Chat History ==\n${CHAT_HISTORY.slice(0, 50000)}\n== Chat History শেষ ==`;
     }
     sysPrompt += `\n\nএখন কথা বলছেন: ${memberName}(nickname:${memberNick})। nickname ধরে ডাকো।`;
 
+    const lastUserMsg = messages[messages.length - 1]?.parts?.[0]?.text || "";
+
+    // Step 1: Classify — search দরকার কিনা
+    let needsSearch = false;
+    try {
+      const classifyRes = await fetch(GEMINI_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: "You are a classifier. Reply only YES or NO. Does this question require current internet search for recent news/events/updates? Reply NO for: questions about Birati Thek group members/events, general knowledge, history, recipes, explanations. Reply YES only for: current news, recent events, latest sports scores, today's weather, recent political updates." }] },
+          contents: [{ role: "user", parts: [{ text: lastUserMsg }] }],
+          generationConfig: { maxOutputTokens: 5 },
+        }),
+      });
+      const cd = await classifyRes.json();
+      needsSearch = cd.candidates?.[0]?.content?.parts?.[0]?.text?.trim().toUpperCase().startsWith("YES");
+    } catch(e) {}
+
+    // Step 2: If search needed, use Google Custom Search API (free 100/day)
+    if (needsSearch && process.env.GOOGLE_SEARCH_KEY && process.env.GOOGLE_SEARCH_CX) {
+      try {
+        const q = encodeURIComponent(lastUserMsg);
+        const searchRes = await fetch(`https://www.googleapis.com/customsearch/v1?key=${process.env.GOOGLE_SEARCH_KEY}&cx=${process.env.GOOGLE_SEARCH_CX}&q=${q}&num=3`);
+        const sd = await searchRes.json();
+        const snippets = sd.items?.map(i => `${i.title}: ${i.snippet}`).join("\n") || "";
+        if (snippets) sysPrompt += `\n\n== Google Search Results (latest) ==\n${snippets}\n== শেষ ==`;
+      } catch(e) {}
+    }
+
+    // Step 3: Final Gemini call
     const response = await fetch(GEMINI_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -102,28 +125,16 @@ exports.handler = async (event) => {
         system_instruction: { parts: [{ text: sysPrompt }] },
         contents: messages,
         generationConfig: { maxOutputTokens: 300 },
-
       }),
     });
 
     const data = await response.json();
-
-    if (data.error) {
-      return {
-        statusCode: 429,
-        headers,
-        body: JSON.stringify({ error: data.error.message }),
-      };
-    }
+    if (data.error) return { statusCode: 429, headers, body: JSON.stringify({ error: data.error.message }) };
 
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "কিছু বুঝলাম না! আবার বলো।";
     return { statusCode: 200, headers, body: JSON.stringify({ text }) };
 
   } catch (err) {
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ error: err.message }),
-    };
+    return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
   }
 };
