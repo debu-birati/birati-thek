@@ -69,9 +69,16 @@ async function doSearch(query) {
   }
   try {
     console.log("[SEARCH] Tavily calling:", query);
-    const res  = await fetch(
-      `https://api.tavily.com/search?api_key=${TAVILY_API_KEY}&query=${encodeURIComponent(query)}&max_results=3`
-    );
+    const res  = await fetch("https://api.tavily.com/search", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        api_key: TAVILY_API_KEY,
+        query: query,
+        max_results: 3,
+        search_depth: "basic"
+      })
+    });
     const data = await res.json();
     console.log("[SEARCH] HTTP status:", res.status);
     if (!res.ok) {
