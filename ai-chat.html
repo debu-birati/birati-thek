@@ -215,8 +215,9 @@ const SEARCH_TRIGGERS = [
   "election","vote","bjp","tmc","mamata","suvendu","modi",
   "sarkar","government","court","police","arrest","murder",
   "petrol","market","cricket","ipl","football","score",
-  "weather","rain","news","khabar","latest","recent",
-  "আজকের","এখন কি","নতুন খবর","কি হচ্ছে"
+  "weather","rain","cyclone","flood",
+  "latest news","breaking news","নতুন খবর","আজকের খবর",
+  "ekhon ki hochhe","কি হচ্ছে দেশে"
 ];
 
 function needsWebSearch(query) {
@@ -326,7 +327,7 @@ function renderHomeDash(){
 function loadMem(){ try{memories=JSON.parse(localStorage.getItem(MEM_KEY))||[];}catch{memories=[];} }
 function saveMem(){ localStorage.setItem(MEM_KEY,JSON.stringify(memories.slice(-40))); }
 
-async function extractMemory(userMsg,aiReply,member){
+async function extractMemory(userMsg,aiReply,member){ return; // disabled
   await new Promise(r=>setTimeout(r,20000));
   try{
     const prompt = "Memory extractor। এই conversation থেকে বিরাটি ঠেক গ্রুপ সম্পর্কে নতুন specific তথ্য থাকলে extract করো। Max 2 items। Return ONLY JSON array of Bengali strings। নতুন কিছু না থাকলে return []. User(" + member.nick + "):" + userMsg + " AI:" + aiReply;
@@ -495,7 +496,6 @@ async function sendMessage(){
     removeTyping();
     appendMsg("ai",aiText,null);
     messages.push({role:"model",parts:[{text:aiText}]});
-    extractMemory(text,aiText,selectedMember);
 
   }catch{
     removeTyping();
