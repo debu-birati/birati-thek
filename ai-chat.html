@@ -431,6 +431,7 @@ async function sendMessage(){
 
   try{
     let aiText;
+    let searchUsed = false;
     const userText = messages[messages.length-1]?.parts?.[0]?.text || "";
 
     try{
@@ -451,12 +452,13 @@ async function sendMessage(){
         aiText = "কিছু একটা গোলমাল! একটু পরে চেষ্টা করো। 😅";
       } else {
         aiText = data.text || "কিছু বুঝলাম না! আবার বলো।";
+        searchUsed = data.searchUsed || false;
       }
     }catch(e){
       aiText = "নেটওয়ার্ক সমস্যা! একটু পরে চেষ্টা করো। 🙏";
     }
     removeTyping();
-    appendMsg("ai",aiText,null,data?.searchUsed||false);
+    appendMsg("ai",aiText,null,searchUsed);
     messages.push({role:"model",parts:[{text:aiText}]});
 
   }catch{
