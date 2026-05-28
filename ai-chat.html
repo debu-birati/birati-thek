@@ -197,7 +197,8 @@
 const BASE_URL = "https://debu-birati.github.io/birati-thek/";
 const NETLIFY_URL = "/.netlify/functions/chat";  // শুধু web search-এর জন্য
 
-// Gemini calls are handled server-side via Netlify function
+const GEMINI_KEY = "AIzaSyA-wUf9Vi7hG-6gHJY3Z81tI9HOO_GFuRA";
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=" + GEMINI_KEY;
 
 // ══ Search Routing (chat history analysis থেকে) ══════════════
 const NO_SEARCH = [
@@ -401,6 +402,19 @@ function showToast(msg){
   setTimeout(()=>t.style.display="none",2500);
 }
 
+// ── System Prompt ────────────────────────────────────────────────
+function buildSysPrompt() {
+  const lines = [SYSTEM_PROMPT];
+  if(memories.length > 0){
+    lines.push("\n== নতুন শেখা ==");
+    memories.slice(-20).forEach(m => lines.push("- [" + m.ts + "," + m.by + "]: " + m.text));
+  }
+  if(selectedMember){
+    lines.push("\nএখন কথা বলছেন: " + selectedMember.name + " (nickname: " + selectedMember.nick + ")। nickname ধরে ডাকো। সবসময় বাংলায়।");
+  }
+  return lines.join("\n");
+}
+
 // ── SEND ─────────────────────────────────────────────────────────
 async function sendMessage(){
   const input=document.getElementById("chat-input");
@@ -421,15 +435,13 @@ async function sendMessage(){
     const userText = messages[messages.length-1]?.parts?.[0]?.text || "";
 
     try{
-      // সব request Netlify function দিয়ে যাবে
-      const res = await fetch(NETLIFY_URL, {
+      const res = await fetch(GEMINI_URL, {
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
-          messages,
-          memberName:selectedMember.name,
-          memberNick:selectedMember.nick,
-          needsSearch:needsWebSearch(userText)
+          system_instruction:{parts:[{text: buildSysPrompt()}]},
+          contents: messages,
+          generationConfig:{maxOutputTokens:300}
         })
       });
       const data = await res.json();
@@ -438,7 +450,7 @@ async function sendMessage(){
       } else if(data.error){
         aiText = "কিছু একটা গোলমাল! একটু পরে চেষ্টা করো। 😅";
       } else {
-        aiText = data.text || "কিছু বুঝলাম না! আবার বলো।";
+        aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || "কিছু বুঝলাম না! আবার বলো।";
       }
     }catch(e){
       aiText = "নেটওয়ার্ক সমস্যা! একটু পরে চেষ্টা করো। 🙏";
