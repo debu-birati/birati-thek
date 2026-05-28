@@ -119,7 +119,7 @@
   .modal .s-sub{color:#6b4e28;font-size:0.78rem;font-weight:700;margin-top:0.3rem;}
   .modal-ok{margin-top:1rem;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:24px;padding:0.5rem 1.5rem;color:#fff;font-weight:700;cursor:pointer;font-size:0.85rem;}
 
-  .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#3d2b0a;color:#fdf8f0;padding:0.5rem 1.2rem;border-radius:24px;font-size:0.82rem;z-index:999;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.2);display:none;}
+  .search-tag{font-size:0.65rem;color:#6b4e28;background:#fdf3dc;border:1px solid #e8ddc8;border-radius:99px;padding:2px 8px;margin-top:4px;display:inline-block;font-weight:700;}
 </style>
 </head>
 <body>
@@ -129,7 +129,7 @@
   <div style="text-align:center;margin-top:1rem;">
     <div class="logo">🤖</div>
     <h1 class="title">বিরাটি ঠেক AI</h1>
-    <p class="subtitle">Sandip অনুমোদিত · Debanjan পরিচালিত</p>
+    <p class="subtitle">Debanjan পরিচালিত</p>
   </div>
 
   <!-- top row: feedback (left) + dashboard (right) -->
@@ -155,7 +155,7 @@
     <div class="grid" id="member-grid"></div>
   </div>
 
-  <p class="footer-text">"Without any অহংকার।" — Sandip 🙏</p>
+  <p class="footer-text">দেবাঞ্জনের পক্ষ থেকে তাঁর ঘনিষ্ঠ বন্ধুদের মধ্যে কৃত্রিম বুদ্ধিমত্তা (AI) সম্পর্কে সচেতনতা ছড়িয়ে দেওয়ার এক উদ্যোগ</p>
 </div>
 
 <!-- ══ CHAT ══════════════════════════════════════════════════════ -->
@@ -456,7 +456,7 @@ async function sendMessage(){
       aiText = "নেটওয়ার্ক সমস্যা! একটু পরে চেষ্টা করো। 🙏";
     }
     removeTyping();
-    appendMsg("ai",aiText,null);
+    appendMsg("ai",aiText,null,data?.searchUsed||false);
     messages.push({role:"model",parts:[{text:aiText}]});
 
   }catch{
@@ -469,12 +469,13 @@ async function sendMessage(){
 }
 
 // ── DOM HELPERS ──────────────────────────────────────────────────
-function appendMsg(type,text,member){
+function appendMsg(type,text,member,searchUsed){
   const msgs=document.getElementById("messages");
   const row=document.createElement("div");
   row.className="msg-row "+(type==="user"?"user":"");
   if(type==="ai"){
-    row.innerHTML=`<div class="msg-avatar ai-av">🤖</div><div class="bubble ai-bubble">${esc(text)}</div>`;
+    const searchTag=searchUsed?`<div><span class="search-tag">🔍 Google Search থেকে পাওয়া</span></div>`:"";
+    row.innerHTML=`<div class="msg-avatar ai-av">🤖</div><div><div class="bubble ai-bubble">${esc(text)}</div>${searchTag}</div>`;
   }else{
     row.innerHTML=`<div class="bubble user-bubble">${esc(text)}</div><div class="msg-avatar" style="background:${member.color}">${member.emoji}</div>`;
   }
