@@ -197,9 +197,7 @@
 const BASE_URL = "https://debu-birati.github.io/birati-thek/";
 const NETLIFY_URL = "/.netlify/functions/chat";  // শুধু web search-এর জন্য
 
-// ══ Gemini Direct (85% requests) ══════════════════════════════
-const GEMINI_KEY = "AIzaSyCk-0n5RpWLtIqBq8KPLTEXSAO9Q9uUOm0";
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=" + GEMINI_KEY;
+// Gemini calls are handled server-side via Netlify function
 
 // ══ Search Routing (chat history analysis থেকে) ══════════════
 const NO_SEARCH = [
@@ -327,29 +325,6 @@ function renderHomeDash(){
 function loadMem(){ try{memories=JSON.parse(localStorage.getItem(MEM_KEY))||[];}catch{memories=[];} }
 function saveMem(){ localStorage.setItem(MEM_KEY,JSON.stringify(memories.slice(-40))); }
 
-async function extractMemory(userMsg,aiReply,member){ return; // disabled
-  await new Promise(r=>setTimeout(r,20000));
-  try{
-    const prompt = "Memory extractor। এই conversation থেকে বিরাটি ঠেক গ্রুপ সম্পর্কে নতুন specific তথ্য থাকলে extract করো। Max 2 items। Return ONLY JSON array of Bengali strings। নতুন কিছু না থাকলে return []. User(" + member.nick + "):" + userMsg + " AI:" + aiReply;
-    const res=await fetch(GEMINI_URL,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        system_instruction:{parts:[{text:"You are a memory extractor. Return only a JSON array."}]},
-        contents:[{role:"user",parts:[{text:prompt}]}],
-        generationConfig:{maxOutputTokens:150}
-      })
-    });
-    const d=await res.json();
-    if(d.error)return;
-    const raw=d.candidates?.[0]?.content?.parts?.[0]?.text||"[]";
-    const items=JSON.parse(raw.replace(/```json|```/g,"").trim());
-    if(!Array.isArray(items)||items.length===0)return;
-    const ts=new Date().toLocaleDateString("bn-BD",{day:"numeric",month:"short"});
-    items.forEach(t=>memories.push({text:String(t).slice(0,150),by:member.nick,ts}));
-    saveMem();
-  }catch{}
-}
 
 // ── FEEDBACK ────────────────────────────────────────────────────
 function submitHomeFeedback(){
@@ -427,28 +402,6 @@ function showToast(msg){
 }
 
 // ── SEND ─────────────────────────────────────────────────────────
-// ── Gemini Direct Call ───────────────────────────────────────
-async function geminiDirect(messages, member) {
-  const sysLines = [SYSTEM_PROMPT];
-  if(memories.length > 0){
-    sysLines.push("\n== নতুন শেখা ==");
-    memories.slice(-20).forEach(m => sysLines.push("- [" + m.ts + "," + m.by + "]: " + m.text));
-  }
-  sysLines.push("\nএখন কথা বলছেন: " + member.name + " (nickname: " + member.nick + ")। nickname ধরে ডাকো। সবসময় বাংলায়।");
-  const res = await fetch(GEMINI_URL, {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({
-      system_instruction:{parts:[{text: sysLines.join("\n")}]},
-      contents: messages,
-      generationConfig:{maxOutputTokens:300}
-    })
-  });
-  const data = await res.json();
-  if(data.error) throw new Error(data.error.message);
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || "কিছু বুঝলাম না! আবার বলো।";
-}
-
 async function sendMessage(){
   const input=document.getElementById("chat-input");
   const text=input.value.trim();
@@ -468,27 +421,24 @@ async function sendMessage(){
     const userText = messages[messages.length-1]?.parts?.[0]?.text || "";
 
     try{
-      if(needsWebSearch(userText)){
-        // ── Web search দরকার → Netlify function ──────────────
-        const res = await fetch(NETLIFY_URL, {
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({
-            messages,
-            memberName:selectedMember.name,
-            memberNick:selectedMember.nick
-          })
-        });
-        const data = await res.json();
-        if(res.status===429 || data.error){
-          // Search fail → graceful fallback to Gemini direct
-          aiText = await geminiDirect(messages, selectedMember);
-        } else {
-          aiText = data.text || "কিছু বুঝলাম না! আবার বলো।";
-        }
+      // সব request Netlify function দিয়ে যাবে
+      const res = await fetch(NETLIFY_URL, {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          messages,
+          memberName:selectedMember.name,
+          memberNick:selectedMember.nick,
+          needsSearch:needsWebSearch(userText)
+        })
+      });
+      const data = await res.json();
+      if(res.status===429){
+        aiText = "⚠️ একটু busy! ১ মিনিট পরে try করো। 🙏";
+      } else if(data.error){
+        aiText = "কিছু একটা গোলমাল! একটু পরে চেষ্টা করো। 😅";
       } else {
-        // ── Thek context → Gemini direct (no rate limit issue) ──
-        aiText = await geminiDirect(messages, selectedMember);
+        aiText = data.text || "কিছু বুঝলাম না! আবার বলো।";
       }
     }catch(e){
       aiText = "নেটওয়ার্ক সমস্যা! একটু পরে চেষ্টা করো। 🙏";
