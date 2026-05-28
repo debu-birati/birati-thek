@@ -389,20 +389,37 @@ function submitHomeFeedback(){
 document.getElementById("fb-modal").addEventListener("click",function(e){ if(e.target===this)this.classList.remove("open"); });
 
 // ── BUILD GRID ──────────────────────────────────────────────────
-async function buildGrid(){
+function buildGrid(){
+  // Stats-এর জন্য wait করবে না — আগে render করো, পরে badge update হবে
   const grid=document.getElementById("member-grid");
-  const s=await loadStats();
   MEMBERS.forEach(m=>{
     const btn=document.createElement("button");
     btn.className="member-btn";
-    const cnt=s.msgs[m.nick]||0;
-    const badge=cnt>0?`<span class="msg-badge">${cnt}</span>`:"";
+    btn.id="mbtn-"+m.nick;
     const thumb=m.img
       ?`<img class="member-thumb" src="${BASE_URL}${m.img}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="${m.name}"><div class="member-thumb-fallback" style="display:none">${m.emoji}</div>`
       :`<div class="member-thumb-fallback">${m.emoji}</div>`;
-    btn.innerHTML=`${badge}${thumb}<span class="m-name">${m.name}</span><span class="m-nick">${m.nick}</span>`;
+    btn.innerHTML=`${thumb}<span class="m-name">${m.name}</span><span class="m-nick">${m.nick}</span>`;
     btn.onclick=()=>selectMember(m);
     grid.appendChild(btn);
+  });
+  // Badge পরে update করো — stats load হলে
+  loadStats().then(s => buildGridBadges(s));
+}
+
+async function buildGridBadges(s){
+  if(!s) s = await loadStats();
+  MEMBERS.forEach(m=>{
+    const btn=document.getElementById("mbtn-"+m.nick);
+    if(!btn) return;
+    const cnt=s.msgs[m.nick]||0;
+    let badge=btn.querySelector(".msg-badge");
+    if(cnt>0){
+      if(!badge){badge=document.createElement("span");badge.className="msg-badge";btn.prepend(badge);}
+      badge.textContent=cnt;
+    } else if(badge) {
+      badge.remove();
+    }
   });
 }
 
@@ -426,18 +443,7 @@ function goBack(){
   buildGridBadges();
 }
 
-async function buildGridBadges(){
-  const s=await loadStats();
-  document.querySelectorAll(".member-btn").forEach(btn=>{
-    const nick=btn.querySelector(".m-nick")?.textContent;
-    const cnt=s.msgs[nick]||0;
-    let badge=btn.querySelector(".msg-badge");
-    if(cnt>0){
-      if(!badge){badge=document.createElement("span");badge.className="msg-badge";btn.appendChild(badge);}
-      badge.textContent=cnt;
-    }
-  });
-}
+
 
 // ── TOAST ────────────────────────────────────────────────────────
 function showToast(msg){
