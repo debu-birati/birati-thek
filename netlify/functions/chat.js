@@ -113,9 +113,9 @@ function buildSystemPrompt(memberName, memberNick, searchResults) {
 
   if (searchResults) {
     lines.push("");
-    lines.push("== Google Search Results (current news — use if relevant) ==");
+    lines.push("== IMPORTANT: Latest Google Search Results (এই তথ্য সবচেয়ে আপডেটেড — তোমার training data ভুল হলেও এটাই সঠিক, এই তথ্য দিয়েই উত্তর দাও) ==");
     lines.push(searchResults);
-    lines.push("== Search শেষ ==");
+    lines.push("== Search শেষ — উপরের তথ্য অনুযায়ী উত্তর দাও ==");
   }
 
   lines.push("");
