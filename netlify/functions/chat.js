@@ -137,12 +137,12 @@ exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return { statusCode: 405, headers, body: JSON.stringify({ error: "Method not allowed" }) };
 
   try {
-    const { messages, memberName, memberNick } = JSON.parse(event.body);
+    const { messages, memberName, memberNick, needsSearch } = JSON.parse(event.body);
     const lastMsg = (messages[messages.length - 1] && messages[messages.length - 1].parts && messages[messages.length - 1].parts[0]) ? messages[messages.length - 1].parts[0].text : "";
 
-    // Smart routing — based on actual chat pattern analysis
+    // Use routing decision from client
     let searchResults = "";
-    if (needsWebSearch(lastMsg)) {
+    if (needsSearch) {
       searchResults = await doSearch(lastMsg);
     }
 
@@ -160,7 +160,7 @@ exports.handler = async (event) => {
 
     const data = await response.json();
     if (data.error) {
-      // If rate limited, still try to answer without search
+      console.log("Gemini error:", JSON.stringify(data.error));
       if (data.error.code === 429) {
         return { statusCode: 429, headers, body: JSON.stringify({ error: "rate_limit" }) };
       }
