@@ -197,7 +197,11 @@ module.exports = async function handler(req, res) {
       data?.candidates?.[0]?.content?.parts?.[0]?.text ||
       "কিছু বুঝলাম না! আবার বলো।";
 
-    return res.status(200).json({ text });
+    return res.status(200).json({ 
+      text,
+      searchUsed: searchResults ? true : false,
+      searchSnippet: searchResults ? searchResults.slice(0, 200) : ""
+    });
 
   } catch (err) {
     console.error("Handler error:", err);
