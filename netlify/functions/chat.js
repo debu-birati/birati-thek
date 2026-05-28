@@ -107,7 +107,7 @@ function buildSystemPrompt(memberName, memberNick, searchResults) {
   if (CHAT_HISTORY) {
     lines.push("");
     lines.push("== সাম্প্রতিক WhatsApp Chat ==");
-    lines.push(CHAT_HISTORY.slice(0, 40000));
+    lines.push(CHAT_HISTORY.slice(0, 15000));
     lines.push("== Chat শেষ ==");
   }
 
