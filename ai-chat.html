@@ -288,18 +288,41 @@ let messages       = [];
 let memories       = [];
 
 // ── STATS ──────────────────────────────────────────────────────
-function loadStats(){ try{return JSON.parse(localStorage.getItem(STATS_KEY))||{visits:0,msgs:{},total:0};}catch{return{visits:0,msgs:{},total:0};} }
-function saveStats(s){ localStorage.setItem(STATS_KEY,JSON.stringify(s)); }
+// Stats — Upstash Redis (সব device-এ same)
+let _statsCache = null;
 
-function updateDash(){
-  const s=loadStats();
+async function loadStats() {
+  if (_statsCache) return _statsCache;
+  try {
+    const res = await fetch("/api/stats");
+    const data = await res.json();
+    _statsCache = data;
+    return _statsCache;
+  } catch {
+    return { visits: 0, msgs: {}, total: 0 };
+  }
+}
+
+async function saveStats(s) {
+  _statsCache = s;
+  try {
+    await fetch("/api/stats", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(s)
+    });
+  } catch {}
+}
+
+async function updateDash(){
+  const s=await loadStats();
   const top=Object.entries(s.msgs).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([n,c])=>`${n}(${c})`).join(" · ");
   document.getElementById("dash-strip").innerHTML=
     `👥 Visit: <b>${s.visits}</b> &nbsp;·&nbsp; 💬 Message: <b>${s.total}</b>`+(top?` &nbsp;·&nbsp; 🏆 ${top}`:"");
 }
 
-function renderHomeDash(){
-  const s=loadStats();
+async function renderHomeDash(){
+  const s=await loadStats();
   const statsEl=document.getElementById("home-dash-stats");
   statsEl.innerHTML=`
     <div class="dash-stat"><span class="dash-label">👥 মোট visit</span><span class="dash-val">${s.visits}</span></div>
@@ -344,9 +367,9 @@ function submitHomeFeedback(){
 document.getElementById("fb-modal").addEventListener("click",function(e){ if(e.target===this)this.classList.remove("open"); });
 
 // ── BUILD GRID ──────────────────────────────────────────────────
-function buildGrid(){
+async function buildGrid(){
   const grid=document.getElementById("member-grid");
-  const s=loadStats();
+  const s=await loadStats();
   MEMBERS.forEach(m=>{
     const btn=document.createElement("button");
     btn.className="member-btn";
@@ -362,7 +385,7 @@ function buildGrid(){
 }
 
 // ── NAVIGATION ──────────────────────────────────────────────────
-function selectMember(m){
+async function selectMember(m){
   selectedMember=m; messages=[];
   document.getElementById("selector").style.display="none";
   document.getElementById("chat").style.display="flex";
@@ -381,8 +404,8 @@ function goBack(){
   buildGridBadges();
 }
 
-function buildGridBadges(){
-  const s=loadStats();
+async function buildGridBadges(){
+  const s=await loadStats();
   document.querySelectorAll(".member-btn").forEach(btn=>{
     const nick=btn.querySelector(".m-nick")?.textContent;
     const cnt=s.msgs[nick]||0;
@@ -422,7 +445,7 @@ async function sendMessage(){
   input.value="";
   document.querySelector(".welcome")?.remove();
 
-  const s=loadStats(); s.total++; s.msgs[selectedMember.nick]=(s.msgs[selectedMember.nick]||0)+1; saveStats(s); updateDash();
+  const s=await loadStats(); s.total++; s.msgs[selectedMember.nick]=(s.msgs[selectedMember.nick]||0)+1; saveStats(s); updateDash();
 
   appendMsg("user",text,selectedMember);
   messages.push({role:"user",parts:[{text}]});
@@ -481,8 +504,7 @@ function appendMsg(type,text,member,searchUsed){
   const row=document.createElement("div");
   row.className="msg-row "+(type==="user"?"user":"");
   if(type==="ai"){
-    const searchTag=searchUsed?`<div><span class="search-tag">🔍 Google Search থেকে পাওয়া</span></div>`:"";
-    row.innerHTML=`<div class="msg-avatar ai-av">🤖</div><div><div class="bubble ai-bubble">${esc(text)}</div>${searchTag}</div>`;
+    row.innerHTML=`<div class="msg-avatar ai-av">🤖</div><div class="bubble ai-bubble">${esc(text)}</div>`;
   }else{
     row.innerHTML=`<div class="bubble user-bubble">${esc(text)}</div><div class="msg-avatar" style="background:${member.color}">${member.emoji}</div>`;
   }
@@ -511,7 +533,7 @@ document.getElementById("chat-input").addEventListener("paste",e=>{
 loadMem();
 buildGrid();
 renderHomeDash();
-const st=loadStats();st.visits++;saveStats(st);
+loadStats().then(st=>{st.visits++;saveStats(st);});
 </script>
 </body>
 </html>
