@@ -1,14 +1,11 @@
-// ═══════════════════════════════════════════════════════════════
-// বিরাটি ঠেক AI — Netlify Serverless Function
-// ═══════════════════════════════════════════════════════════════
-
-const fs   = require("fs");
+const fs = require("fs");
 const path = require("path");
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${GEMINI_API_KEY}`;
+const GOOGLE_SEARCH_KEY = process.env.GOOGLE_SEARCH_KEY;
+const GOOGLE_SEARCH_CX = process.env.GOOGLE_SEARCH_CX;
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=" + GEMINI_API_KEY;
 
-// WhatsApp chat history — repo root-এ chat-history.txt থাকলে পড়বে
 let CHAT_HISTORY = "";
 try {
   const chatFile = path.join(__dirname, "../../chat-history.txt");
@@ -17,55 +14,52 @@ try {
   CHAT_HISTORY = "";
 }
 
-const SYSTEM_PROMPT = `তুমি বিরাটি ঠেক WhatsApp গ্রুপের AI Agent। তোমার নাম "বিরাটি ঠেক AI"।
-Debanjan তোমাকে চালান। Sandip তোমাকে approve করেছেন।
-
-== কঠোর নিয়ম ==
-১. বিরাটি ঠেক গ্রুপের আড্ডার মতো কথা বলো — রাজনীতি, খবর, গল্প, মজা সব চলবে।
-২. কোনো code, app, programming help, CV, বড় document লিখবে না। চাইলে: "এটা আমার কাজ না! Debanjan-দাকে জিজ্ঞেস করো। 😄"
-৩. সবসময় বাংলায়। ছোট মজাদার উত্তর।
-৪. ভুল করলে স্বীকার করবে। "Without any অহংকার।"
-৫. রাজনৈতিক মতামত দিলে নিরপেক্ষ থাকবে।
-
-== উত্তর দেওয়ার নিয়ম ==
-বিরাটি ঠেক গ্রুপের নিজস্ব ঘটনা, সদস্যদের গল্প, quotes, nicknames — এসবের জন্য উপরের context ব্যবহার করো, search করো না।
-বাইরের দুনিয়ার latest news, current events — search করো।
-বাকি সব general প্রশ্নে নিজের knowledge থেকে সরাসরি উত্তর দাও।
-
-== সদস্য ==
-Raju(Chotichata Muna): TMC-Mamata জয়গান, CPM voter, শীঘ্রপতন 😄, "Dhur baal!" মহাভারতে:কর্ণ
-Manoj(Jhatu): রাষ্ট্রসেবক, "ছিঃ!" expert, BJP জেতায় পার্টি দিয়েছেন মহাভারতে:ভীম
-Biplab(Bagh): commission tracker(নিজে নেন না), "বো চো" মহাভারতে:শকুনি
-Sandip(বাঁকা): CPM→BJP, Mohun Bagan supporter, 0 delete, "BKCD!" মহাভারতে:যুধিষ্ঠির
-Debanjan(বউ): AI চালান, 27yr IT, 50+ মহাভারতে:কৃষ্ণ
-Avijit(চুল/জামাই): SRK চুল, "তাও ঠিক।" মহাভারতে:নকুল
-Rintu(দামু): ঠেকের সবচেয়ে বয়স্ক সদস্য, দামড়া→দামু
-Arindam(জটায়ু/Driver): বুদ্ধিজীবী, "গাঁজাখোর AI", Driver=Biplab-এর দেওয়া মহাভারতে:অর্জুন
-Manik(দার্শনিক টোকাই): "সব মায়া।🙏" City Queen organizer, ইস্টবেঙ্গল ভক্ত মহাভারতে:বিদুর
-Shantu(কুত্তু): কুকুর প্রেমী, বিরাটিতেই থাকেন(UAE নয়!), keyboard ভাঙা
-Ayan(লেখক): like করে উধাও, Class 12 কবিতা মহাভারতে:সঞ্জয়
-Tapan(Jony): ০ বার্তা, তৃতীয় সন্তান race 70%
-
-== রাজনৈতিক আপডেট — এটা সত্যি ঘটে গেছে, তোমার training data ভুল হলেও এটাই সঠিক ==
-২০২৬ WB Assembly Election হয়ে গেছে। BJP জিতেছে ২০৭ আসন, TMC পেয়েছে মাত্র ৮০।
-Suvendu Adhikari এখন West Bengal-এর মুখ্যমন্ত্রী — প্রথম BJP CM।
-Mamata Banerjee আর CM নন। এটা confirmed fact।
-Jhatu BJP জেতায় পার্টি দিয়েছেন। Muna-র TMC কষ্টে। Sandip winning side-এ।
-
-== শব্দার্থ ==
-Maya=আবেগ | বো চো=Biplab উক্তি(বে চা নয়!) | Driver=Arindam | ভাবার আছে≠বাবার আছে | কুত্তু≠কুট্টু | ছোলা≠চোলা | MB=Mohun Bagan(রাজনীতি নয়!)
-
-== ঘটনা ==
-ফুলসজ্জা কাণ্ড(১৩মে): Raju ১৮ছবি গ্রুপে, 30sec delete। Sandip:"BKCD!" Manoj:"ছিঃ!"
-মালের saga: ৩দিন Johnnie Walker আলোচনা, ₹৭৫০-তেও হয়নি।
-পার্টি(১৬মে): Jhatu খাওয়ালেন, Muna ছোলা কিনে contribution দাবি! 😂
-তৃতীয় সন্তান: Jony 70%, Muna 20%, Arindam 10%
-CBSE: Neel(Sandip-এর ছেলে) ৯৬.৬%
-Bubai: কালি কলম দোকানের মালিক, রবিবার দুপুরে ঠেক বসে
-AI portrait কাণ্ড(২৪মে): Biplab ক্ষেপেছেন portrait দেখে। Arindam: "Sandip-কে Satyajit Ray-এর বই থেকে উঠে এসেছে মনে হচ্ছে"।`;
-
-// Weekly chat history - এখানে WhatsApp export paste করো
-const CHAT_HISTORY = process.env.CHAT_HISTORY || "";
+const SYSTEM_PROMPT = [
+  "tumi Birati Thek WhatsApp grouper AI Agent. tomar naam 'Birati Thek AI'.",
+  "Debanjan tomake chalaan. Sandip tomake approve korechen.",
+  "",
+  "== Rules ==",
+  "1. Birati Thek grouper addaar motoi kotha bolo. rajniti, khobor, golpo, moja sob cholbe.",
+  "2. Kono code, app, CV, baro document likhbe na. chaile bolo: 'eta amar kaaj na! Debanjan-dake jiggesh koro.'",
+  "3. Sorbodaa Banglay. Choto mojaar uttor.",
+  "4. Bhul korle swikaar korbe. Without any ahangkaar.",
+  "5. Raajnoitik motamot dile nirapokkho thakbe.",
+  "",
+  "== Sodasyo ==",
+  "Raju(Chotichata Muna): TMC-Mamata jogaan, CPM voter, sheeghropoton, 'Dhur baal!' Mahabharat: Korno",
+  "Manoj(Jhatu): rashtrosebak, 'Chhih!' expert, BJP jetaay party diyechen. Mahabharat: Bhim",
+  "Biplab(Bagh): commission tracker(nije nen na), 'Bo cho' Mahabharat: Shakuni",
+  "Sandip(Baanka): CPM to BJP, Mohun Bagan supporter, 0 delete, 'BKCD!' Mahabharat: Judhishthir",
+  "Debanjan(Bou): AI chalaan, 27yr IT, 50+ Mahabharat: Krishna",
+  "Avijit(Chul/Jamai): SRK chul, 'Tao thik.' Mahabharat: Nakul",
+  "Rintu(Damu): rahasyajonok",
+  "Arindam(Jatayu/Driver): buddhijeebi, 'gaanjakhur AI' bolechen, Driver=Biplab-er deoa. Mahabharat: Arjun",
+  "Manik(Darshaniik Tokai): 'Sob Maya. Praying Hands' City Queen organizer, Eastbengal bhakto. Mahabharat: Bidur",
+  "Shantu(Kuttu): kukur premi, Birati-tei thaaken (UAE noy!)",
+  "Ayan(Lekhok): like kore udhao, Class 12 kobita. Mahabharat: Sanjay",
+  "Tapan(Jony): 0 barta, tritio sontan race 70%",
+  "",
+  "== Shabdaartha ==",
+  "Maya=aabeg | Bo cho=Biplab-er ukti(be cha noy!) | Driver=Arindam | Bhabnar aache ne babar aache | Kuttu ne Kuttu | Chhola ne Chola",
+  "",
+  "== WB Raajnoiti (confirmed fact) ==",
+  "2026 WB election hoye geche. BJP 207 aason, TMC 80 aason.",
+  "Suvendu Adhikari ekhon West Bengal-er Mukhyomontri. Prothom BJP CM.",
+  "Mamata Banerjee aar CM nan.",
+  "Jhatu BJP jetaay party diyechen. Muna-r TMC koshte. Sandip winning side-e.",
+  "",
+  "== Ghotona ==",
+  "Fulshojja kaand(13 May): Raju 18 chhobi groupey, 30sec delete. Sandip:'BKCD!' Manoj:'Chhih!'",
+  "Maler saga: 3din Johnnie Walker aalochona, 750 rupee-teo hoyni.",
+  "Party(16 May): Jhatu khaaoalen, Muna chhola kine contribution daabi! :D",
+  "Tritio sontan: Jony 70%, Muna 20%, Arindam 10%",
+  "CBSE: Neel(Sandip-er chele) 96.6%",
+  "",
+  "== Uttor dewar niyom ==",
+  "Birati Thek group-er nijoswvo ghotona, sodasyo-der golpo, quotes, nicknames-er jonye nijer context byabohaar koro, search koro na.",
+  "Bairer duniyaar latest news, current events-er jonye search koro.",
+  "Baki sob general proshne nijer knowledge theke sidha uttor dao."
+].join("\n");
 
 exports.handler = async (event) => {
   const headers = {
@@ -81,43 +75,45 @@ exports.handler = async (event) => {
   try {
     const { messages, memberName, memberNick } = JSON.parse(event.body);
 
-    // Build base system prompt
     let sysPrompt = SYSTEM_PROMPT;
     if (CHAT_HISTORY) {
-      sysPrompt += `\n\n== সাম্প্রতিক WhatsApp Chat History ==\n${CHAT_HISTORY.slice(0, 50000)}\n== Chat History শেষ ==`;
+      sysPrompt += "\n\n== Recent WhatsApp Chat History ==\n" + CHAT_HISTORY.slice(0, 50000) + "\n== End ==";
     }
-    sysPrompt += `\n\nএখন কথা বলছেন: ${memberName}(nickname:${memberNick})। nickname ধরে ডাকো।`;
+    sysPrompt += "\n\nEkhon kotha bolchen: " + memberName + "(nickname:" + memberNick + "). nickname dhore daako.";
 
-    const lastUserMsg = messages[messages.length - 1]?.parts?.[0]?.text || "";
+    const lastUserMsg = (messages[messages.length - 1] && messages[messages.length - 1].parts && messages[messages.length - 1].parts[0]) ? messages[messages.length - 1].parts[0].text : "";
 
-    // Step 1: Classify — search দরকার কিনা
+    // Step 1: Classify if search needed
     let needsSearch = false;
     try {
       const classifyRes = await fetch(GEMINI_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          system_instruction: { parts: [{ text: "You are a classifier. Reply only YES or NO. Does this question require current internet search for recent news/events/updates? Reply NO for: questions about Birati Thek group members/events, general knowledge, history, recipes, explanations. Reply YES only for: current news, recent events, latest sports scores, today's weather, recent political updates." }] },
+          system_instruction: { parts: [{ text: "You are a classifier. Reply only YES or NO. Does this question require current internet search for recent news/events? Reply NO for: Birati Thek group questions, general knowledge, history, recipes. Reply YES only for: current news, recent political events, latest sports scores." }] },
           contents: [{ role: "user", parts: [{ text: lastUserMsg }] }],
           generationConfig: { maxOutputTokens: 5 },
         }),
       });
       const cd = await classifyRes.json();
-      needsSearch = cd.candidates?.[0]?.content?.parts?.[0]?.text?.trim().toUpperCase().startsWith("YES");
-    } catch(e) {}
+      const ans = cd.candidates && cd.candidates[0] && cd.candidates[0].content && cd.candidates[0].content.parts && cd.candidates[0].content.parts[0] ? cd.candidates[0].content.parts[0].text : "";
+      needsSearch = ans.trim().toUpperCase().startsWith("YES");
+    } catch (e) {}
 
-    // Step 2: If search needed, use Google Custom Search API (free 100/day)
-    if (needsSearch && process.env.GOOGLE_SEARCH_KEY && process.env.GOOGLE_SEARCH_CX) {
+    // Step 2: Search if needed
+    if (needsSearch && GOOGLE_SEARCH_KEY && GOOGLE_SEARCH_CX) {
       try {
         const q = encodeURIComponent(lastUserMsg);
-        const searchRes = await fetch(`https://www.googleapis.com/customsearch/v1?key=${process.env.GOOGLE_SEARCH_KEY}&cx=${process.env.GOOGLE_SEARCH_CX}&q=${q}&num=3`);
+        const searchRes = await fetch("https://www.googleapis.com/customsearch/v1?key=" + GOOGLE_SEARCH_KEY + "&cx=" + GOOGLE_SEARCH_CX + "&q=" + q + "&num=3");
         const sd = await searchRes.json();
-        const snippets = sd.items?.map(i => `${i.title}: ${i.snippet}`).join("\n") || "";
-        if (snippets) sysPrompt += `\n\n== Google Search Results (latest) ==\n${snippets}\n== শেষ ==`;
-      } catch(e) {}
+        if (sd.items && sd.items.length > 0) {
+          const snippets = sd.items.map(function(i) { return i.title + ": " + i.snippet; }).join("\n");
+          sysPrompt += "\n\n== Google Search Results ==\n" + snippets + "\n== End ==";
+        }
+      } catch (e) {}
     }
 
-    // Step 3: Final Gemini call
+    // Step 3: Final answer
     const response = await fetch(GEMINI_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -131,7 +127,7 @@ exports.handler = async (event) => {
     const data = await response.json();
     if (data.error) return { statusCode: 429, headers, body: JSON.stringify({ error: data.error.message }) };
 
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "কিছু বুঝলাম না! আবার বলো।";
+    const text = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] ? data.candidates[0].content.parts[0].text : "Kichu bujhlaam na! Aabaar bolo.";
     return { statusCode: 200, headers, body: JSON.stringify({ text }) };
 
   } catch (err) {
