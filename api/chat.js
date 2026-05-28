@@ -124,9 +124,11 @@ function buildSystemPrompt(memberName, memberNick, searchResults) {
 
   if (searchResults) {
     lines.push("");
-    lines.push("== IMPORTANT: Latest Google Search Results (এই তথ্য সবচেয়ে আপডেটেড — তোমার training data ভুল হলেও এটাই সঠিক, এই তথ্য দিয়েই উত্তর দাও) ==");
+    lines.push("== সতর্কতা: নিচের Google Search result এইমাত্র পাওয়া গেছে। এটাই সবচেয়ে নির্ভরযোগ্য তথ্য। ==");
+    lines.push("নিয়ম: এই search result ব্যবহার করে সরাসরি উত্তর দাও। 'জানি না', 'টিভিতে দেখো', 'নেটে খোঁজো' — এসব বলা সম্পূর্ণ নিষিদ্ধ। তোমার কাছে তথ্য আছে, সেটা দিয়েই উত্তর দাও।");
+    lines.push("== Google Search Result (এখনই পাওয়া) ==");
     lines.push(searchResults);
-    lines.push("== Search শেষ — উপরের তথ্য অনুযায়ী উত্তর দাও ==");
+    lines.push("== Search শেষ। এখন উপরের তথ্য দিয়ে বাংলায় সংক্ষেপে উত্তর দাও। ==");
   }
 
   lines.push("");
