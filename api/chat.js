@@ -9,9 +9,8 @@
 const fs   = require("fs");
 const path = require("path");
 
-const GEMINI_API_KEY    = process.env.GEMINI_API_KEY;
-const GOOGLE_SEARCH_KEY = process.env.GOOGLE_SEARCH_KEY;
-const GOOGLE_SEARCH_CX  = process.env.GOOGLE_SEARCH_CX;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
 
 const GEMINI_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=" +
@@ -64,28 +63,27 @@ async function doSearch(query) {
     console.log("[SEARCH] Cache hit:", cacheKey);
     return searchCache[cacheKey].result;
   }
-  if (!GOOGLE_SEARCH_KEY || !GOOGLE_SEARCH_CX) {
-    console.log("[SEARCH] ERROR: API keys missing!");
+  if (!TAVILY_API_KEY) {
+    console.log("[SEARCH] ERROR: TAVILY_API_KEY missing!");
     return "";
   }
   try {
-    const q   = encodeURIComponent(query);
-    console.log("[SEARCH] Calling:", query);
+    console.log("[SEARCH] Tavily calling:", query);
     const res  = await fetch(
-      `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_SEARCH_KEY}&cx=${GOOGLE_SEARCH_CX}&q=${q}&num=3&dateRestrict=m1`
+      `https://api.tavily.com/search?api_key=${TAVILY_API_KEY}&query=${encodeURIComponent(query)}&max_results=3`
     );
     const data = await res.json();
     console.log("[SEARCH] HTTP status:", res.status);
-    if (data.error) {
-      console.log("[SEARCH] API error:", JSON.stringify(data.error));
+    if (!res.ok) {
+      console.log("[SEARCH] Tavily error:", JSON.stringify(data));
       return "";
     }
-    if (!data.items || data.items.length === 0) {
+    if (!data.results || data.results.length === 0) {
       console.log("[SEARCH] No results for:", query);
       return "";
     }
-    const snippets = data.items.map(i => i.title + ": " + i.snippet).join("\n");
-    console.log("[SEARCH] Got", data.items.length, "results");
+    const snippets = data.results.map(r => r.title + ": " + r.content).join("\n");
+    console.log("[SEARCH] Got", data.results.length, "results");
     searchCache[cacheKey] = { result: snippets, ts: now };
     return snippets;
   } catch (e) {
