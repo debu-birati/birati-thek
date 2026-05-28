@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "name": "birati-thek-ai",
+  "functions": {
+    "api/chat.js": {
+      "includeFiles": "chat-history.txt"
+    }
+  }
+}
