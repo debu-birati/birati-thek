@@ -4,7 +4,7 @@ const path = require("path");
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GOOGLE_SEARCH_KEY = process.env.GOOGLE_SEARCH_KEY;
 const GOOGLE_SEARCH_CX = process.env.GOOGLE_SEARCH_CX;
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=" + GEMINI_API_KEY;
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=" + GEMINI_API_KEY;
 
 // Load WhatsApp chat history if available
 let CHAT_HISTORY = "";
