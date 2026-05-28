@@ -197,8 +197,7 @@
 const BASE_URL = "https://debu-birati.github.io/birati-thek/";
 const NETLIFY_URL = "/.netlify/functions/chat";  // শুধু web search-এর জন্য
 
-const GEMINI_KEY = "AIzaSyA-wUf9Vi7hG-6gHJY3Z81tI9HOO_GFuRA";
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=" + GEMINI_KEY;
+// All AI calls go through Netlify function
 
 // ══ Search Routing (chat history analysis থেকে) ══════════════
 const NO_SEARCH = [
@@ -435,13 +434,14 @@ async function sendMessage(){
     const userText = messages[messages.length-1]?.parts?.[0]?.text || "";
 
     try{
-      const res = await fetch(GEMINI_URL, {
+      const res = await fetch(NETLIFY_URL, {
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
-          system_instruction:{parts:[{text: buildSysPrompt()}]},
-          contents: messages,
-          generationConfig:{maxOutputTokens:300}
+          messages,
+          memberName:selectedMember.name,
+          memberNick:selectedMember.nick,
+          needsSearch:needsWebSearch(userText)
         })
       });
       const data = await res.json();
@@ -450,7 +450,7 @@ async function sendMessage(){
       } else if(data.error){
         aiText = "কিছু একটা গোলমাল! একটু পরে চেষ্টা করো। 😅";
       } else {
-        aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || "কিছু বুঝলাম না! আবার বলো।";
+        aiText = data.text || "কিছু বুঝলাম না! আবার বলো।";
       }
     }catch(e){
       aiText = "নেটওয়ার্ক সমস্যা! একটু পরে চেষ্টা করো। 🙏";
