@@ -309,9 +309,10 @@ let _statsCache = null;
 async function loadStats() {
   if (_statsCache) return _statsCache;
   try {
-    const res = await fetch("/api/stats");
+    const res = await fetch("/api/stats?t=" + Date.now());
+    if (!res.ok) return { visits: 0, msgs: {}, total: 0 };
     const data = await res.json();
-    _statsCache = data;
+    _statsCache = data || { visits: 0, msgs: {}, total: 0 };
     return _statsCache;
   } catch {
     return { visits: 0, msgs: {}, total: 0 };
@@ -337,11 +338,17 @@ async function updateDash(){
 }
 
 async function renderHomeDash(){
-  const s=await loadStats();
+  // প্রথমে 0 দেখাও — page আটকাবে না
   const statsEl=document.getElementById("home-dash-stats");
   statsEl.innerHTML=`
-    <div class="dash-stat"><span class="dash-label">👥 মোট visit</span><span class="dash-val">${s.visits}</span></div>
-    <div class="dash-stat"><span class="dash-label">💬 মোট message</span><span class="dash-val">${s.total}</span></div>`;
+    <div class="dash-stat"><span class="dash-label">👥 মোট visit</span><span class="dash-val" id="val-visits">...</span></div>
+    <div class="dash-stat"><span class="dash-label">💬 মোট message</span><span class="dash-val" id="val-total">...</span></div>`;
+  const s=await loadStats();
+  // API থেকে আসার পরে update করো
+  const vv = document.getElementById("val-visits");
+  const vt = document.getElementById("val-total");
+  if(vv) vv.textContent = s.visits || 0;
+  if(vt) vt.textContent = s.total || 0;
 
   const entries=Object.entries(s.msgs).sort((a,b)=>b[1]-a[1]).slice(0,5);
   const lb=document.getElementById("home-lb");
