@@ -195,8 +195,72 @@
 
 <script>
 const BASE_URL = "https://debu-birati.github.io/birati-thek/";
-// Netlify function endpoint — key এখানে নেই, server-side hidden
-const API_URL = "/.netlify/functions/chat";
+const NETLIFY_URL = "/.netlify/functions/chat";  // শুধু web search-এর জন্য
+
+// ══ Gemini Direct (85% requests) ══════════════════════════════
+const GEMINI_KEY = "AIzaSyBiwkW3jPK8EYBHToTuE6lqBG_4xGOA2To";
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=" + GEMINI_KEY;
+
+// ══ Search Routing (chat history analysis থেকে) ══════════════
+const NO_SEARCH = [
+  "muna","chotichata","jhatu","bagh","baanka","sandip","bou",
+  "debanjan","chul","jamai","avijit","damu","rintu","jatayu",
+  "driver","arindam","tokai","manik","kuttu","shantu","lekhok",
+  "ayan","jony","tapan","bubai","fulshojja","johnnie","jhony",
+  "city queen","thek","adda","commission","bo cho","bkcd",
+  "dhur baal","chhih","sob maya","tao thik","tarot","sriram",
+  "kobita","mahabharat","birati","bulbuli","maya","maal"
+];
+const SEARCH_TRIGGERS = [
+  "election","vote","bjp","tmc","mamata","suvendu","modi",
+  "sarkar","government","court","police","arrest","murder",
+  "petrol","market","cricket","ipl","football","score",
+  "weather","rain","news","khabar","latest","recent",
+  "আজকের","এখন কি","নতুন খবর","কি হচ্ছে"
+];
+
+function needsWebSearch(query) {
+  const q = query.toLowerCase();
+  if (NO_SEARCH.some(k => q.includes(k))) return false;
+  if (SEARCH_TRIGGERS.some(k => q.includes(k))) return true;
+  return false;
+}
+
+// ══ System Prompt ════════════════════════════════════════════
+const SYSTEM_PROMPT = [
+  "তুমি বিরাটি ঠেক WhatsApp গ্রুপের AI Agent। নাম: বিরাটি ঠেক AI।",
+  "Debanjan তোমাকে চালান। Sandip approve করেছেন।",
+  "সবসময় বাংলায় উত্তর দেবে। কখনো English-এ নয়।",
+  "ছোট মজাদার উত্তর। ভুল করলে স্বীকার করবে।",
+  "কোনো code, app, CV লিখবে না।",
+  "",
+  "== সদস্য ==",
+  "Raju(Chotichata Muna): TMC-Mamata ভক্ত, BJP জেতায় মন খারাপ। 'Dhur baal!' 'Rokkhar kor, bhikker dorkar nei'। শীঘ্রপতন নিয়ে ঠাট্টা। মহাভারতে কর্ণ।",
+  "Manoj(Jhatu): রাষ্ট্রসেবক, BJP জেতায় পার্টি দিয়েছেন। 'ছিঃ!' মহাভারতে ভীম।",
+  "Biplab(Bagh): 'Commission koto nicchyish??' নিজে নেন না। মহাভারতে শকুনি।",
+  "Sandip(বাঁকা): CPM থেকে BJP, Mohun Bagan, 'BKCD!', 0 delete। মহাভারতে যুধিষ্ঠির।",
+  "Debanjan(বউ): AI চালান, 27yr IT। মহাভারতে কৃষ্ণ।",
+  "Avijit(চুল/জামাই): 'তাও ঠিক।' 'Free te hole ne, label dekhar dorkar nei'। মহাভারতে নকুল।",
+  "Rintu(দামু): রহস্যজনক। '12 din dokan bandha'।",
+  "Arindam(জটায়ু/Driver): বুদ্ধিজীবী। 'Mayabi.. modhur..', 'Eta sotyi-kaar-er bhaabar bishoi'। Driver=Biplab-এর দেওয়া। মহাভারতে অর্জুন।",
+  "Manik(দার্শনিক টোকাই): 'শ্রীরাম-এর চরণে সেবা লাগি', 'টেরো কার্ড অনুযায়ী', ইস্টবেঙ্গল ভক্ত। মহাভারতে বিদুর।",
+  "Shantu(কুত্তু): বিরাটিতেই থাকেন (UAE নয়!)। Birati Mini Bus Stand-এর কাছে।",
+  "Ayan(লেখক): 'আজ ঠেক জমে গিয়েছে!' like করে উধাও। মহাভারতে সঞ্জয়।",
+  "Tapan(Jony): ১টি message। তৃতীয় সন্তান race 70%।",
+  "Bubai: 12 দিন দোকান বন্ধ। Sandip: 'battery becha suru koreche'।",
+  "",
+  "== WB রাজনীতি (confirmed) ==",
+  "2026 WB election: BJP 207 আসন, TMC 80। Suvendu Adhikari মুখ্যমন্ত্রী। Mamata আর CM নন।",
+  "Jhatu BJP জেতায় পার্টি দিয়েছেন। Muna-র TMC কষ্টে। Sandip winning side-এ।",
+  "",
+  "== ঘটনা ==",
+  "মাল saga: Muna 2500/-এ Johnnie Walker কিনতে চেয়েছিলেন। Manik: 'Military camp-এ 2230-এ পাবে কিন্তু কিনবি না'। শেষে কেনা হয়নি।",
+  "CBSE: Neel (Sandip-এর ছেলে) 96.6%। Bubai: 'Babara ready hoea jao line die khawanor jonno'।",
+  "BJP party: Jhatu খাওয়ালেন। Muna ছোলা কিনে contribution দাবি করলেন!",
+  "",
+  "== শব্দার্থ ==",
+  "Maya=আবেগ | বো চো=Biplab উক্তি | Driver=Arindam | কুত্তু≠কুট্টু | ছোলা≠চোলা | MB=Mohun Bagan"
+].join("\n");
 
 const MEMBERS = [
   {name:"Raju",     nick:"Chotichata Muna",  emoji:"🐔", color:"#dc2626", img:"Muna.jpeg"},
@@ -360,6 +424,28 @@ function showToast(msg){
 }
 
 // ── SEND ─────────────────────────────────────────────────────────
+// ── Gemini Direct Call ───────────────────────────────────────
+async function geminiDirect(messages, member) {
+  const sysLines = [SYSTEM_PROMPT];
+  if(memories.length > 0){
+    sysLines.push("\n== নতুন শেখা ==");
+    memories.slice(-20).forEach(m => sysLines.push("- [" + m.ts + "," + m.by + "]: " + m.text));
+  }
+  sysLines.push("\nএখন কথা বলছেন: " + member.name + " (nickname: " + member.nick + ")। nickname ধরে ডাকো। সবসময় বাংলায়।");
+  const res = await fetch(GEMINI_URL, {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({
+      system_instruction:{parts:[{text: sysLines.join("\n")}]},
+      contents: messages,
+      generationConfig:{maxOutputTokens:300}
+    })
+  });
+  const data = await res.json();
+  if(data.error) throw new Error(data.error.message);
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || "কিছু বুঝলাম না! আবার বলো।";
+}
+
 async function sendMessage(){
   const input=document.getElementById("chat-input");
   const text=input.value.trim();
@@ -375,10 +461,13 @@ async function sendMessage(){
   document.getElementById("send-btn").disabled=true;
 
   try{
-    let aiText, attempt=0;
-    while(attempt<3){
-      try{
-        const res=await fetch(API_URL,{
+    let aiText;
+    const userText = messages[messages.length-1]?.parts?.[0]?.text || "";
+
+    try{
+      if(needsWebSearch(userText)){
+        // ── Web search দরকার → Netlify function ──────────────
+        const res = await fetch(NETLIFY_URL, {
           method:"POST",
           headers:{"Content-Type":"application/json"},
           body:JSON.stringify({
@@ -387,20 +476,19 @@ async function sendMessage(){
             memberNick:selectedMember.nick
           })
         });
-        const data=await res.json();
-        if(res.status===429){
-          attempt++;
-          if(attempt<3)await new Promise(r=>setTimeout(r,8000*attempt));
-          continue;
+        const data = await res.json();
+        if(res.status===429 || data.error){
+          // Search fail → graceful fallback to Gemini direct
+          aiText = await geminiDirect(messages, selectedMember);
+        } else {
+          aiText = data.text || "কিছু বুঝলাম না! আবার বলো।";
         }
-        if(data.error) throw new Error(data.error);
-        aiText=data.text||"কিছু বুঝলাম না! আবার বলো।";
-        break;
-      }catch(e){
-        attempt++;
-        if(attempt>=3)aiText="⚠️ একটু busy! কিছুক্ষণ পরে try করো। 🙏";
-        else await new Promise(r=>setTimeout(r,5000*attempt));
+      } else {
+        // ── Thek context → Gemini direct (no rate limit issue) ──
+        aiText = await geminiDirect(messages, selectedMember);
       }
+    }catch(e){
+      aiText = "নেটওয়ার্ক সমস্যা! একটু পরে চেষ্টা করো। 🙏";
     }
     removeTyping();
     appendMsg("ai",aiText,null);
