@@ -1,8 +1,8 @@
 // ======================================================
 // বিরাটি ঠেক — Stats API (Upstash Redis REST)
-// GET  /api/stats → stats load
-// POST /api/stats → stats save
-// Upstash REST API: https://upstash.com/docs/redis/features/restapi
+// Upstash REST API verified format:
+// GET  /get/{key}          → read
+// POST /set/{key}/{value}  → write (value URL-encoded)
 // ======================================================
 
 const REDIS_URL   = process.env.KV_REST_API_URL;
@@ -15,30 +15,22 @@ const CORS = {
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
 };
 
-// Upstash REST GET: GET /get/{key}
 async function redisGet(key) {
   const res = await fetch(`${REDIS_URL}/get/${key}`, {
     headers: { Authorization: `Bearer ${REDIS_TOKEN}` }
   });
   const data = await res.json();
   if (!data.result) return null;
-  try {
-    // result is a JSON string stored by redisSet
-    return JSON.parse(data.result);
-  } catch { return null; }
+  try { return JSON.parse(data.result); }
+  catch { return null; }
 }
 
-// Upstash REST SET: POST /set/{key} with value in body as plain string
 async function redisSet(key, value) {
-  const valueStr = JSON.stringify(value);
-  // Upstash REST API: body হলো array format ["SET", key, value]
-  const res = await fetch(`${REDIS_URL}`, {
-    method:  "POST",
-    headers: {
-      Authorization: `Bearer ${REDIS_TOKEN}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(["SET", key, valueStr])
+  // Upstash REST: POST /set/{key}/{value} — value in URL
+  const valueStr = encodeURIComponent(JSON.stringify(value));
+  const res = await fetch(`${REDIS_URL}/set/${key}/${valueStr}`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${REDIS_TOKEN}` }
   });
   const data = await res.json();
   return data.result === "OK";
@@ -50,7 +42,6 @@ module.exports = async function handler(req, res) {
 
   if (req.method === "OPTIONS") return res.status(200).end();
 
-  // GET → stats load
   if (req.method === "GET") {
     try {
       if (!REDIS_URL || !REDIS_TOKEN) {
@@ -64,14 +55,13 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  // POST → stats save
   if (req.method === "POST") {
     try {
       if (!REDIS_URL || !REDIS_TOKEN) {
         return res.status(200).json({ ok: true });
       }
-      await redisSet(STATS_KEY, req.body);
-      return res.status(200).json({ ok: true });
+      const ok = await redisSet(STATS_KEY, req.body);
+      return res.status(200).json({ ok });
     } catch (e) {
       console.error("Stats POST error:", e.message);
       return res.status(500).json({ error: e.message });
