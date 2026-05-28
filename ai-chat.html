@@ -195,7 +195,7 @@
 
 <script>
 const BASE_URL = "https://debu-birati.github.io/birati-thek/";
-const NETLIFY_URL = "/.netlify/functions/chat";  // শুধু web search-এর জন্য
+const VERCEL_URL = "/api/chat";  // Vercel serverless function
 
 // All AI calls go through Netlify function
 
@@ -434,7 +434,7 @@ async function sendMessage(){
     const userText = messages[messages.length-1]?.parts?.[0]?.text || "";
 
     try{
-      const res = await fetch(NETLIFY_URL, {
+      const res = await fetch(VERCEL_URL, {
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
