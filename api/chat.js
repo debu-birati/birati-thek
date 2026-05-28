@@ -61,20 +61,35 @@ async function doSearch(query) {
   const cacheKey = query.toLowerCase().slice(0, 60);
   const now      = Date.now();
   if (searchCache[cacheKey] && now - searchCache[cacheKey].ts < CACHE_TTL) {
+    console.log("[SEARCH] Cache hit:", cacheKey);
     return searchCache[cacheKey].result;
   }
-  if (!GOOGLE_SEARCH_KEY || !GOOGLE_SEARCH_CX) return "";
+  if (!GOOGLE_SEARCH_KEY || !GOOGLE_SEARCH_CX) {
+    console.log("[SEARCH] ERROR: API keys missing!");
+    return "";
+  }
   try {
     const q   = encodeURIComponent(query);
-    const res = await fetch(
+    console.log("[SEARCH] Calling:", query);
+    const res  = await fetch(
       `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_SEARCH_KEY}&cx=${GOOGLE_SEARCH_CX}&q=${q}&num=3&dateRestrict=m1`
     );
     const data = await res.json();
-    if (!data.items || data.items.length === 0) return "";
+    console.log("[SEARCH] HTTP status:", res.status);
+    if (data.error) {
+      console.log("[SEARCH] API error:", JSON.stringify(data.error));
+      return "";
+    }
+    if (!data.items || data.items.length === 0) {
+      console.log("[SEARCH] No results for:", query);
+      return "";
+    }
     const snippets = data.items.map(i => i.title + ": " + i.snippet).join("\n");
+    console.log("[SEARCH] Got", data.items.length, "results");
     searchCache[cacheKey] = { result: snippets, ts: now };
     return snippets;
   } catch (e) {
+    console.log("[SEARCH] Exception:", e.message);
     return "";
   }
 }
