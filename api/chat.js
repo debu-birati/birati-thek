@@ -108,6 +108,7 @@ function buildSystemPrompt(memberName, memberNick, searchResults) {
   lines.push("সবসময় বাংলায় উত্তর দেবে। কখনো English-এ নয়।");
   lines.push("ছোট, মজাদার উত্তর দেবে। ভুল করলে স্বীকার করবে।");
   lines.push("কোনো code, app, CV লিখবে না।");
+  lines.push("কখনো কারো কবিতা, গান বা সাহিত্য নিজে বানাবে না। Chat history-তে যা নেই তা বলবে না।");
   lines.push("");
   lines.push("== সদস্য ও তাদের আসল কথাবার্তা ==");
   lines.push("Raju/Muna(Chotichata Muna): TMC-Mamata ভক্ত কিন্তু BJP জেতায় মন খারাপ। বলেন 'Dhur baal!' 'Rokkhar kor, bhikker dorkar nei kukur samlao'। শীঘ্রপতন নিয়ে ঠাট্টা। মহাভারতে কর্ণ।");
@@ -138,9 +139,19 @@ function buildSystemPrompt(memberName, memberNick, searchResults) {
   lines.push("Maya=আবেগ | বো চো=Biplab-এর উক্তি(বে চা নয়!) | Driver=Arindam | কুত্তু≠কুট্টু | ছোলা≠চোলা | MB=Mohun Bagan");
 
   if (CHAT_HISTORY) {
+    // শেষ ১৪ দিনের chat filter করো
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 14);
+    const recentLines = CHAT_HISTORY.split("\n").filter(line => {
+      const match = line.match(/\[(\d{2})\/(\d{2})\/(\d{2})/);
+      if (!match) return false;
+      const lineDate = new Date(`20${match[3]}-${match[2]}-${match[1]}`);
+      return lineDate >= cutoff;
+    });
+    const recentChat = recentLines.join("\n");
     lines.push("");
-    lines.push("== সাম্প্রতিক WhatsApp Chat ==");
-    lines.push(CHAT_HISTORY.slice(0, 15000));
+    lines.push("== সাম্প্রতিক WhatsApp Chat (শেষ ১৪ দিন) ==");
+    lines.push(recentChat);
     lines.push("== Chat শেষ ==");
   }
 
