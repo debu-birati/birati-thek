@@ -180,7 +180,7 @@ function buildSystemPrompt(memberName, memberNick, searchResults) {
   if (CHAT_HISTORY) {
     // শেষ ১৪ দিনের chat filter করো
     const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - 14);
+    cutoff.setDate(cutoff.getDate() - 7);
     const recentLines = CHAT_HISTORY.split("\n").filter(line => {
       const match = line.match(/\[(\d{2})\/(\d{2})\/(\d{2})/);
       if (!match) return true;  // date নেই = কবিতার line, রাখো
