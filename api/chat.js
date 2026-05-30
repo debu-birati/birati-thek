@@ -144,7 +144,7 @@ function buildSystemPrompt(memberName, memberNick, searchResults) {
     cutoff.setDate(cutoff.getDate() - 14);
     const recentLines = CHAT_HISTORY.split("\n").filter(line => {
       const match = line.match(/\[(\d{2})\/(\d{2})\/(\d{2})/);
-      if (!match) return false;
+      if (!match) return true;  // date নেই = কবিতার line, রাখো
       const lineDate = new Date(`20${match[3]}-${match[2]}-${match[1]}`);
       return lineDate >= cutoff;
     });
